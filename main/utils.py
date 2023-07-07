@@ -25,6 +25,19 @@ def service_valid_options(service_model, sub_service_model):
 	    return []
 
 
+def send_email_property(email, property_model):
+	if not isinstance(email, list):
+		email = [email]
+	subject = 'User adds a property for review'
+	message = f"""Name: {property_model.name}
+Phone number: {property_model.phone}
+Email: {property_model.email}
+Location: {property_model.location}
+Content: {property_model.short_content()}
+"""
+	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+
+
 def send_email_quote(email, quote_model):
 	if not isinstance(email, list):
 		email = [email]

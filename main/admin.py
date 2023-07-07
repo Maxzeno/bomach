@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from .models import (
     Project, Blog, Service, SubService, HomeSlider, CustomerReview, Email,
-    Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage
+    Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property
 )
 
 # Register your models here.
@@ -14,6 +14,16 @@ admin.site.index_title = 'Welcome to Bomach Group'
 
 admin.site.unregister(Group)
 
+# Experimental feature
+
+@admin.register(Property)
+class PropertyAdmin(admin.ModelAdmin):
+    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'image', 'content', 'priority', 'activate', 'from_admin', 'date')
+    list_display = ('id', 'name', 'slug', 'phone', 'email', 'location', 'priority', 'activate', 'from_admin', 'date')
+    search_fields = ('name', 'id', 'location')
+
+
+# in production
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):

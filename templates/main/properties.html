@@ -1,0 +1,111 @@
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Properties - Bomach group</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% include "./include/head.html" %}
+
+</head>
+
+<body>
+    {% include "./include/header_others.html" %}
+<!-- page title area start here-->
+<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-wrapper text-center">
+                    <h1 class="page-title">Properties</h1>
+                    <div class="breadcrumb breadcrumb-list">
+                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                            <ul class="trail-items">
+                                <li  class="trail-item trail-begin">
+                                    <a href="/"><span >Home</span></a>  
+                                </li>
+                                <li class="trail-item trail-end"><span>Properties</span></li>
+                            </ul>
+                        </nav>                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page title area end here-->
+
+<!--popular-services area start -->
+<section class="popular-services pt-110 pb-90 gry-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-10">
+                <div class="section_title_wrapper text-center mb-50 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">                      
+                    <h2 class="msection-title">
+                        Get The Best <span>Property</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mx-auto w-75 mb-5">
+                <form action="{{ request.path }}" method="GET" class="row g-3">
+                    <div class="footer__subscribe wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="footer__subscribe-form footer__subscribe-form-2 footer__subscribe-form-3 p-relative">
+                            {{ form.query }}
+                            <button class="theme-btn">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            {% if not properties %}
+            <div class="p-5 text-center">
+                NOTHING FOUND
+            </div>
+            {% endif %}
+
+        <div class="row">
+            {% for i in properties %}
+            <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+                <div class="popular__services" style="height: 60vh; width: 100%;">
+                    <div class="popular__services-thumb p-relative" style="height: 100%; width: 100%;">
+                        <img src="{{ i.image_url }}" style="height: 100%; width: 100%; object-fit: cover;" alt="img not found">
+                        <div class="popular__services-thumb-title popular-srtitle-color">
+                           <h5><a href="/property/{{ i.slug }}">{{ i.name }}</a></h5>
+                        </div>
+                        <div class="popular__services-thumb-text text-center">
+                            <div class="popular__services-thumb-text-icon sr-icon-bg mb-30">
+                                <i class="flaticon-engineer"></i>
+                            </div>
+                            <div class="popular__services-thumb-text-content transition-3">
+                                <h3 class="services__title"><a href="/property/{{ i.slug }}">{{ i.name }}</a></h3>
+                                <p>{{ i.short_content|safe }}</p>
+                                <div class="popular__services-thumb-text-button">
+                                    <a href="/property/{{ i.slug }}">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--popular-services area end -->
+
+{% include "./include/footer.html" %}
+{% include "./include/foot.html" %}
+  
+</body>
+
+</html>

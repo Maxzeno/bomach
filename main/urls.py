@@ -5,6 +5,11 @@ from .import views
 app_name = 'main'
 
 urlpatterns = [
+    # experimental feature
+    path('property', views.Property.as_view(), name='property'),
+    path('property/create', views.PropertyCreate.as_view(), name='property-create'),
+    path('property/<slug:slug>', views.PropertyDetail.as_view(), name='property-details'),
+    # in production
     path('', views.Index.as_view(), name='home'),
     path('index', views.Index.as_view(), name='index'),
     path('about', views.About.as_view(), name='about'),

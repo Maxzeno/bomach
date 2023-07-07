@@ -9,9 +9,10 @@ import json
 from datetime import datetime, timedelta
 from .models import (
     Project as ProjectModel, Blog as BlogModel, Service as ServiceModel, Product as ProductModel,
-    Employee, PartnerSlider, CustomerReview, HomeSlider, Quote as QuoteModel, SubService, Booking as BookingModel)
+    Employee, PartnerSlider, CustomerReview, HomeSlider, 
+    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel)
 
-from .forms import QuoteForm, ContactForm, BookingForm, EmailForm
+from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm
 from .utils import service_valid_options
 
 # Create your views here.
@@ -23,6 +24,48 @@ HAPPY_CUSTOMER_COUNT = 43
 
 class Base:
     context = {'services': ServiceModel.objects.all().order_by('-priority'), 'email_form': EmailForm()}
+
+# Experimental feature
+
+class Property(View, Base):
+    def get(self, request):
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            properties = PropertyModel.objects.filter( 
+                Q(name__icontains=query) | Q(location__icontains=query) | Q(id__icontains=query)
+            )
+        else:
+            properties = PropertyModel.objects.all().order_by('-priority')
+        return render(request, 'main/properties.html', {'form': form, 'properties': properties, **self.context})
+
+
+class PropertyDetail(View, Base):
+    def get(self, request, slug):
+        the_property = get_object_or_404(PropertyModel, slug=slug)
+        return render(request, 'main/property-details.html', {'property': the_property, **self.context})
+
+
+class PropertyCreate(View, Base):
+    def get(self, request):
+        form = PropertyForm()
+        return render(request, 'main/property-create.html', {'form': form, **self.context})
+
+    def post(self, request):
+        print(request.POST, request.FILES)
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Success we will review it and get back to you')
+            form = BookingForm()
+            return render(request, 'main/property-create.html', {'form': form, **self.context})
+
+        print(form.errors)
+        print(dir(form))
+        messages.error(request, 'Fill the form properly', extra_tags='danger')
+        return render(request, 'main/property-create.html', {'form': form, **self.context})
+
+# In Production 
 
 
 class Index(View, Base):

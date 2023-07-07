@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django_summernote.fields import SummernoteTextField
 import bleach
 from .utils import (
-    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, unique_id)
+    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id)
 
 # Create your models here.
 
@@ -30,10 +30,88 @@ class CustomBaseModel:
             return f"{cleaned_string[:50]}.."
         return ''
 
+    def video_url(self):
+        if self.video:
+            return (
+                f"https://www.youtube.com/embed/{self.video.split('/')[-1].split('v=')[-1].split('&')[0].split('?')[0]}?rel=0"
+            )
+        return ''
+
+    def generate_unique_slug(self, val):
+        slug = slugify(val)
+        unique_slug = slug
+        num = 1
+        while self.__class__.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{slug}-{num}"
+            num += 1
+        return unique_slug
+
+    def create_slug(self):
+        slug_val = ''
+        if hasattr(self, 'slug') and hasattr(self, 'name'):
+            slug_val = self.name
+        elif hasattr(self, 'slug') and hasattr(self, 'title'):
+            slug_val = self.title
+
+        if slug_val and not self.slug:
+            self.slug = self.generate_unique_slug(slug_val)
+
+
     def save(self, *args, **kwargs):
         self.content = self.content.replace('&lt;o:p&gt;&lt;/o:p&gt;', '')
+        self.create_slug()
         super().save(*args, **kwargs)
 
+
+# Experimental feature
+
+# class PropertyImage(models.Model, ImageUrl):
+#     name = models.CharField(max_length=250, default='N/A')
+#     priority = models.IntegerField(default=0)
+#     image = models.ImageField(upload_to='images/')
+#     date = models.DateTimeField(default=timezone.now)
+#    # updated_at = models.DateTimeField(auto_now=True)    
+
+
+def property_id():
+    return unique_id(Property)
+
+class Property(CustomBaseModel, models.Model, ImageUrl):
+    id = models.CharField(primary_key=True, max_length=6, default=property_id)
+    activate = models.BooleanField(default=False)
+    from_admin = models.BooleanField(default=False)
+
+    name = models.CharField(max_length=250, default='Bomach admin')
+    phone = models.CharField(max_length=250, default='N/A')
+    email = models.CharField(max_length=250)
+    slug = models.CharField(max_length=250, unique=True, blank=True)
+    image = models.ImageField(upload_to='images/')
+    location = models.CharField(max_length=500)
+    content = SummernoteTextField()
+    # video = models.URLField(max_length=500, null=True)
+    # property_images = models.ManyToManyField(PropertyImage)
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
+    # def image_url(self):
+    #     """
+    #         Gets the first product image NOTE they can be more that one product image
+    #     """
+    #     property_image = self.property_images.order_by('-priority').first()
+    #     if property_image:
+    #         return property_image.image_url()
+    #     return '/static/assets/img/logo/bomach-logo-full.jpeg'
+
+    def __str__(self):
+        return self.id 
+
+
+    class Meta:
+        verbose_name = 'Property' 
+        verbose_name_plural = 'Properties'
+
+# In Production
 
 class Service(CustomBaseModel, models.Model, ImageUrl):
     name = models.CharField(max_length=250, unique=True)
@@ -48,7 +126,8 @@ class Service(CustomBaseModel, models.Model, ImageUrl):
         default=80) # ranting over 100%
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -67,7 +146,8 @@ class SubService(CustomBaseModel, models.Model, ImageUrl):
         default=80) # ranting over 100%
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -80,7 +160,8 @@ class Project(CustomBaseModel, models.Model, ImageUrl):
     content = SummernoteTextField(blank=True, null=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -90,6 +171,7 @@ class ProductImage(models.Model, ImageUrl):
     priority = models.IntegerField(default=0)
     image = models.ImageField(upload_to='images/')
     date = models.DateTimeField(default=timezone.now)
+    # updated_at = models.DateTimeField(auto_now=True)    
 
 
 def product_id():
@@ -105,14 +187,8 @@ class Product(CustomBaseModel, models.Model):
     product_images = models.ManyToManyField(ProductImage)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
-    def video_url(self):
-        if self.video:
-            return (
-                f"https://www.youtube.com/embed/{self.video.split('/')[-1].split('v=')[-1].split('&')[0].split('?')[0]}?rel=0"
-            )
-        return ''
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def image_url(self):
         """
             Gets the first product image NOTE they can be more that one product image
@@ -123,7 +199,7 @@ class Product(CustomBaseModel, models.Model):
         return '/static/assets/img/logo/bomach-logo-full.jpeg'
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 class Blog(CustomBaseModel, models.Model, ImageUrl):
@@ -134,7 +210,8 @@ class Blog(CustomBaseModel, models.Model, ImageUrl):
     content = SummernoteTextField(blank=True, null=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.title
 
@@ -146,7 +223,8 @@ class HomeSlider(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.big_text
 
@@ -157,7 +235,8 @@ class CustomerReview(models.Model):
     occupation = models.CharField(max_length=500)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -171,7 +250,8 @@ class Employee(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -181,7 +261,8 @@ class PartnerSlider(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.company
 
@@ -195,7 +276,8 @@ class Quote(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, blank=True, null=True)
     sub_service = models.ForeignKey(SubService, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -211,7 +293,8 @@ class ContactUs(models.Model):
     message = models.CharField(max_length=10000, default="N/A")
     location = models.CharField(max_length=1000, default="N/A")
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -235,7 +318,8 @@ class Booking(models.Model):
     meeting_time = models.DateTimeField()
     duration_in_minutes = models.IntegerField(default=30)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.name
 
@@ -248,22 +332,29 @@ class Email(models.Model):
     email = models.EmailField(unique=True, null=False)
     is_active = models.BooleanField(default=True)
     date = models.DateTimeField(default=timezone.now)
-
+    # updated_at = models.DateTimeField(auto_now=True)    
+    
     def __str__(self):
         return self.email
 
     class Meta:
         verbose_name = 'Email Subscriber' 
         verbose_name_plural = 'Email Subscribers'
-    
 
 
 # django signal
-def create_slug(sender, instance, *args, **kwargs):
-    instance.slug = slugify(instance.name)
+# def create_slug(sender, instance, *args, **kwargs):
+#     instance.slug = slugify(instance.name)
 
-def create_slug_title(sender, instance, *args, **kwargs):
-    instance.slug = slugify(instance.title)
+# def create_slug_title(sender, instance, *args, **kwargs):
+#     instance.slug = slugify(instance.title)
+
+
+# pre_save.connect(create_slug, sender=Service)
+# pre_save.connect(create_slug, sender=SubService)
+# pre_save.connect(create_slug, sender=Project) # note this is proJEct
+# pre_save.connect(create_slug, sender=Product) # and this is proDUct
+# pre_save.connect(create_slug_title, sender=Blog)
 
 def send_quote_email_signal(sender, instance, *args, **kwargs):
     send_email_quote(STAFF_EMAILS, instance)
@@ -274,21 +365,16 @@ def send_contact_email_signal(sender, instance, *args, **kwargs):
 def send_booking_email_signal(sender, instance, *args, **kwargs):
     send_booking_email(STAFF_EMAILS, instance)
 
+def send_email_property_signal(sender, instance, *args, **kwargs):
+    send_email_property(STAFF_EMAILS, instance)
+
 def send_user_booking_email_signal(sender, instance, *args, **kwargs):
     send_user_booking_email(instance.email, instance)
 
-
-pre_save.connect(create_slug, sender=Service)
-pre_save.connect(create_slug, sender=SubService)
-pre_save.connect(create_slug, sender=Project) # note this is proJEct
-pre_save.connect(create_slug, sender=Product) # and this is proDUct
-pre_save.connect(create_slug_title, sender=Blog)
 
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
 post_save.connect(send_quote_email_signal, sender=Quote)
 post_save.connect(send_contact_email_signal, sender=ContactUs)
+post_save.connect(send_email_property_signal, sender=Property)
 
-
-# <o:p></o:p>
-# <o:p></o:p>
