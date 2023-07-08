@@ -73,6 +73,16 @@ class CustomBaseModel:
 #    # updated_at = models.DateTimeField(auto_now=True)    
 
 
+## some conversion might occure eg. from easting northing to longitude latitude
+# class PropertyCoordinates(CustomBaseModel, models.Model):
+#     name = models.CharField(max_length=250, default='N/A')
+#     x = models.CharField(max_length=250)
+#     y = models.CharField(max_length=250)
+#     date = models.DateTimeField(default=timezone.now)
+#     # updated_at = models.DateTimeField(auto_now=True)    
+
+
+
 def property_id():
     return unique_id(Property)
 
@@ -90,6 +100,7 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     content = SummernoteTextField()
     # video = models.URLField(max_length=500, null=True)
     # property_images = models.ManyToManyField(PropertyImage)
+    # coordinates = models.ManyToManyField(PropertyCoordinates)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
     # updated_at = models.DateTimeField(auto_now=True)    
