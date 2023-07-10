@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from .models import (
-    Project, Blog, Service, SubService, HomeSlider, CustomerReview, Email,
+    Project, Blog, Service, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
     Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property
 )
 
@@ -16,9 +16,16 @@ admin.site.unregister(Group)
 
 # Experimental feature
 
+@admin.register(PropertyCoordinates)
+class PropertyCoordinatesAdmin(admin.ModelAdmin):
+    fields = ('name', 'x', 'y', 'date')
+    list_display = ('name', 'x', 'y', 'date')
+    search_fields = ('name', 'x', 'y')
+
+
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'image', 'content', 'priority', 'activate', 'from_admin', 'date')
+    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'coordinates', 'image', 'content', 'priority', 'activate', 'from_admin', 'date')
     list_display = ('id', 'name', 'slug', 'phone', 'email', 'location', 'priority', 'activate', 'from_admin', 'date')
     search_fields = ('name', 'id', 'location')
 
