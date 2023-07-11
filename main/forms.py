@@ -4,6 +4,12 @@ from django_summernote.widgets import SummernoteWidget
 
 # Experimental feature
 
+PROPERTY_COORDINATE_NUM = 50
+
+def dynamic_field(val):
+    return forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
+        attrs={'placeholder': '{val}', 'id': '{val}'}))
+
 
 class SearchForm(forms.Form):
     query = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
@@ -12,6 +18,20 @@ class SearchForm(forms.Form):
 
 
 class PropertyForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.all_fields = []
+        for i in range(1, PROPERTY_COORDINATE_NUM+1):
+            easting = f'easting{i}'
+            northing = f'northing{i}'
+            self.fields[easting] = forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
+                attrs={'placeholder': f'{easting.title()}', 'id': f'{easting}'}))
+            self.fields[northing] = forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
+                attrs={'placeholder': f'{northing.title()}', 'id': f'{northing}'}))
+            
+            self.all_fields.append(easting)
+            self.all_fields.append(northing)
+
     name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
         'placeholder': 'Name', 'id': 'name'
         }))

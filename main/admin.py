@@ -18,9 +18,9 @@ admin.site.unregister(Group)
 
 @admin.register(PropertyCoordinates)
 class PropertyCoordinatesAdmin(admin.ModelAdmin):
-    fields = ('name', 'x', 'y', 'date')
-    list_display = ('name', 'x', 'y', 'date')
-    search_fields = ('name', 'x', 'y')
+    fields = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
+    list_display = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
+    search_fields = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms')
 
 
 @admin.register(Property)

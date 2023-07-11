@@ -2,8 +2,26 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
 from django.utils.crypto import get_random_string
+from pyproj import Proj
 
 # Create your models here.
+
+
+def convert_easting_northing_to_lon_lat(easting, northing):
+    # Define the projection system for Nigeria
+    nigeria_proj = Proj(proj='utm', zone=31, ellps='WGS84', south=False)
+    
+    # Convert Easting/Northing to Longitude/Latitude
+    lon, lat = nigeria_proj(easting, northing, inverse=True)
+    return lon, lat
+
+
+def convert_decimal_to_dms(decimal):
+	degrees = int(decimal)
+	decimal_minutes = abs(decimal - degrees) * 60
+	minutes = int(decimal_minutes)
+	seconds = (decimal_minutes - minutes) * 60
+	return f"{degrees}° {minutes}' {seconds}\""
 
 
 def unique_id(model, col='id', length=6):
@@ -18,11 +36,11 @@ def unique_id(model, col='id', length=6):
 
 def service_valid_options(service_model, sub_service_model):
 	try:
-	    service_pk = service_model.objects.order_by('-priority').first().pk
-	    sub_services = sub_service_model.objects.filter(service=service_pk).order_by('-priority')
-	    return [ sub_service.name for sub_service in sub_services ]
+		service_pk = service_model.objects.order_by('-priority').first().pk
+		sub_services = sub_service_model.objects.filter(service=service_pk).order_by('-priority')
+		return [ sub_service.name for sub_service in sub_services ]
 	except:
-	    return []
+		return []
 
 
 def send_email_property(email, property_model):

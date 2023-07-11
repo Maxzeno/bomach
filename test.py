@@ -1,3 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Identical Form Field</title>
+  <style>
+    .form-field {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <div class="form-field">
+      <label for="field1">Field 1:</label>
+      <input type="text" onclick="createIdenticalFormField()" id="field1" name="field1">
+    </div>
+    <button type="button">Add Field</button>
+  </form>
+
+  <script>
+    function createIdenticalFormField() {
+      var form = document.querySelector('form');
+      var lastFormField = document.querySelector('.form-field:last-child');
+
+      var newFormField = lastFormField.cloneNode(true);
+      var newFieldId = 'field' + (parseInt(lastFormField.querySelector('input').id.slice(-1)) + 1);
+      newFormField.querySelector('label').setAttribute('for', newFieldId);
+      newFormField.querySelector('input').setAttribute('id', newFieldId);
+      newFormField.querySelector('input').setAttribute('name', newFieldId);
+
+      form.appendChild(newFormField);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+from pyproj import Proj
+
+def convert_easting_northing_to_lon_lat(easting, northing):
+    # Define the projection system for Nigeria
+    nigeria_proj = Proj(proj='utm', zone=31, ellps='WGS84', south=False)
+    
+    # Convert Easting/Northing to Longitude/Latitude
+    lon, lat = nigeria_proj(easting, northing, inverse=True)
+    
+    return lon, lat
+
+# Example usage
+easting = 300000  # Example Easting value
+northing = 400000  # Example Northing value
+
+lon, lat = convert_easting_northing_to_lon_lat(easting, northing)
+print(f"Longitude: {lon}, Latitude: {lat}")
+
+
+
+def convert_decimal_to_dms(decimal):
+    degrees = int(decimal)
+    decimal_minutes = abs(decimal - degrees) * 60
+    minutes = int(decimal_minutes)
+    seconds = (decimal_minutes - minutes) * 60
+    
+    return degrees, minutes, seconds
+
+
+
+
+
+
+
+
+
 from pyproj import Proj, transform
 
 def dms_to_utm(latitude, longitude):

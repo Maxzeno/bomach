@@ -6,7 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django_summernote.fields import SummernoteTextField
 import bleach
 from .utils import (
-    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id)
+    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
+    convert_easting_northing_to_lon_lat, convert_decimal_to_dms
+    )
 
 # Create your models here.
 
@@ -76,17 +78,24 @@ class CustomBaseModel:
 ## some conversion might occure eg. from easting northing to longitude latitude
 class PropertyCoordinates(models.Model):
     name = models.CharField(max_length=250, default='N/A')
-    x = models.CharField(max_length=250)
-    y = models.CharField(max_length=250)
+    easting = models.CharField(max_length=250)
+    northing = models.CharField(max_length=250)
+    lon = models.CharField(max_length=250, null=True, blank=True)
+    lat = models.CharField(max_length=250, null=True, blank=True)
+    lon_dms = models.CharField(max_length=250, null=True, blank=True)
+    lat_dms = models.CharField(max_length=250, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)
     # updated_at = models.DateTimeField(auto_now=True)    
 
     def __str__(self):
-        return self.name or f'{self.x} {self.y}' 
+        return self.name or f'{self.east} {self.north} {self.lon} {self.lat}' 
 
-    # def save(self, *args, **kwargs):
-    #     # to implement lon lag convertion
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        # to implement lon lag convertion
+        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing)
+        self.lon_dms = convert_decimal_to_dms(self.lon)
+        self.lat_dms = convert_decimal_to_dms(self.lat)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Coordinate' 

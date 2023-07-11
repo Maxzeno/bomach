@@ -5,14 +5,16 @@ from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
+from django import forms
+
 import json
 from datetime import datetime, timedelta
 from .models import (
     Project as ProjectModel, Blog as BlogModel, Service as ServiceModel, Product as ProductModel,
     Employee, PartnerSlider, CustomerReview, HomeSlider, 
-    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel)
+    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates)
 
-from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm
+from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM
 from .utils import service_valid_options
 
 # Create your views here.
@@ -52,12 +54,20 @@ class PropertyCreate(View, Base):
         return render(request, 'main/property-create.html', {'form': form, **self.context})
 
     def post(self, request):
-        print(request.POST, request.FILES)
         form = PropertyForm(request.POST, request.FILES)
+
         if form.is_valid():
             form.save()
+            for i in range(1, PROPERTY_COORDINATE_NUM+1):
+                easting = request.POST.get(f'easting{i}')
+                northing = request.POST.get(f'northing{i}')
+                print(easting, type(easting))
+                print(northing, type(northing))
+                if easting and northing:
+                    PropertyCoordinates.objects.create(easting=float(easting), northing=float(northing))
+
             messages.success(request, 'Success we will review it and get back to you')
-            form = BookingForm()
+            form = PropertyForm()
             return render(request, 'main/property-create.html', {'form': form, **self.context})
 
         print(form.errors)
