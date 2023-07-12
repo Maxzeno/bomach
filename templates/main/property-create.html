@@ -10,25 +10,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     {% include "./include/head.html" %}
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
 
-<style type="text/css">
-  .dz {
-      border: dashed !important;
-      border-radius: 10px !important;
-  }
-  .dz:hover {
-      background-color: aliceblue !important;
-  }
-  .dz-success-mark{
-      background-color: unset !important;
-  }
-  .dz-success-mark svg{
-      background-color: green;
-      border-radius: 50%;
-      opacity: 0.7;
-  }
+<style>
+  #image-preview {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  display: inline-block;
+  margin: 5px;
+}
+
+.image-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
 </style>
   </head>
 
@@ -194,8 +195,11 @@
                   </div>
 
                   <div class="col-md-12 custom-pad-20">
-                    <div class="tp-contact-form-field mb-20 dropzone dz">
+                    <div class="dropzone dz mb-20">
                       <div class="fallback">{{ form.images }}</div>
+                      <div id="image-preview"></div>
+                      <div><small>Choose multiple files. Supported formats are .jpg and .png, 5MB max</small></div>
+
                     </div>
                   </div>
                   
@@ -275,7 +279,6 @@
                   }
                   
               }catch (e){
-                console.log('eeeerrrrorrr')
                 niceSelect.children('.current').text('select sub category')
                 var li = $('<li>').text('select sub category');
                 li.addClass('option');
@@ -311,7 +314,7 @@ if (validOptions.indexOf(liText) === -1) {
 });
 </script>
 
-<script>
+<!-- <script>
   // Initialize dropzone on the multi-image input field
   Dropzone.autoDiscover = false;
   var myDropzone = new Dropzone(".dropzone", {
@@ -323,7 +326,33 @@ if (validOptions.indexOf(liText) === -1) {
       dictRemoveFile: "Remove",  // Remove button text
       // Additional configuration options or event handlers can be added here
   });
-</script>
+</script> -->
 
+<script>
+  document.getElementById('image-input').addEventListener('change', function(event) {
+  const files = event.target.files;
+  const previewContainer = document.getElementById('image-preview');
+  previewContainer.innerHTML = ''; // Clear previous preview
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const imageItem = document.createElement('div');
+      imageItem.classList.add('image-item');
+
+      const image = document.createElement('img');
+      image.src = e.target.result;
+
+      imageItem.appendChild(image);
+      previewContainer.appendChild(imageItem);
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+</script>
   </body>
 </html>

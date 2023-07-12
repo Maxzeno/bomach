@@ -40,7 +40,7 @@ class PropertyForm(forms.ModelForm):
         }))
     
     images = forms.ImageField(required=True, label='', widget=forms.ClearableFileInput(attrs={
-        'multiple': True, 'class': ''
+        'multiple': True, 'class': '', 'id': 'image-input'
     }))
 
     property_category = forms.ModelChoiceField(required=False, label='Categories', queryset=PropertyCategory.objects.all().order_by('-priority'),

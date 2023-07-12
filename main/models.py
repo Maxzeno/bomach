@@ -117,16 +117,13 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
 
     def image_url(self):
         pass
-        # """
-        #     Gets the first product image NOTE they can be more that one product image
-        # """
-
-        
-        # image = self.property_images.order_by('-priority').first()
-        # if image:
-        #     return image.image_url()
-        # return '/static/assets/img/logo/bomach-logo-full.jpeg'
-    
+        """
+            Gets the first product image NOTE they can be more that one property image
+        """
+        image = self.images.all().order_by('-priority').first()
+        if image:
+            return image.image_url()
+        return '/static/assets/img/logo/bomach-logo-full.jpeg'
 
     def create_slug(self):
         slug_val = ''
