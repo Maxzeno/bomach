@@ -1,5 +1,5 @@
 from django import forms
-from .models import Quote, Service, SubService, ContactUs, Booking, Email, Property
+from .models import PropertyCategory, Quote, Service, SubPropertyCategory, SubService, ContactUs, Booking, Email, Property
 from django_summernote.widgets import SummernoteWidget
 
 # Experimental feature
@@ -18,20 +18,6 @@ class SearchForm(forms.Form):
 
 
 class PropertyForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.all_fields = []
-        for i in range(1, PROPERTY_COORDINATE_NUM+1):
-            easting = f'easting{i}'
-            northing = f'northing{i}'
-            self.fields[easting] = forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
-                attrs={'placeholder': f'{easting.title()}', 'id': f'{easting}'}))
-            self.fields[northing] = forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
-                attrs={'placeholder': f'{northing.title()}', 'id': f'{northing}'}))
-            
-            self.all_fields.append(easting)
-            self.all_fields.append(northing)
-
     name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
         'placeholder': 'Name', 'id': 'name'
         }))
@@ -41,17 +27,32 @@ class PropertyForm(forms.ModelForm):
     email = forms.EmailField(required=True, label='', max_length=500,  widget=forms.EmailInput(attrs={
         'placeholder': 'Email', 'id': 'email'
         }))
-    content = forms.CharField(required=True, label='', widget=SummernoteWidget())
+    content = forms.CharField(required=True, label='', max_length=10000,  widget=forms.Textarea(attrs={
+        'placeholder': 'Content', 'id': 'content'
+        }))
+
+    property_title = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
+        'placeholder': 'Property Title', 'id': 'location'
+        }))
 
     location = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
         'placeholder': 'Property Location', 'id': 'location'
         }))
+    
+    images = forms.ImageField(required=True, label='', widget=forms.ClearableFileInput(attrs={
+        'multiple': True, 'class': ''
+    }))
 
-    image = forms.ImageField()
+    property_category = forms.ModelChoiceField(required=False, label='Categories', queryset=PropertyCategory.objects.all().order_by('-priority'),
+     initial=PropertyCategory.objects.none(), empty_label='select category')
+
+    sub_property_category = forms.ModelChoiceField(required=False, label='Sub Categories', 
+        queryset=SubPropertyCategory.objects.all().order_by('-priority'), 
+        initial=SubPropertyCategory.objects.none(), empty_label='select sub category')
 
     class Meta:
         model = Property
-        fields = ['name', 'phone', 'content', 'email', 'location', 'image']
+        fields = ['name', 'phone', 'content', 'email', 'location', 'property_title', 'sub_property_category']
 
 
 # in production

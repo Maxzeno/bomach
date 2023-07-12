@@ -10,12 +10,12 @@ from django import forms
 import json
 from datetime import datetime, timedelta
 from .models import (
-    Project as ProjectModel, Blog as BlogModel, Service as ServiceModel, Product as ProductModel,
-    Employee, PartnerSlider, CustomerReview, HomeSlider, 
+    Project as ProjectModel, Blog as BlogModel, PropertyImage, Service as ServiceModel, Product as ProductModel,
+    Employee, PartnerSlider, CustomerReview, HomeSlider, PropertyCategory as PropertyCategoryModel, SubPropertyCategory,
     Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates)
 
 from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM
-from .utils import service_valid_options
+from .utils import service_valid_options, property_category_valid_options
 
 # Create your views here.
 
@@ -51,29 +51,28 @@ class PropertyDetail(View, Base):
 class PropertyCreate(View, Base):
     def get(self, request):
         form = PropertyForm()
-        return render(request, 'main/property-create.html', {'form': form, **self.context})
+        valid_options = property_category_valid_options(PropertyCategoryModel, SubPropertyCategory)
+        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
     def post(self, request):
         form = PropertyForm(request.POST, request.FILES)
-
+        print(request.POST)
+        print(request.FILES)
+        valid_options = property_category_valid_options(PropertyCategoryModel, SubPropertyCategory)
         if form.is_valid():
-            form.save()
-            for i in range(1, PROPERTY_COORDINATE_NUM+1):
-                easting = request.POST.get(f'easting{i}')
-                northing = request.POST.get(f'northing{i}')
-                print(easting, type(easting))
-                print(northing, type(northing))
-                if easting and northing:
-                    PropertyCoordinates.objects.create(easting=float(easting), northing=float(northing))
+            property = form.save()
+            images = request.FILES.getlist('images')
+            for image in images:
+                PropertyImage.objects.create(image=image, property=property)
 
             messages.success(request, 'Success we will review it and get back to you')
             form = PropertyForm()
-            return render(request, 'main/property-create.html', {'form': form, **self.context})
+            return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
         print(form.errors)
         print(dir(form))
         messages.error(request, 'Fill the form properly', extra_tags='danger')
-        return render(request, 'main/property-create.html', {'form': form, **self.context})
+        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
 # In Production 
 
@@ -153,6 +152,22 @@ class GetSubService(View):
         children = SubService.objects.filter(service=service.pk).order_by('-priority')
         child_data = [{'id': child.pk, 'name': child.name} for child in children]
         return JsonResponse(child_data, safe=False)
+
+
+
+class GetSubPropertyCategory(View):
+    def get(self, request):
+        return JsonResponse([], safe=False)
+
+    def post(self, request):
+        try:
+            property_category_id = request.POST.get('property_category_id')
+            property_category = PropertyCategoryModel.objects.get(pk=property_category_id)
+            children = SubPropertyCategory.objects.filter(property_category=property_category.pk).order_by('-priority')
+            child_data = [{'id': child.pk, 'name': child.name} for child in children]
+            return JsonResponse(child_data, safe=False)
+        except:
+            return JsonResponse([], safe=False)
 
 
 class AvailableDatetime(View):

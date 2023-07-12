@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from .models import (
-    Project, Blog, Service, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
+    Project, Blog, PropertyCategory, PropertyImage, Service, SubPropertyCategory, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
     Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property
 )
 
@@ -16,18 +16,52 @@ admin.site.unregister(Group)
 
 # Experimental feature
 
-@admin.register(PropertyCoordinates)
-class PropertyCoordinatesAdmin(admin.ModelAdmin):
-    fields = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
-    list_display = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
-    search_fields = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms')
+class PropertyImageAdminInline(admin.TabularInline):
+    extra = 1
+    model = PropertyImage
+
+class PropertyCoordinatesAdminInline(admin.TabularInline):
+    extra = 1
+    model = PropertyCoordinates
+
+class SubPropertyCategoryAdminInline(admin.TabularInline):
+    extra = 1
+    model = SubPropertyCategory
+
+@admin.register(PropertyCategory)
+class PropertyCategoryAdmin(admin.ModelAdmin):
+    inlines = [SubPropertyCategoryAdminInline]
+    fields = ('name', 'priority', 'date')
+    list_display = ('name', 'priority', 'date')
+    search_fields = ('name',)
+
+
+# @admin.register(SubPropertyCategory)
+# class SubPropertyCategoryAdmin(admin.ModelAdmin):
+#     fields = ('name', 'property_category', 'priority', 'date')
+#     list_display = ('name', 'priority', 'date')
+#     search_fields = ('name',)
 
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'coordinates', 'image', 'content', 'priority', 'activate', 'from_admin', 'date')
-    list_display = ('id', 'name', 'slug', 'phone', 'email', 'location', 'priority', 'activate', 'from_admin', 'date')
+    inlines = [PropertyCoordinatesAdminInline, PropertyImageAdminInline]
+    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'property_title', 'sub_property_category', 'content', 'priority', 'activate', 'from_admin', 'date')
+    list_display = ('id', 'name', 'slug', 'phone', 'email', 'location', 'property_title', 'priority', 'activate', 'from_admin', 'date')
     search_fields = ('name', 'id', 'location')
+
+
+# @admin.register(PropertyCoordinates)
+# class PropertyCoordinatesAdmin(admin.ModelAdmin):
+#     fields = ('name', 'property', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
+#     list_display = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
+#     search_fields = ('name', 'easting', 'northing', 'lon', 'lat', 'lon_dms', 'lat_dms')
+
+# @admin.register(PropertyImage)
+# class PropertyImageAdmin(admin.ModelAdmin):
+#     fields = ('name', 'image', 'property', 'priority', 'date')
+#     list_display = ('name', 'priority', 'date')
+#     search_fields = ('name',)
 
 
 # in production
@@ -40,7 +74,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
 @admin.register(SubService)
-class ServiceAdmin(admin.ModelAdmin):
+class SubServiceAdmin(admin.ModelAdmin):
     fields = ('name', 'service', 'slug', 'image', 'content', 'rating', 'priority', 'date')
     list_display = ('name', 'slug', 'rating', 'priority', 'date')
     search_fields = ('name','slug')
@@ -56,7 +90,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    fields = ('id', 'name', 'slug', 'service', 'video', 'content', 'product_images', 'priority', 'date')
+    fields = ('id', 'name', 'slug', 'service', 'video', 'content', 'product_property_images', 'priority', 'date')
     list_display = ('id', 'name', 'slug', 'priority', 'date')
     search_fields = ('name', 'id')
 

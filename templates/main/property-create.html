@@ -10,6 +10,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     {% include "./include/head.html" %}
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+<style type="text/css">
+  .dz {
+      border: dashed !important;
+      border-radius: 10px !important;
+  }
+  .dz:hover {
+      background-color: aliceblue !important;
+  }
+  .dz-success-mark{
+      background-color: unset !important;
+  }
+  .dz-success-mark svg{
+      background-color: green;
+      border-radius: 50%;
+      opacity: 0.7;
+  }
+</style>
   </head>
 
   <body>
@@ -122,6 +142,7 @@
               </div>
             </div>
           </div>
+
           <div class="col-lg-8">
             <form
               action="{{ request.path }}"
@@ -148,31 +169,36 @@
                   </div>
                   <div class="col-md-6 custom-pad-20">
                     <div class="tp-contact-form-field mb-20">
-                      {{ form.location }}
+                      {{ form.property_title }}
                     </div>
                   </div>
+                  <div class="col-md-6 custom-pad-20 mb-20">
+                    <div class="tp-contact-form-field select-field-arrow">
+                        {{ form.property_category }}
+                    </div>
+                </div>
+                <div class="col-md-6 custom-pad-20 mb-20">
+                    <div class="tp-contact-form-field select-field-arrow">
+                        {{ form.sub_property_category }}
+                    </div>
+                </div>
+                <div class="col-md-12 custom-pad-20">
+                  <div class="tp-contact-form-field mb-20">
+                    {{ form.location }}
+                  </div>
+                </div>
                   <div class="col-md-12 custom-pad-20">
                     <div class="tp-contact-form-field mb-20">
                       {{ form.content }}
                     </div>
                   </div>
+
                   <div class="col-md-12 custom-pad-20">
-                    <div class="tp-contact-form-field mb-20">
-                      {{ form.image }}
+                    <div class="tp-contact-form-field mb-20 dropzone dz">
+                      <div class="fallback">{{ form.images }}</div>
                     </div>
                   </div>
-
-                  <div class="my-2">
-                    Property Coordinates in Easting North (Optional)
-                  </div>
-                  {% for field in form %} {% if field.name in form.all_fields %}
-                  <div
-                    class="col-md-6 custom-pad-20 {{ field.name }} {% if forloop.counter > 8 %} d-none {% endif %}"
-                  >
-                    <div class="tp-contact-form-field mb-20">{{ field }}</div>
-                  </div>
-                  {% endif %} {% endfor %}
-
+                  
                   <div class="col-md-12 custom-pad-20">
                     <div class="tp-contact-form-field">
                       <button
@@ -195,21 +221,109 @@
 
     {% include "./include/footer.html" %} {% include "./include/foot.html" %}
 
-    <script>
-      var inputs = document.querySelectorAll('input');
-      inputs.forEach(e => {
-          e.addEventListener('input', function(item) {
-            lastChar = item.target.id.slice(-1)
-            console.log(lastChar)
-            if (!isNaN(Number(lastChar))){
-              lastChar = lastChar * 1 + 1
-              document.querySelector(`.easting${lastChar}`).classList.remove('d-none')
-              document.querySelector(`.northing${lastChar}`).classList.remove('d-none')
-            }
-            parent = item.target.parentNode.parentNode
-            // console.log(parent)
-        })
-      })
-    </script>
+<script>
+  $(document).ready(function() {
+  $('#id_property_category').change(function() {
+      var property_category_id = $(this).val();
+
+      // Get the CSRF token value
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+      $.ajax({
+          url: '/get-sub-property-category',
+          type: 'POST',
+          data: {
+              'property_category_id': property_category_id,
+              'csrfmiddlewaretoken': csrftoken
+          },
+          success: function(data) {
+
+              var childField = $('#id_sub_property_category');
+
+              childField.empty();
+
+              for (var i = 0; i < data.length; i++) {
+                  var option = $('<option selected>').val(data[i].id).text(data[i].name);
+                  if (i != 0){
+                      // option.attr('selected', '');
+                      option.removeAttr('selected')
+                  }
+                  childField.append(option);
+              }
+
+              var niceSelect = $('.nice-select:eq(2)');
+
+              ul = niceSelect.children('.list').children();
+              niceSelect.children('.current').text('')
+
+              for (i=0; i < ul.length; i++){
+                  ul.eq(i).remove()
+              }
+
+              try {
+                  niceSelect.children('.current').text(data[0].name)
+                  niceSelect.children('.list')
+
+                  for (var i = 0; i < data.length; i++) {
+                      var li = $('<li>').text(data[i].name);
+                      li.addClass('option');
+                      li.attr('data-value', `${data[i].id}`);
+                      if (i == 0){
+                          li.addClass('selected');
+                      }
+                      niceSelect.children('.list').append(li);
+                  }
+                  
+              }catch (e){
+                console.log('eeeerrrrorrr')
+                niceSelect.children('.current').text('select sub category')
+                var li = $('<li>').text('select sub category');
+                li.addClass('option');
+                li.attr('data-value', '');
+                li.addClass('selected');
+                niceSelect.children('.list').append(li);
+              }
+
+              // <li data-value="1" class="option selected">ihjsdhjdsjkd</li>
+          }
+      });
+  });
+});
+
+</script>   
+
+<script>
+
+var validOptions = [
+  {% for item in valid_options %}
+    "{{ item }}"{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+];
+
+niceSelectUl = $('.nice-select:eq(2)').children('.list').children();
+
+niceSelectUl.each(function() {
+var liText = $(this).text().trim();
+// Check if the <li> text is not in the validOptions
+if (validOptions.indexOf(liText) === -1) {
+  $(this).remove(); // Remove the unmatched <li> element
+}
+});
+</script>
+
+<script>
+  // Initialize dropzone on the multi-image input field
+  Dropzone.autoDiscover = false;
+  var myDropzone = new Dropzone(".dropzone", {
+      paramName: "images",  // Name of the form field
+      maxFilesize: 5,  // Maximum file size in megabytes
+      acceptedFiles: 'image/*',  // Accepted file types
+      addRemoveLinks: true,  // Show remove links for uploaded files
+      dictDefaultMessage: "Drop files here or click to upload",  // Default message
+      dictRemoveFile: "Remove",  // Remove button text
+      // Additional configuration options or event handlers can be added here
+  });
+</script>
+
   </body>
 </html>

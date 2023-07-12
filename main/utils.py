@@ -42,6 +42,14 @@ def service_valid_options(service_model, sub_service_model):
 	except:
 		return []
 
+def property_category_valid_options(property_category_model, sub_property_category_model):
+	try:
+		property_category_pk = property_category_model.objects.order_by('-priority').first().pk
+		sub_property_categorys = sub_property_category_model.objects.filter(property_category=property_category_pk).order_by('-priority')
+		return [ sub_property_category.name for sub_property_category in sub_property_categorys ]
+	except:
+		return []
+	
 
 def send_email_property(email, property_model):
 	if not isinstance(email, list):

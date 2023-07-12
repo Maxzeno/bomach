@@ -67,40 +67,32 @@ class CustomBaseModel:
 
 # Experimental feature
 
-# class PropertyImage(models.Model, ImageUrl):
-#     name = models.CharField(max_length=250, default='N/A')
-#     priority = models.IntegerField(default=0)
-#     image = models.ImageField(upload_to='images/')
-#     date = models.DateTimeField(default=timezone.now)
-#    # updated_at = models.DateTimeField(auto_now=True)    
-
-
-## some conversion might occure eg. from easting northing to longitude latitude
-class PropertyCoordinates(models.Model):
-    name = models.CharField(max_length=250, default='N/A')
-    easting = models.CharField(max_length=250)
-    northing = models.CharField(max_length=250)
-    lon = models.CharField(max_length=250, null=True, blank=True)
-    lat = models.CharField(max_length=250, null=True, blank=True)
-    lon_dms = models.CharField(max_length=250, null=True, blank=True)
-    lat_dms = models.CharField(max_length=250, null=True, blank=True)
+class PropertyCategory(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+    priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
 
     def __str__(self):
-        return self.name or f'{self.east} {self.north} {self.lon} {self.lat}' 
-
-    def save(self, *args, **kwargs):
-        # to implement lon lag convertion
-        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing)
-        self.lon_dms = convert_decimal_to_dms(self.lon)
-        self.lat_dms = convert_decimal_to_dms(self.lat)
-        super().save(*args, **kwargs)
+        return self.name
 
     class Meta:
-        verbose_name = 'Coordinate' 
-        verbose_name_plural = 'Coordinates'
+        verbose_name = 'Property Category' 
+        verbose_name_plural = 'Property Categories'
 
+
+class SubPropertyCategory(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+    property_category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, null=True)
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Sub Property Category' 
+        verbose_name_plural = 'Sub Property Categories'
+    
 
 def property_id():
     return unique_id(Property)
@@ -111,27 +103,39 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     from_admin = models.BooleanField(default=False)
 
     name = models.CharField(max_length=250, default='Bomach admin')
-    phone = models.CharField(max_length=250, default='N/A')
-    email = models.CharField(max_length=250)
+    phone = models.CharField(max_length=250, default='080 3665 6173')
+    email = models.EmailField(max_length=250, default='contact@bomachgroup.com')
     slug = models.CharField(max_length=250, unique=True, blank=True)
-    image = models.ImageField(upload_to='images/')
+    property_title = models.CharField(max_length=250, default='Title')
+    sub_property_category = models.ForeignKey(SubPropertyCategory, on_delete=models.CASCADE, null=True, blank=True)
     location = models.CharField(max_length=500)
     content = SummernoteTextField()
-    # video = models.URLField(max_length=500, null=True)
-    # property_images = models.ManyToManyField(PropertyImage)
-    coordinates = models.ManyToManyField(PropertyCoordinates)
+    # property_images = models.ManyToManyField(PropertyImage, blank=True)
+    # coordinates = models.ManyToManyField(PropertyCoordinates, blank=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
+
+    def image_url(self):
+        pass
+        # """
+        #     Gets the first product image NOTE they can be more that one product image
+        # """
+
+        
+        # image = self.property_images.order_by('-priority').first()
+        # if image:
+        #     return image.image_url()
+        # return '/static/assets/img/logo/bomach-logo-full.jpeg'
     
-    # def image_url(self):
-    #     """
-    #         Gets the first product image NOTE they can be more that one product image
-    #     """
-    #     property_image = self.property_images.order_by('-priority').first()
-    #     if property_image:
-    #         return property_image.image_url()
-    #     return '/static/assets/img/logo/bomach-logo-full.jpeg'
+
+    def create_slug(self):
+        slug_val = ''
+        if hasattr(self, 'slug') and hasattr(self, 'location'):
+            slug_val = self.location
+
+        if slug_val and not self.slug:
+            self.slug = self.generate_unique_slug(slug_val)
+
 
     def __str__(self):
         return self.id 
@@ -140,6 +144,43 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     class Meta:
         verbose_name = 'Property' 
         verbose_name_plural = 'Properties'
+
+
+class PropertyImage(models.Model, ImageUrl):
+    name = models.CharField(max_length=250, default='N/A')
+    priority = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='images/')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True, blank=True, related_name='images')
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Property id: {self.property.id} - Image id: {self.id}'
+
+class PropertyCoordinates(models.Model):
+    name = models.CharField(max_length=250, default='N/A')
+    easting = models.CharField(max_length=250)
+    northing = models.CharField(max_length=250)
+    lon = models.CharField(max_length=250, null=True, blank=True)
+    lat = models.CharField(max_length=250, null=True, blank=True)
+    lon_dms = models.CharField(max_length=250, null=True, blank=True)
+    lat_dms = models.CharField(max_length=250, null=True, blank=True)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True, blank=True, related_name='coordinates')
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Easting: {self.easting} - Northing: {self.northing}' 
+
+    def save(self, *args, **kwargs):
+        # coordinate convertion
+        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing)
+        self.lon_dms = convert_decimal_to_dms(self.lon)
+        self.lat_dms = convert_decimal_to_dms(self.lat)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Coordinate' 
+        verbose_name_plural = 'Coordinates'
+
 
 # In Production
 
@@ -156,8 +197,7 @@ class Service(CustomBaseModel, models.Model, ImageUrl):
         default=80) # ranting over 100%
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -176,8 +216,7 @@ class SubService(CustomBaseModel, models.Model, ImageUrl):
         default=80) # ranting over 100%
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -190,8 +229,7 @@ class Project(CustomBaseModel, models.Model, ImageUrl):
     content = SummernoteTextField(blank=True, null=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -201,7 +239,6 @@ class ProductImage(models.Model, ImageUrl):
     priority = models.IntegerField(default=0)
     image = models.ImageField(upload_to='images/')
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
 
 
 def product_id():
@@ -217,8 +254,7 @@ class Product(CustomBaseModel, models.Model):
     product_images = models.ManyToManyField(ProductImage)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def image_url(self):
         """
             Gets the first product image NOTE they can be more that one product image
@@ -240,8 +276,7 @@ class Blog(CustomBaseModel, models.Model, ImageUrl):
     content = SummernoteTextField(blank=True, null=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.title
 
@@ -253,8 +288,7 @@ class HomeSlider(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.big_text
 
@@ -265,8 +299,7 @@ class CustomerReview(models.Model):
     occupation = models.CharField(max_length=500)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -280,8 +313,7 @@ class Employee(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -291,8 +323,7 @@ class PartnerSlider(models.Model, ImageUrl):
     image = models.ImageField(upload_to='images/')
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.company
 
@@ -306,8 +337,7 @@ class Quote(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, blank=True, null=True)
     sub_service = models.ForeignKey(SubService, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -323,8 +353,7 @@ class ContactUs(models.Model):
     message = models.CharField(max_length=10000, default="N/A")
     location = models.CharField(max_length=1000, default="N/A")
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -348,8 +377,7 @@ class Booking(models.Model):
     meeting_time = models.DateTimeField()
     duration_in_minutes = models.IntegerField(default=30)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.name
 
@@ -362,8 +390,7 @@ class Email(models.Model):
     email = models.EmailField(unique=True, null=False)
     is_active = models.BooleanField(default=True)
     date = models.DateTimeField(default=timezone.now)
-    # updated_at = models.DateTimeField(auto_now=True)    
-    
+
     def __str__(self):
         return self.email
 
