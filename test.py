@@ -1,3 +1,22 @@
+<script>
+function redirectToGoogleMaps() {
+  var propertyCoordinates = [
+    // Add coordinates for your property here
+    { lat: latitude1, lng: longitude1 },
+    { lat: latitude2, lng: longitude2 },
+    // ...
+  ];
+
+  var destination = propertyCoordinates[0].lat + ',' + propertyCoordinates[0].lng;
+  var url = 'https://www.google.com/maps/dir/?api=1&destination=' + destination;
+  window.location.href = url;
+}
+</script>
+
+<a href="#" onclick="redirectToGoogleMaps(); return false;">View Property Location on Google Maps</a>
+
+
+
 
 <script>
 function redirectToGoogleMaps() {
