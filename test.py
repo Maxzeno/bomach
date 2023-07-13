@@ -1,3 +1,33 @@
+
+<script>
+function redirectToGoogleMaps() {
+  var propertyCoordinates = [
+    // Add coordinates for your property here
+    { lat: latitude1, lng: longitude1 },
+    { lat: latitude2, lng: longitude2 },
+    // ...
+  ];
+
+  var path = propertyCoordinates.map(function(coord) {
+    return coord.lat + ',' + coord.lng;
+  }).join('|');
+
+  var url = 'https://www.google.com/maps/dir//' + path + '/@' + propertyCoordinates[0].lat + ',' + propertyCoordinates[0].lng + ',17z';
+  window.open(url);
+}
+</script>
+
+<a href="#" onclick="redirectToGoogleMaps(); return false;">View Property on Google Maps</a>
+
+
+
+
+
+
+To create a link that redirects to Google Maps and displays the property location, you can use the following URL format:
+https://www.google.com/maps/search/?api=1&query=LATITUDE,LONGITUDE
+
+
 # the line around the property
 <script>
 function initMap() {
