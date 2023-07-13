@@ -28,7 +28,7 @@ class PropertyForm(forms.ModelForm):
         'placeholder': 'Email', 'id': 'email'
         }))
     content = forms.CharField(required=True, label='', max_length=10000,  widget=forms.Textarea(attrs={
-        'placeholder': 'Content', 'id': 'content'
+        'placeholder': 'Description of the property and purpose eg rent, sell', 'id': 'content'
         }))
 
     property_title = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={

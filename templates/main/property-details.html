@@ -50,7 +50,8 @@
                         <h4 class="service__sidebar--widget__title">property Info</h4>
                         <ul>
                             <li>ID : <span>{{ property.id }}</span></li>
-                            <li>Name : <span>{{ property.name }}</span></li>
+                            <li>Category : <span>{{ property.sub_property_category.property_category.name }}</span></li>
+                            <li>Sub category : <span>{{ property.sub_property_category.name }}</span></li>
                             <li>Location : <span>{{ property.location }}</span></li>
                             <li>Date : <span>{{ property.date|date:'F j, Y' }}</span></li>
                         </ul>
@@ -62,7 +63,10 @@
                     <div class="service-details mb-30 fix wow fadeInUp"  data-wow-delay=".5s">
                         <img src="{{ property.image_url }}" class="img-fluid" alt="img">
                     </div>
-                    <h4 class="service-details-subtitle mb-20 wow fadeInUp"  data-wow-delay=".9">{{ property.name }}</h4>
+                    <div class="d-flex justify-content-between active-like-link">
+                        <h4 class="service-details-subtitle mb-20 wow fadeInUp"  data-wow-delay=".9">{{ property.name }}</h4>
+                        <a href="#" style="text-decoration: none;"><i class="fa fa-location"></i> view on map</a>
+                    </div>
                     <div class="active-like-link">
                     <p class="mb-30 wow fadeInUp"  data-wow-delay=".7s">{{ property.content|safe }}</p>
                     </div>

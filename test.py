@@ -1,3 +1,95 @@
+# the line around the property
+<script>
+function initMap() {
+  var propertyCoordinates = [
+    // Add coordinates for your property here
+    { lat: latitude1, lng: longitude1 },
+    { lat: latitude2, lng: longitude2 },
+    // ...
+  ];
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: propertyCoordinates[0],
+    zoom: 15
+  });
+
+  var propertyPath = new google.maps.Polyline({
+    path: propertyCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',  // Customize the line color
+    strokeOpacity: 1.0,
+    strokeWeight: 2  // Customize the line thickness
+  });
+
+  propertyPath.setMap(map);
+}
+</script>
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
+
+<div id="map"></div>
+
+
+
+<script>
+function initMap() {
+  var propertyCoordinates = [
+    // Add coordinates for your property here
+    { lat: latitude1, lng: longitude1 },
+    { lat: latitude2, lng: longitude2 },
+    // ...
+  ];
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: propertyCoordinates[0],
+    zoom: 15
+  });
+
+  var infowindow = new google.maps.InfoWindow();
+
+  propertyCoordinates.forEach(function(coord) {
+    var marker = new google.maps.Marker({
+      position: coord,
+      map: map
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent('Property Location');  // Customize the info window content
+      infowindow.open(map, marker);
+    });
+  });
+}
+</script>
+
+
+<script>
+initMap();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import redirect
+
+def redirect_to_google_maps(request):
+    latitude = 40.7128
+    longitude = -74.0060
+    return redirect(f"https://www.google.com/maps/search/?api=1&query={latitude},{longitude}")
+
+
+
+
 
 from django.contrib import admin
  

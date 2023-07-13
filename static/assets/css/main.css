@@ -7735,10 +7735,27 @@ blockquote cite::before {
 
 
 
+/* paginator */
 
 
+.pagination .page-item .page-link {
+  color: #3f3f95;
+}
 
+.pagination .page-item .page-link :hover{
+  color: #3f3f95;
+}
 
+.pagination .page-item.active .page-link {
+  background-color: #3f3f95;
+  color: white;
+  border-color: #3f3f95;
+}
+
+.pagination .page-item.disabled .page-link{
+  background-color: gainsboro;
+  color: gray;
+}
 
 
 

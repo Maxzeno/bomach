@@ -23,6 +23,12 @@ class PropertyImageAdminInline(admin.TabularInline):
 class PropertyCoordinatesAdminInline(admin.TabularInline):
     extra = 1
     model = PropertyCoordinates
+    fields = ('easting', 'northing', 'zone', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # Make the field read-only when editing an existing object
+            return ['lon', 'lat', 'lon_dms', 'lat_dms']
+        return []
 
 class SubPropertyCategoryAdminInline(admin.TabularInline):
     extra = 1

@@ -4,9 +4,9 @@ from django.views import View
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django import forms
-
+from django.core.paginator import Paginator
 import json
 from datetime import datetime, timedelta
 from .models import (
@@ -35,17 +35,24 @@ class Property(View, Base):
         if form.is_valid():
             query = form.cleaned_data['query']
             properties = PropertyModel.objects.filter( 
-                Q(name__icontains=query) | Q(location__icontains=query) | Q(id__icontains=query)
+                Q(activate=True) & (Q(name__icontains=query) | Q(location__icontains=query) | Q(id__icontains=query))
             )
         else:
-            properties = PropertyModel.objects.all().order_by('-priority')
+            properties = PropertyModel.objects.filter(activate=True).order_by('-priority')
+        
+        paginator = Paginator(properties, 9)
+        page_number = request.GET.get('page')
+        properties = paginator.get_page(page_number)
         return render(request, 'main/properties.html', {'form': form, 'properties': properties, **self.context})
 
 
 class PropertyDetail(View, Base):
     def get(self, request, slug):
         the_property = get_object_or_404(PropertyModel, slug=slug)
-        return render(request, 'main/property-details.html', {'property': the_property, **self.context})
+        if the_property.activate == True:
+            return render(request, 'main/property-details.html', {'property': the_property, **self.context})
+        else:
+            raise Http404("Property not found")
 
 
 class PropertyCreate(View, Base):
@@ -55,8 +62,6 @@ class PropertyCreate(View, Base):
 
     def post(self, request):
         form = PropertyForm(request.POST, request.FILES)
-        print(request.POST)
-        print(request.FILES)
         images = request.FILES.getlist('images')
         for image in images:
             if image.size > 5 * 1024 * 1024:  # Checking if the file size is greater than 5MB
@@ -72,8 +77,7 @@ class PropertyCreate(View, Base):
             form = PropertyForm()
             return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
-        print(form.errors)
-        print(dir(form))
+        # print(form.errors)
         messages.error(request, 'Fill the form properly', extra_tags='danger')
         return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 

@@ -110,8 +110,6 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     sub_property_category = models.ForeignKey(SubPropertyCategory, on_delete=models.CASCADE, null=True, blank=True)
     location = models.CharField(max_length=500)
     content = SummernoteTextField()
-    # property_images = models.ManyToManyField(PropertyImage, blank=True)
-    # coordinates = models.ManyToManyField(PropertyCoordinates, blank=True)
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
 
@@ -157,6 +155,7 @@ class PropertyCoordinates(models.Model):
     name = models.CharField(max_length=250, default='N/A')
     easting = models.CharField(max_length=250)
     northing = models.CharField(max_length=250)
+    zone = models.IntegerField(default=32)
     lon = models.CharField(max_length=250, null=True, blank=True)
     lat = models.CharField(max_length=250, null=True, blank=True)
     lon_dms = models.CharField(max_length=250, null=True, blank=True)
@@ -169,9 +168,9 @@ class PropertyCoordinates(models.Model):
 
     def save(self, *args, **kwargs):
         # coordinate convertion
-        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing)
-        self.lon_dms = convert_decimal_to_dms(self.lon)
-        self.lat_dms = convert_decimal_to_dms(self.lat)
+        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing, int(self.zone))
+        self.lon_dms = convert_decimal_to_dms(self.lon, flag='E')
+        self.lat_dms = convert_decimal_to_dms(self.lat, flag='N')
         super().save(*args, **kwargs)
 
     class Meta:

@@ -6,22 +6,26 @@ from pyproj import Proj
 
 # Create your models here.
 
+# notes Lat/long can be in: deg/min/sec  or  decimal degrees
+# UTM can be in:  m  or  mm
 
-def convert_easting_northing_to_lon_lat(easting, northing):
+def convert_easting_northing_to_lon_lat(easting, northing, zone=32):
     # Define the projection system for Nigeria
-    nigeria_proj = Proj(proj='utm', zone=31, ellps='WGS84', south=False)
+    nigeria_proj = Proj(proj='utm', zone=zone, ellps='WGS84', south=False)
     
     # Convert Easting/Northing to Longitude/Latitude
     lon, lat = nigeria_proj(easting, northing, inverse=True)
     return lon, lat
 
 
-def convert_decimal_to_dms(decimal):
+def convert_decimal_to_dms(decimal, flag=''):
+	if flag:
+		flag = f" {flag}"
 	degrees = int(decimal)
 	decimal_minutes = abs(decimal - degrees) * 60
 	minutes = int(decimal_minutes)
 	seconds = (decimal_minutes - minutes) * 60
-	return f"{degrees}° {minutes}' {seconds}\""
+	return f"{degrees}° {minutes}' {seconds}\"{flag}"
 
 
 def unique_id(model, col='id', length=6):

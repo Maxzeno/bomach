@@ -56,22 +56,33 @@
 
 
         <div class="mx-auto w-75 mb-5">
-                <form action="{{ request.path }}" method="GET" class="row g-3">
-                    <div class="footer__subscribe wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="footer__subscribe-form footer__subscribe-form-2 footer__subscribe-form-3 p-relative">
-                            {{ form.query }}
-                            <button class="theme-btn">Search</button>
-                        </div>
+            <form action="{{ request.path }}" method="GET" class="row g-3">
+                <div class="footer__subscribe wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="footer__subscribe-form footer__subscribe-form-2 footer__subscribe-form-3 p-relative">
+                        {{ form.query }}
+                        <button class="theme-btn">Search</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+        </div>
+            
 
+        <!-- <div class="input-group mb-3">
+            <select class="form-control form-control-lg">
+                <option selected>Choose...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <input type="text" class="form-control form-control-lg">
+            <button class="btn btn-danger" type="button">Search</button>
+        </div> -->
 
-            {% if not properties %}
-            <div class="p-5 text-center">
-                NOTHING FOUND
-            </div>
-            {% endif %}
+        {% if not properties %}
+        <div class="p-5 text-center">
+            NOTHING FOUND
+        </div>
+        {% endif %}
 
         <div class="row">
             {% for i in properties %}
@@ -99,6 +110,49 @@
             </div>
             {% endfor %}
         </div>
+
+    {% if properties.has_other_pages %}
+    <ul class="pagination justify-content-center">
+        {% if properties.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; First</span>
+            </li>
+        {% endif %}
+
+        {% for num in properties.paginator.page_range %}
+            {% if num > properties.number|add:"-2" and num < properties.number|add:"3" %}
+                {% if properties.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% elif num == properties.number|add:"-2" or num == properties.number|add:"3" %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if properties.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ properties.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Last &raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
     </div>
 </section>
 <!--popular-services area end -->
