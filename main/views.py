@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django import forms
 
 import json
@@ -51,17 +51,20 @@ class PropertyDetail(View, Base):
 class PropertyCreate(View, Base):
     def get(self, request):
         form = PropertyForm()
-        valid_options = property_category_valid_options(PropertyCategoryModel, SubPropertyCategory)
         return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
     def post(self, request):
         form = PropertyForm(request.POST, request.FILES)
         print(request.POST)
         print(request.FILES)
-        valid_options = property_category_valid_options(PropertyCategoryModel, SubPropertyCategory)
+        images = request.FILES.getlist('images')
+        for image in images:
+            if image.size > 5 * 1024 * 1024:  # Checking if the file size is greater than 5MB
+                messages.error(request, 'each file size should be less than 5MB', extra_tags='danger')
+                return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+            
         if form.is_valid():
             property = form.save()
-            images = request.FILES.getlist('images')
             for image in images:
                 PropertyImage.objects.create(image=image, property=property)
 

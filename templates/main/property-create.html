@@ -337,7 +337,7 @@ if (validOptions.indexOf(liText) === -1) {
   let uploadedImages = []
   document.getElementById('image-input').addEventListener('change', function(event) {
   let files = event.target.files;
-  
+
   // Add the selected files to the uploaded images array
   uploadedImages = uploadedImages.concat(Array.from(files));
 
@@ -346,7 +346,6 @@ if (validOptions.indexOf(liText) === -1) {
 
   // Add each uploaded image back to the FileList
   for (let i = 0; i < uploadedImages.length; i++) {
-    // console.log(uploadedImages[i].type, uploadedImages[i]);
     fileList.items.add(uploadedImages[i]);
   }
 
@@ -381,25 +380,22 @@ if (validOptions.indexOf(liText) === -1) {
 
 function hideOnClick(item) {
   let all_image = document.querySelectorAll('.image-item img')
-  console.log(all_image)
-  // item.style.display = 'none'
+
   for (let i = 0; i < all_image.length; i++) {
     if (all_image[i].src === item.src){
       uploadedImages.splice(i, 1);
-      
+
       // Create a new FileList object
       const fileList = new DataTransfer();
 
       // Add each uploaded image back to the FileList
       for (let i = 0; i < uploadedImages.length; i++) {
-        // console.log(uploadedImages[i].type, uploadedImages[i]);
         fileList.items.add(uploadedImages[i]);
       }
 
       // Set the FileList as the value of the image input
-      event.target.files = fileList.files;
-      files = event.target.files;
-
+      document.getElementById('image-input').files = fileList.files;
+      files = fileList.files;
 
       const previewContainer = document.getElementById('image-preview');
       previewContainer.innerHTML = '';
@@ -421,13 +417,11 @@ function hideOnClick(item) {
         };
 
         reader.readAsDataURL(file);
-}
+      }
 
       break
     }
   }
-
-  // console.log(item.src)
 }
 
 </script>
