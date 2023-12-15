@@ -1,10 +1,65 @@
 from django import forms
-from .models import Quote, Service, SubService, ContactUs, Booking, Email
+from .models import PropertyCategory, Quote, Service, SubPropertyCategory, SubService, ContactUs, Booking, Email, Property
+from django_summernote.widgets import SummernoteWidget
 
+# Experimental feature
+
+PROPERTY_COORDINATE_NUM = 50
+
+def dynamic_field(val):
+    return forms.CharField(required=False, label='', max_length=250,  widget=forms.TextInput(
+        attrs={'placeholder': '{val}', 'id': '{val}'}))
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
+        'placeholder': 'Search by name, ID and Location', 'id': 'query',
+        }))
+
+
+class PropertyForm(forms.ModelForm):
+    name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
+        'placeholder': 'Name', 'id': 'name'
+        }))
+    phone = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
+        'placeholder': 'Phone', 'id': 'phone'
+        }))
+    email = forms.EmailField(required=True, label='', max_length=500,  widget=forms.EmailInput(attrs={
+        'placeholder': 'Email', 'id': 'email'
+        }))
+    content = forms.CharField(required=True, label='', max_length=10000,  widget=forms.Textarea(attrs={
+        'placeholder': 'Description of the property and purpose eg rent, sell', 'id': 'content'
+        }))
+
+    property_title = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
+        'placeholder': 'Property Title', 'id': 'location'
+        }))
+
+    location = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
+        'placeholder': 'Property Location', 'id': 'location'
+        }))
+    
+    images = forms.ImageField(required=True, label='', widget=forms.ClearableFileInput(attrs={
+        'multiple': True, 'class': '', 'id': 'image-input'
+    }))
+
+    property_category = forms.ModelChoiceField(required=False, label='Categories', queryset=PropertyCategory.objects.all().order_by('-priority'),
+     initial=PropertyCategory.objects.none(), empty_label='select category')
+
+    sub_property_category = forms.ModelChoiceField(required=False, label='Sub Categories', 
+        queryset=SubPropertyCategory.objects.all().order_by('-priority'), 
+        initial=SubPropertyCategory.objects.none(), empty_label='select sub category')
+
+    class Meta:
+        model = Property
+        fields = ['name', 'phone', 'content', 'email', 'location', 'property_title', 'sub_property_category']
+
+
+# in production
 
 class EmailForm(forms.ModelForm):
     email = forms.EmailField(required=False, label='', max_length=1000,  widget=forms.EmailInput(attrs={
-        'placeholder':'Email Address', 'class': 'form-control', 'id': 'emailAddress'
+        'placeholder': 'Email Address', 'class': 'form-control', 'id': 'emailAddress'
         }))
 
     class Meta:
@@ -14,24 +69,24 @@ class EmailForm(forms.ModelForm):
 
 class QuoteForm(forms.ModelForm):
     name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Full Name', 'id': 'name'
+        'placeholder': 'Full Name', 'id': 'name'
         }))
     phone = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Phone', 'id': 'phone'
+        'placeholder': 'Phone', 'id': 'phone'
         }))
     email = forms.EmailField(required=True, label='', max_length=500,  widget=forms.EmailInput(attrs={
-        'placeholder':'Email', 'id': 'email'
+        'placeholder': 'Email', 'id': 'email'
         }))
     message = forms.CharField(required=True, label='', max_length=10000, widget=forms.Textarea(attrs={
-        'placeholder':'Message', 'id': 'message'
+        'placeholder': 'Message', 'id': 'message'
         }))
 
     phone = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Phone', 'id': 'phone'
+        'placeholder': 'Phone', 'id': 'phone'
         }))
 
     location = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
-        'placeholder':'Location', 'id': 'location'
+        'placeholder': 'Location', 'id': 'location'
         }))
 
     service = forms.ModelChoiceField(required=True, label='Service', queryset=Service.objects.all().order_by('-priority'),
@@ -50,20 +105,20 @@ class QuoteForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Full Name', 'id': 'name'
+        'placeholder': 'Full Name', 'id': 'name'
         }))
     phone = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Phone', 'id': 'phone'
+        'placeholder': 'Phone', 'id': 'phone'
         }))
     email = forms.EmailField(required=True, label='', max_length=500,  widget=forms.EmailInput(attrs={
-        'placeholder':'Email', 'id': 'email'
+        'placeholder': 'Email', 'id': 'email'
         }))
     message = forms.CharField(required=True, label='', max_length=10000, widget=forms.Textarea(attrs={
-        'placeholder':'Message', 'id': 'message'
+        'placeholder': 'Message', 'id': 'message'
         }))
 
     location = forms.CharField(required=True, label='', max_length=1000, widget=forms.TextInput(attrs={
-        'placeholder':'Location', 'id': 'location'
+        'placeholder': 'Location', 'id': 'location'
         }))
 
     class Meta:
@@ -73,16 +128,16 @@ class ContactForm(forms.ModelForm):
 
 class BookingForm(forms.ModelForm):
     name = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Full Name', 'id': 'name'
+        'placeholder': 'Full Name', 'id': 'name'
         }))
     phone = forms.CharField(required=True, label='', max_length=500,  widget=forms.TextInput(attrs={
-        'placeholder':'Phone', 'id': 'phone'
+        'placeholder': 'Phone', 'id': 'phone'
         }))
     email = forms.EmailField(required=True, label='', max_length=500,  widget=forms.EmailInput(attrs={
-        'placeholder':'Email', 'id': 'email'
+        'placeholder': 'Email', 'id': 'email'
         }))
     message = forms.CharField(required=True, label='', max_length=10000, widget=forms.Textarea(attrs={
-        'placeholder':'Reason', 'id': 'message'
+        'placeholder': 'Reason', 'id': 'message'
         }))
 
     location = forms.ChoiceField(choices=Booking.BRANCH_CHOICES, initial='Enugu Branch')
@@ -97,7 +152,7 @@ class BookingForm(forms.ModelForm):
         )
     
     meeting_time = forms.DateTimeField(required=True, label='', widget=forms.DateTimeInput(attrs={
-        'placeholder':'Meeting time', 'id': 'meeting_time', 'type': 'datetime-local'
+        'placeholder': 'Meeting time', 'id': 'meeting_time', 'type': 'datetime-local'
         })) 
 
     class Meta:

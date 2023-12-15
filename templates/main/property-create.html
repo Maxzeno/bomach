@@ -1,0 +1,431 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Property listing - Bomach group</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {% include "./include/head.html" %}
+    <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
+
+<style>
+  #image-preview {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  display: inline-block;
+  margin: 5px;
+}
+
+.image-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.image-item img:hover{
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+</style>
+  </head>
+
+  <body>
+    {% include "./include/header_others.html" %}
+
+    <!-- page title area start here-->
+    <div
+      class="page-title-area pt-70 pb-70"
+      data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="page-title-wrapper text-center">
+              <h1 class="page-title">Property listing</h1>
+              <div class="breadcrumb breadcrumb-list">
+                <nav
+                  aria-label="Breadcrumbs"
+                  class="breadcrumb-trail breadcrumbs"
+                >
+                  <ul class="trail-items">
+                    <li class="trail-item trail-begin">
+                      <a href="/"><span>Home</span></a>
+                    </li>
+                    <li class="trail-item trail-end">
+                      <span>Property listing</span>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- page title area end here-->
+
+    <!-- contact area start here -->
+    <section class="tp-contact-area pb-120">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10">
+            <div
+              class="section_title_wrapper mb-50 wow fadeInUp"
+              data-wow-delay="0.3s"
+              style="
+                visibility: visible;
+                animation-delay: 0.3s;
+                animation-name: fadeInUp;
+              "
+            >
+              <span class="subtitle service-ex-subtitle">
+                Property listing
+              </span>
+              <h2 class="msection-title mb-35">
+                Lease or Sell <span>Property</span> with us
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="row custom-mar-20">
+              <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                <div
+                  class="tp-contact-info mb-40 wow fadeInUp"
+                  data-wow-delay=".4s"
+                >
+                  <div class="tp-contact-info-icon">
+                    <i class="flaticon-location"></i>
+                  </div>
+                  <div class="tp-contact-info-text">
+                    <h4 class="tp-contact-info-title mb-15">Address</h4>
+                    <p>
+                      Suite 9 Swiss Guard Plaza, 450 Ogui Road <br />Enugu State
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                <div
+                  class="tp-contact-info mb-40 wow fadeInUp"
+                  data-wow-delay=".6s"
+                >
+                  <div class="tp-contact-info-icon tp-contact-info-icon-phone">
+                    <i class="flaticon-phone-call"></i>
+                  </div>
+                  <div class="tp-contact-info-text">
+                    <h4 class="tp-contact-info-title mb-15">Phone</h4>
+                    <a href="tel:08036656173">080 3665 6173</a>
+                    <a href="tel:09015555159">090 1555 5159</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                <div
+                  class="tp-contact-info mb-40 wow fadeInUp"
+                  data-wow-delay=".8s"
+                >
+                  <div class="tp-contact-info-icon">
+                    <i class="flaticon-letter"></i>
+                  </div>
+                  <div class="tp-contact-info-text">
+                    <h4 class="tp-contact-info-title mb-15">Email</h4>
+                    <a href="mailto:contact@bomachgroup.com"
+                      ><span>contact@bomachgroup.com</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <form
+              action="{{ request.path }}"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              {% csrf_token %}
+              <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
+                <div class="row custom-mar-20">
+                  <div class="col-md-6 custom-pad-20">
+                    <div class="tp-contact-form-field mb-20">
+                      {{ form.name }}
+                    </div>
+                  </div>
+                  <div class="col-md-6 custom-pad-20">
+                    <div class="tp-contact-form-field mb-20">
+                      {{ form.email }}
+                    </div>
+                  </div>
+                  <div class="col-md-6 custom-pad-20">
+                    <div class="tp-contact-form-field mb-20">
+                      {{ form.phone }}
+                    </div>
+                  </div>
+                  <div class="col-md-6 custom-pad-20">
+                    <div class="tp-contact-form-field mb-20">
+                      {{ form.property_title }}
+                    </div>
+                  </div>
+                  <div class="col-md-6 custom-pad-20 mb-20">
+                    <div class="tp-contact-form-field select-field-arrow">
+                        {{ form.property_category }}
+                    </div>
+                </div>
+                <div class="col-md-6 custom-pad-20 mb-20">
+                    <div class="tp-contact-form-field select-field-arrow">
+                        {{ form.sub_property_category }}
+                    </div>
+                </div>
+                <div class="col-md-12 custom-pad-20">
+                  <div class="tp-contact-form-field mb-20">
+                    {{ form.location }}
+                  </div>
+                </div>
+                  <div class="col-md-12 custom-pad-20">
+                    <div class="tp-contact-form-field mb-20">
+                      {{ form.content }}
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 custom-pad-20">
+                    <div class="dropzone dz mb-20">
+                      <div class="mb-2"> Upload images of the property and it's documents</div>
+                      <div class="fallback">{{ form.images }}</div>
+                      <div id="image-preview"></div>
+                      <div><small>Choose multiple files. Supported formats are .jpg and .png, 5MB max</small></div>
+
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-12 custom-pad-20">
+                    <div class="tp-contact-form-field">
+                      <button
+                        type="submit"
+                        class="theme-btn home2-btn btn-before"
+                      >
+                        <i class="fal fa-angle-double-right"></i> Send For
+                        Review
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- contact area end here -->
+
+    {% include "./include/footer.html" %} {% include "./include/foot.html" %}
+
+<script>
+  $(document).ready(function() {
+  $('#id_property_category').change(function() {
+      var property_category_id = $(this).val();
+
+      // Get the CSRF token value
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+      $.ajax({
+          url: '/get-sub-property-category',
+          type: 'POST',
+          data: {
+              'property_category_id': property_category_id,
+              'csrfmiddlewaretoken': csrftoken
+          },
+          success: function(data) {
+
+              var childField = $('#id_sub_property_category');
+
+              childField.empty();
+
+              for (var i = 0; i < data.length; i++) {
+                  var option = $('<option selected>').val(data[i].id).text(data[i].name);
+                  if (i != 0){
+                      // option.attr('selected', '');
+                      option.removeAttr('selected')
+                  }
+                  childField.append(option);
+              }
+
+              var niceSelect = $('.nice-select:eq(2)');
+
+              ul = niceSelect.children('.list').children();
+              niceSelect.children('.current').text('')
+
+              for (i=0; i < ul.length; i++){
+                  ul.eq(i).remove()
+              }
+
+              try {
+                  niceSelect.children('.current').text(data[0].name)
+                  niceSelect.children('.list')
+
+                  for (var i = 0; i < data.length; i++) {
+                      var li = $('<li>').text(data[i].name);
+                      li.addClass('option');
+                      li.attr('data-value', `${data[i].id}`);
+                      if (i == 0){
+                          li.addClass('selected');
+                      }
+                      niceSelect.children('.list').append(li);
+                  }
+                  
+              }catch (e){
+                niceSelect.children('.current').text('select sub category')
+                var li = $('<li>').text('select sub category');
+                li.addClass('option');
+                li.attr('data-value', '');
+                li.addClass('selected');
+                niceSelect.children('.list').append(li);
+              }
+
+              // <li data-value="1" class="option selected">ihjsdhjdsjkd</li>
+          }
+      });
+  });
+});
+
+</script>   
+
+<script>
+
+var validOptions = [
+  {% for item in valid_options %}
+    "{{ item }}"{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+];
+
+niceSelectUl = $('.nice-select:eq(2)').children('.list').children();
+
+niceSelectUl.each(function() {
+var liText = $(this).text().trim();
+// Check if the <li> text is not in the validOptions
+if (validOptions.indexOf(liText) === -1) {
+  $(this).remove(); // Remove the unmatched <li> element
+}
+});
+</script>
+
+<!-- <script>
+  // Initialize dropzone on the multi-image input field
+  Dropzone.autoDiscover = false;
+  var myDropzone = new Dropzone(".dropzone", {
+      paramName: "images",  // Name of the form field
+      maxFilesize: 5,  // Maximum file size in megabytes
+      acceptedFiles: 'image/*',  // Accepted file types
+      addRemoveLinks: true,  // Show remove links for uploaded files
+      dictDefaultMessage: "Drop files here or click to upload",  // Default message
+      dictRemoveFile: "Remove",  // Remove button text
+      // Additional configuration options or event handlers can be added here
+  });
+</script> -->
+
+<script>
+  let uploadedImages = []
+  document.getElementById('image-input').addEventListener('change', function(event) {
+  let files = event.target.files;
+
+  // Add the selected files to the uploaded images array
+  uploadedImages = uploadedImages.concat(Array.from(files));
+
+  // Create a new FileList object
+  const fileList = new DataTransfer();
+
+  // Add each uploaded image back to the FileList
+  for (let i = 0; i < uploadedImages.length; i++) {
+    fileList.items.add(uploadedImages[i]);
+  }
+
+  // Set the FileList as the value of the image input
+  event.target.files = fileList.files;
+  files = event.target.files;
+
+
+  const previewContainer = document.getElementById('image-preview');
+  previewContainer.innerHTML = '';
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const imageItem = document.createElement('div');
+      imageItem.classList.add('image-item');
+
+      const image = document.createElement('img');
+      image.src = e.target.result;
+      image.setAttribute('onclick', 'hideOnClick(this)');
+
+      imageItem.appendChild(image);
+      previewContainer.appendChild(imageItem);
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+});
+
+function hideOnClick(item) {
+  let all_image = document.querySelectorAll('.image-item img')
+
+  for (let i = 0; i < all_image.length; i++) {
+    if (all_image[i].src === item.src){
+      uploadedImages.splice(i, 1);
+
+      // Create a new FileList object
+      const fileList = new DataTransfer();
+
+      // Add each uploaded image back to the FileList
+      for (let i = 0; i < uploadedImages.length; i++) {
+        fileList.items.add(uploadedImages[i]);
+      }
+
+      // Set the FileList as the value of the image input
+      document.getElementById('image-input').files = fileList.files;
+      files = fileList.files;
+
+      const previewContainer = document.getElementById('image-preview');
+      previewContainer.innerHTML = '';
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const imageItem = document.createElement('div');
+          imageItem.classList.add('image-item');
+
+          const image = document.createElement('img');
+          image.src = e.target.result;
+          image.setAttribute('onclick', 'hideOnClick(this)');
+
+          imageItem.appendChild(image);
+          previewContainer.appendChild(imageItem);
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      break
+    }
+  }
+}
+
+</script>
+
+  </body>
+</html>

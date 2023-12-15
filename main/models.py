@@ -6,7 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django_summernote.fields import SummernoteTextField
 import bleach
 from .utils import (
-    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, unique_id)
+    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
+    convert_easting_northing_to_lon_lat, convert_decimal_to_dms
+    )
 
 # Create your models here.
 
@@ -30,10 +32,153 @@ class CustomBaseModel:
             return f"{cleaned_string[:50]}.."
         return ''
 
+    def video_url(self):
+        if self.video:
+            return (
+                f"https://www.youtube.com/embed/{self.video.split('/')[-1].split('v=')[-1].split('&')[0].split('?')[0]}?rel=0"
+            )
+        return ''
+
+    def generate_unique_slug(self, val):
+        slug = slugify(val)
+        unique_slug = slug
+        num = 1
+        while self.__class__.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{slug}-{num}"
+            num += 1
+        return unique_slug
+
+    def create_slug(self):
+        slug_val = ''
+        if hasattr(self, 'slug') and hasattr(self, 'name'):
+            slug_val = self.name
+        elif hasattr(self, 'slug') and hasattr(self, 'title'):
+            slug_val = self.title
+
+        if slug_val and not self.slug:
+            self.slug = self.generate_unique_slug(slug_val)
+
+
     def save(self, *args, **kwargs):
         self.content = self.content.replace('&lt;o:p&gt;&lt;/o:p&gt;', '')
+        self.create_slug()
         super().save(*args, **kwargs)
 
+
+# Experimental feature
+
+class PropertyCategory(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Property Category' 
+        verbose_name_plural = 'Property Categories'
+
+
+class SubPropertyCategory(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+    property_category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, null=True)
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Sub Property Category' 
+        verbose_name_plural = 'Sub Property Categories'
+    
+
+def property_id():
+    return unique_id(Property)
+
+class Property(CustomBaseModel, models.Model, ImageUrl):
+    id = models.CharField(primary_key=True, max_length=6, default=property_id)
+    activate = models.BooleanField(default=False)
+    from_admin = models.BooleanField(default=False)
+
+    name = models.CharField(max_length=250, default='Bomach admin')
+    phone = models.CharField(max_length=250, default='080 3665 6173')
+    email = models.EmailField(max_length=250, default='contact@bomachgroup.com')
+    slug = models.CharField(max_length=250, unique=True, blank=True)
+    property_title = models.CharField(max_length=250, default='Title')
+    sub_property_category = models.ForeignKey(SubPropertyCategory, on_delete=models.CASCADE, null=True, blank=True)
+    location = models.CharField(max_length=500)
+    content = SummernoteTextField()
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+
+    def image_url(self):
+        pass
+        """
+            Gets the first product image NOTE they can be more that one property image
+        """
+        image = self.images.all().order_by('-priority').first()
+        if image:
+            return image.image_url()
+        return '/static/assets/img/logo/bomach-logo-full.jpeg'
+
+    def create_slug(self):
+        slug_val = ''
+        if hasattr(self, 'slug') and hasattr(self, 'location'):
+            slug_val = self.location
+
+        if slug_val and not self.slug:
+            self.slug = self.generate_unique_slug(slug_val)
+
+
+    def __str__(self):
+        return self.id 
+
+
+    class Meta:
+        verbose_name = 'Property' 
+        verbose_name_plural = 'Properties'
+
+
+class PropertyImage(models.Model, ImageUrl):
+    name = models.CharField(max_length=250, default='N/A')
+    priority = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='images/')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True, blank=True, related_name='images')
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Property id: {self.property.id} - Image id: {self.id}'
+
+class PropertyCoordinates(models.Model):
+    name = models.CharField(max_length=250, default='N/A')
+    easting = models.CharField(max_length=250)
+    northing = models.CharField(max_length=250)
+    zone = models.IntegerField(default=32)
+    lon = models.CharField(max_length=250, null=True, blank=True)
+    lat = models.CharField(max_length=250, null=True, blank=True)
+    lon_dms = models.CharField(max_length=250, null=True, blank=True)
+    lat_dms = models.CharField(max_length=250, null=True, blank=True)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True, blank=True, related_name='coordinates')
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Easting: {self.easting} - Northing: {self.northing}' 
+
+    def save(self, *args, **kwargs):
+        # coordinate convertion
+        self.lon, self.lat = convert_easting_northing_to_lon_lat(self.easting, self.northing, int(self.zone))
+        self.lon_dms = convert_decimal_to_dms(self.lon, flag='E')
+        self.lat_dms = convert_decimal_to_dms(self.lat, flag='N')
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Coordinate' 
+        verbose_name_plural = 'Coordinates'
+
+
+# In Production
 
 class Service(CustomBaseModel, models.Model, ImageUrl):
     name = models.CharField(max_length=250, unique=True)
@@ -106,13 +251,6 @@ class Product(CustomBaseModel, models.Model):
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
 
-    def video_url(self):
-        if self.video:
-            return (
-                f"https://www.youtube.com/embed/{self.video.split('/')[-1].split('v=')[-1].split('&')[0].split('?')[0]}?rel=0"
-            )
-        return ''
-
     def image_url(self):
         """
             Gets the first product image NOTE they can be more that one product image
@@ -123,7 +261,7 @@ class Product(CustomBaseModel, models.Model):
         return '/static/assets/img/logo/bomach-logo-full.jpeg'
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 class Blog(CustomBaseModel, models.Model, ImageUrl):
@@ -255,15 +393,21 @@ class Email(models.Model):
     class Meta:
         verbose_name = 'Email Subscriber' 
         verbose_name_plural = 'Email Subscribers'
-    
 
 
 # django signal
-def create_slug(sender, instance, *args, **kwargs):
-    instance.slug = slugify(instance.name)
+# def create_slug(sender, instance, *args, **kwargs):
+#     instance.slug = slugify(instance.name)
 
-def create_slug_title(sender, instance, *args, **kwargs):
-    instance.slug = slugify(instance.title)
+# def create_slug_title(sender, instance, *args, **kwargs):
+#     instance.slug = slugify(instance.title)
+
+
+# pre_save.connect(create_slug, sender=Service)
+# pre_save.connect(create_slug, sender=SubService)
+# pre_save.connect(create_slug, sender=Project) # note this is proJEct
+# pre_save.connect(create_slug, sender=Product) # and this is proDUct
+# pre_save.connect(create_slug_title, sender=Blog)
 
 def send_quote_email_signal(sender, instance, *args, **kwargs):
     send_email_quote(STAFF_EMAILS, instance)
@@ -274,21 +418,16 @@ def send_contact_email_signal(sender, instance, *args, **kwargs):
 def send_booking_email_signal(sender, instance, *args, **kwargs):
     send_booking_email(STAFF_EMAILS, instance)
 
+def send_email_property_signal(sender, instance, *args, **kwargs):
+    send_email_property(STAFF_EMAILS, instance)
+
 def send_user_booking_email_signal(sender, instance, *args, **kwargs):
     send_user_booking_email(instance.email, instance)
 
-
-pre_save.connect(create_slug, sender=Service)
-pre_save.connect(create_slug, sender=SubService)
-pre_save.connect(create_slug, sender=Project) # note this is proJEct
-pre_save.connect(create_slug, sender=Product) # and this is proDUct
-pre_save.connect(create_slug_title, sender=Blog)
 
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
 post_save.connect(send_quote_email_signal, sender=Quote)
 post_save.connect(send_contact_email_signal, sender=ContactUs)
+post_save.connect(send_email_property_signal, sender=Property)
 
-
-# <o:p></o:p>
-# <o:p></o:p>

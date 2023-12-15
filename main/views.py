@@ -4,15 +4,18 @@ from django.views import View
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
+from django import forms
+from django.core.paginator import Paginator
 import json
 from datetime import datetime, timedelta
 from .models import (
-    Project as ProjectModel, Blog as BlogModel, Service as ServiceModel, Product as ProductModel,
-    Employee, PartnerSlider, CustomerReview, HomeSlider, Quote as QuoteModel, SubService, Booking as BookingModel)
+    Project as ProjectModel, Blog as BlogModel, PropertyImage, Service as ServiceModel, Product as ProductModel,
+    Employee, PartnerSlider, CustomerReview, HomeSlider, PropertyCategory as PropertyCategoryModel, SubPropertyCategory,
+    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates)
 
-from .forms import QuoteForm, ContactForm, BookingForm, EmailForm
-from .utils import service_valid_options
+from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM
+from .utils import service_valid_options, property_category_valid_options
 
 # Create your views here.
 
@@ -23,6 +26,62 @@ HAPPY_CUSTOMER_COUNT = 43
 
 class Base:
     context = {'services': ServiceModel.objects.all().order_by('-priority'), 'email_form': EmailForm()}
+
+# Experimental feature
+
+class Property(View, Base):
+    def get(self, request):
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            properties = PropertyModel.objects.filter( 
+                Q(activate=True) & (Q(name__icontains=query) | Q(location__icontains=query) | Q(id__icontains=query))
+            )
+        else:
+            properties = PropertyModel.objects.filter(activate=True).order_by('-priority')
+        
+        paginator = Paginator(properties, 9)
+        page_number = request.GET.get('page')
+        properties = paginator.get_page(page_number)
+        return render(request, 'main/properties.html', {'form': form, 'properties': properties, **self.context})
+
+
+class PropertyDetail(View, Base):
+    def get(self, request, slug):
+        the_property = get_object_or_404(PropertyModel, slug=slug)
+        if the_property.activate == True:
+            return render(request, 'main/property-details.html', {'property': the_property, **self.context})
+        else:
+            raise Http404("Property not found")
+
+
+class PropertyCreate(View, Base):
+    def get(self, request):
+        form = PropertyForm()
+        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+
+    def post(self, request):
+        form = PropertyForm(request.POST, request.FILES)
+        images = request.FILES.getlist('images')
+        for image in images:
+            if image.size > 5 * 1024 * 1024:  # Checking if the file size is greater than 5MB
+                messages.error(request, 'each file size should be less than 5MB', extra_tags='danger')
+                return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+            
+        if form.is_valid():
+            property = form.save()
+            for image in images:
+                PropertyImage.objects.create(image=image, property=property)
+
+            messages.success(request, 'Success we will review it and get back to you')
+            form = PropertyForm()
+            return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+
+        # print(form.errors)
+        messages.error(request, 'Fill the form properly', extra_tags='danger')
+        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+
+# In Production 
 
 
 class Index(View, Base):
@@ -100,6 +159,22 @@ class GetSubService(View):
         children = SubService.objects.filter(service=service.pk).order_by('-priority')
         child_data = [{'id': child.pk, 'name': child.name} for child in children]
         return JsonResponse(child_data, safe=False)
+
+
+
+class GetSubPropertyCategory(View):
+    def get(self, request):
+        return JsonResponse([], safe=False)
+
+    def post(self, request):
+        try:
+            property_category_id = request.POST.get('property_category_id')
+            property_category = PropertyCategoryModel.objects.get(pk=property_category_id)
+            children = SubPropertyCategory.objects.filter(property_category=property_category.pk).order_by('-priority')
+            child_data = [{'id': child.pk, 'name': child.name} for child in children]
+            return JsonResponse(child_data, safe=False)
+        except:
+            return JsonResponse([], safe=False)
 
 
 class AvailableDatetime(View):

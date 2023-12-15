@@ -3,28 +3,28 @@
 <footer>
     <!-- Footer start -->
     <div class="footer__area footer-bg pt-100 pb-50">
-            <div class="footer__top footer__top-3 pb-60">
-        <div class="container">
-            <form action="/email-subscribe" method="POST" class="row g-3">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-6">
-                        <div class="footer__subscribe-title wow fadeInUp" data-wow-delay="0.3s">
-                            <h3>Newsletter</h3>
+        <div class="footer__top footer__top-3 pb-60">
+            <div class="container">
+                <form action="/email-subscribe" method="POST" class="row g-3">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="footer__subscribe-title wow fadeInUp" data-wow-delay="0.3s">
+                                <h3>Newsletter</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xl-8">
-                        <div class="footer__subscribe wow fadeInUp" data-wow-delay="0.6s">
-                            <div class="footer__subscribe-form footer__subscribe-form-2 footer__subscribe-form-3 p-relative">
-                                {% csrf_token %}
-                                {{ email_form.email }}
-                                <button class="theme-btn">subscribe now</button>
+                        <div class="col-xl-8">
+                            <div class="footer__subscribe wow fadeInUp" data-wow-delay="0.6s">
+                                <div class="footer__subscribe-form footer__subscribe-form-2 footer__subscribe-form-3 p-relative">
+                                    {% csrf_token %}
+                                    {{ email_form.email }}
+                                    <button class="theme-btn">subscribe now</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
         <div class="container pt-70">
             <div class="row">
                 <div class="col-xl-4 col-lg-6 col-md-6">
