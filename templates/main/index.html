@@ -11,43 +11,43 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% include "./include/head.html" %}
-<style>
-  /* Width and color of the scrollbar track */
-  .scroll-emm-container::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-    width: 4px;
-  }
-  
-  /* Styling the scrollbar thumb */
-  .scroll-emm-container::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 2px;
-  }
-  
-  /* Hover style for the scrollbar thumb */
-  .scroll-emm-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
+    <style>
+        /* Width and color of the scrollbar track */
+        .scroll-emm-container::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+            width: 4px;
+        }
 
-   /* Hide the scrollbar */
-  .scroll-emm-container::-webkit-scrollbar {
-    /*display: none;*/
-    width: 1px
-  }
-  
-  /* Ensure content is still scrollable */
-  .scroll-emm-container {
-    overflow-x: scroll;
-    overflow-y: hidden;
-/*    -ms-overflow-style: none; 
+        /* Styling the scrollbar thumb */
+        .scroll-emm-container::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 2px;
+        }
+
+        /* Hover style for the scrollbar thumb */
+        .scroll-emm-container::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+        /* Hide the scrollbar */
+        .scroll-emm-container::-webkit-scrollbar {
+            /*display: none;*/
+            width: 1px
+        }
+
+        /* Ensure content is still scrollable */
+        .scroll-emm-container {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            /*    -ms-overflow-style: none; 
     scrollbar-width: none; */
-  }
-</style>
+        }
+    </style>
 </head>
 
 <body>
     <!-- preloader -->
- <!--    <div id="preloader">
+    <!--    <div id="preloader">
         <div class="preloader">
             <span>
                 <img src="{% static 'assets/img/logo/bomach-logo-hd.jpeg' %}" class="img-fluid" alt="img">
@@ -64,106 +64,119 @@
     </div>
     <!-- back to top end -->
 
-<!-- header area start here -->
-<header class="header-area header-transparentsss">
-    <div class="header-menu header-sticky">
-        <div class="custom-container">
-            <div class="row align-items-center">
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-8">
-                    <div class="header-logo ">
-                        <a href="/"><img src="{% static 'assets/img/logo/bomach-logo-hd.jpeg' %}" style="max-height: 100px;" class="img-fluid" alt="img"></a>
-                    </div>
-                </div>
-                <div class="col-xxl-6 col-xl-6 col-lg-6 col-4">
-                    <div class="main-menu main-menu-3 white-menu d-none d-lg-block" id="white-menu">
-                        <nav id="mobile-menu">
-                           <ul>
-                             <li class="has-dropdown">
-                                <a href="/">Home</a>
-                             </li>
-                             <li class="has-dropdown">
-                                <a href="#">Who we are <i class="far fa-plus"></i></a>
-                                <ul class="submenu" style="opacity: 0.8">
-                                    <li><a href="/about">About Us</a></li>
-                                    <li><a href="/team">Team</a></li>
-                                </ul>
-                             </li>
-                            <li class="has-dropdown">
-                                <a href="#">Services <i class="far fa-plus"></i></a>
-                                <ul class="submenu" style="opacity: 0.8">
-                                    {% for i in services %}
-                                    <li><a href="/services/{{ i.slug }}">{{ i.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                             </li>
-                             <li class="has-dropdown">
-                                <a href="/project">Projects</a>
-                             </li>
-                             <li class="has-dropdown">
-                                <a href="/blog">Blog</a>
-                             </li>
-                          </ul>
-                        </nav>
-                     </div>
-                     <div class="header__action-item d-lg-none d-flex align-items-center justify-content-end">
-                        <a href="javascript:void(0)" class="sidebar-toggle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                         </a>
-                     </div>
-                </div>
-                <div class="col-xxl-4 col-xl-4 col-lg-4 d-none d-lg-block">
-                    <div class="main-menu-wrapper d-flex align-items-center justify-content-end mb-10">
-                        <div class="main-menu-wrapper__search text-left">
-                            <!-- <span class="home-contact-nav-item">Contact us</span> -->
-                            <!-- <h4><a class="home-phone-nav-item" href="tel:08036656173">080 3665 6173</a></h4> -->
+    <!-- header area start here -->
+    <header class="header-area header-transparentsss">
+        <div class="header-menu header-sticky">
+            <div class="custom-container">
+                <div class="row align-items-center">
+                    <div class="col-xxl-2 col-xl-2 col-lg-2 col-8">
+                        <div class="header-logo ">
+                            <a href="/"><img src="{% static 'assets/img/logo/bomach-logo-hd.jpeg' %}"
+                                    style="max-height: 100px;" class="img-fluid" alt="img"></a>
                         </div>
-                        <div class="menu-btn">
-                            <a href="/contact" class="theme-btn">Contact us</a>
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-4">
+                        <div class="main-menu main-menu-3 white-menu d-none d-lg-block" id="white-menu">
+                            <nav id="mobile-menu">
+                                <ul>
+                                    <li class="has-dropdown">
+                                        <a href="/">Home</a>
+                                    </li>
+                                    <li class="has-dropdown">
+                                        <a href="#">Who we are <i class="far fa-plus"></i></a>
+                                        <ul class="submenu" style="opacity: 0.8">
+                                            <li><a href="/about">About Us</a></li>
+                                            <li><a href="/team">Team</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-dropdown">
+                                        <a href="/property">Properties</a>
+                                    </li>
+                                    <li class="has-dropdown">
+                                        <a href="#">Services <i class="far fa-plus"></i></a>
+                                        <ul class="submenu" style="opacity: 0.8">
+                                            {% for i in services %}
+                                            <li><a href="/services/{{ i.slug }}">{{ i.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="has-dropdown">
+                                        <a href="/project">Projects</a>
+                                    </li>
+
+                                    <li class="has-dropdown">
+                                        <a href="/blog">Blog</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="header__action-item d-lg-none d-flex align-items-center justify-content-end">
+                            <a href="javascript:void(0)" class="sidebar-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-menu">
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 d-none d-lg-block">
+                        <div class="main-menu-wrapper d-flex align-items-center justify-content-end mb-10">
+                            <div class="main-menu-wrapper__search text-left">
+                                <!-- <span class="home-contact-nav-item">Contact us</span> -->
+                                <!-- <h4><a class="home-phone-nav-item" href="tel:08036656173">080 3665 6173</a></h4> -->
+                            </div>
+                            <div class="menu-btn">
+                                <a href="/contact" class="theme-btn">Contact us</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
+
+    <!-- Message Notification -->
+    {% if messages %}
+
+    <div style="position: fixed; z-index: 10000; right: 2vh;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible alertDisplay"
+            style="margin-top: 5vh; max-width: 75vw;">
+            <a href="#" class="close closeAlertBtn" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ message }}
+        </div>
+        {% endfor %}
     </div>
-</header>
 
-<!-- Message Notification -->
-{% if messages %}
+    {% endif %}
 
-<div style="position: fixed; z-index: 10000; right: 2vh;">
-{% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible alertDisplay" style="margin-top: 5vh; max-width: 75vw;">
-      <a href="#" class="close closeAlertBtn" data-dismiss="alert" aria-label="close">&times;</a>
-      {{ message }}
-    </div>
-{% endfor %}
-</div>
-
-{% endif %}
-
-<div class="offcanvas-overlay"></div>
-<!-- hdscreen search -->
-<div class="search-wrap">
-    <div class="search-inner">
-        <i class="fal fa-times search-close" id="search-close"></i>
-        <div class="search-cell">
-            <form method="get">
-                <div class="search-field-holder">
-                    <input type="search" class="main-search-input" placeholder="Search Entire Store...">
-                </div>
-            </form>
+    <div class="offcanvas-overlay"></div>
+    <!-- hdscreen search -->
+    <div class="search-wrap">
+        <div class="search-inner">
+            <i class="fal fa-times search-close" id="search-close"></i>
+            <div class="search-cell">
+                <form method="get">
+                    <div class="search-field-holder">
+                        <input type="search" class="main-search-input" placeholder="Search Entire Store...">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- end hdscreen search -->
+    <!-- end hdscreen search -->
 
-<!-- sidebar area start -->
-<div class="sidebar__area">
+    <!-- sidebar area start -->
+    <div class="sidebar__area">
         <div class="sidebar__wrapper">
             <div class="sidebar__top d-flex justify-content-between mb-40">
                 <div class="logo">
                     <a href="/">
-                    <img src="{% static 'assets/img/logo/bomach-logo-hd.jpeg' %}" style="max-height: 100px;" alt="logo">
+                        <img src="{% static 'assets/img/logo/bomach-logo-hd.jpeg' %}" style="max-height: 100px;"
+                            alt="logo">
                     </a>
                 </div>
                 <div class="sidebar__close">
@@ -171,7 +184,7 @@
                         <svg viewBox="0 0 22 22">
                             <path d="M12.41,11l5.29-5.29c0.39-0.39,0.39-1.02,0-1.41s-1.02-0.39-1.41,0L11,9.59L5.71,4.29c-0.39-0.39-1.02-0.39-1.41,0
                             s-0.39,1.02,0,1.41L9.59,11l-5.29,5.29c-0.39,0.39-0.39,1.02,0,1.41C4.49,17.9,4.74,18,5,18s0.51-0.1,0.71-0.29L11,12.41l5.29,5.29
-                            C16.49,17.9,16.74,18,17,18s0.51-0.1,0.71-0.29c0.39-0.39,0.39-1.02,0-1.41L12.41,11z"/>
+                            C16.49,17.9,16.74,18,17,18s0.51-0.1,0.71-0.29c0.39-0.39,0.39-1.02,0-1.41L12.41,11z" />
                         </svg>
                     </button>
                 </div>
@@ -191,660 +204,707 @@
                 </div>
             </div>
         </div>
-</div>
-<!-- sidebar area end -->
-<!-- header area end here -->
+    </div>
+    <!-- sidebar area end -->
+    <!-- header area end here -->
 
-<section class="slider-area fix">
-    <div class="slider-active slider-s-animation swiper-container">
-        <div class="swiper-wrapper">
-            {% for i in home_sliders %}
-            <div class="single-slider slider-height d-flex align-items-center swiper-slide" data-swiper-autoplay="5000">
-                <div class="slide-bg" data-background="{{ i.image_url }}"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="aslider z-index text-center">
-                                <div class="aslider--title-wrapper" data-animation="fadeInUp" data-delay=".7s">
-                                    <h2 class="aslider--title aslider--title-bg mb-30">{{ i.big_text }}</h2>
+    <section class="slider-area fix">
+        <div class="slider-active slider-s-animation swiper-container">
+            <div class="swiper-wrapper">
+                {% for i in home_sliders %}
+                <div class="single-slider slider-height d-flex align-items-center swiper-slide"
+                    data-swiper-autoplay="5000">
+                    <div class="slide-bg" data-background="{{ i.image_url }}"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="aslider z-index text-center">
+                                    <div class="aslider--title-wrapper" data-animation="fadeInUp" data-delay=".7s">
+                                        <h2 class="aslider--title aslider--title-bg mb-30">{{ i.big_text }}</h2>
+                                    </div>
+                                    <p class="aslider--subtitle" data-animation="fadeInUp" data-delay=".9s">{{
+                                        i.small_text }}</p>
                                 </div>
-                                <p class="aslider--subtitle" data-animation="fadeInUp" data-delay=".9s">{{ i.small_text }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev slide-prev"><i class="far fa-long-arrow-left"></i></div>
+            <div class="swiper-button-next slide-next"><i class="far fa-long-arrow-right"></i></div>
+        </div>
+    </section>
+    <!-- hero area end here -->
+
+    <!-- experience area start -->
+    <section class="experience-area pt-110 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="section_title_wrapper mb-50 wow fadeInUp" data-wow-delay="0.3s">
+                        <h2 class="section-title expricence-title">
+                            We are the best at what we do
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="exprience__video wow fadeInUp" data-wow-delay="0.6s">
+                        <!-- <div class="expricenc__box">
+                        <span class="counter">25</span>
+                         <h3>Years <br> Experience</h3>
+                    </div> -->
+                        <img src="{% static 'assets/img/bomach/Bomach-Real.jpg' %}" alt="ex-video.jpg' %}">
+                        <div class="exprience__video-btn">
+                            <a class="play-btn popup-video" href="https://www.youtube.com/watch?v=3c2NoilqL64"><i
+                                    class="fas fa-play"></i></a><!-- https://www.youtube.com/watch?v=jlxYqV5_KzE    https://www.youtube.com/watch?v=pNje3bWz7V8-->
+                            <div class="play-video-text">
+                                <h5>Play Video</h5>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev slide-prev"><i class="far fa-long-arrow-left"></i></div>
-        <div class="swiper-button-next slide-next"><i class="far fa-long-arrow-right"></i></div>
-    </div>
-</section>
-<!-- hero area end here -->
+    </section>
+    <!-- experience area end -->
 
-<!-- experience area start -->
-<section class="experience-area pt-110 pb-120">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="section_title_wrapper mb-50 wow fadeInUp" data-wow-delay="0.3s">                      
-                    <h2 class="section-title expricence-title">
-                        We are the best at what we do
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="exprience__video wow fadeInUp" data-wow-delay="0.6s">
-                    <!-- <div class="expricenc__box">
-                        <span class="counter">25</span>
-                         <h3>Years <br> Experience</h3>
-                    </div> -->
-                    <img src="{% static 'assets/img/bomach/Bomach-Real.jpg' %}" alt="ex-video.jpg' %}">
-                    <div class="exprience__video-btn">
-                        <a class="play-btn popup-video" href="https://www.youtube.com/watch?v=3c2NoilqL64"><i class="fas fa-play"></i></a><!-- https://www.youtube.com/watch?v=jlxYqV5_KzE    https://www.youtube.com/watch?v=pNje3bWz7V8-->
-                        <div class="play-video-text">
-                            <h5>Play Video</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- experience area end -->
-
-<!-- services area start -->
-<section class="services-area pb-90">
-    <div class="container">
-        <div class="row">
-            {% for i in services %}
-            <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="services mb-30 text-center wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                    <div class="services__icon">
-                        <i class="flaticon-medal"></i>
-                    </div>
-                    <div class="services__content transition-3">
-                        <h3 class="services__title"><a href="/services/{{ i.slug }}">{{ i.name }}</a></h3>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<section class="services-area pb-90">
-    <div class="container">
-        <h2 class="msection-title mb-35">
-            Get your <span>Free</span> Service Quote
-        </h2>
-        <form action="{{ request.path }}" method="POST">
-            {% csrf_token %}
-            <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
-                <div class="row custom-mar-20">
-                    <div class="col-md-6 custom-pad-20">
-                        <div class="tp-contact-form-field mb-20">
-                            {{ form.name }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 custom-pad-20">
-                        <div class="tp-contact-form-field mb-20">
-                            {{ form.email }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 custom-pad-20">
-                        <div class="tp-contact-form-field mb-20">
-                            {{ form.phone }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 custom-pad-20">
-                        <div class="tp-contact-form-field mb-20">
-                            {{ form.location }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 custom-pad-20 mb-20">
-                        <div class="tp-contact-form-field select-field-arrow ">
-                            {{ form.service }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 custom-pad-20 mb-20">
-                        <div class="tp-contact-form-field select-field-arrow ">
-                            {{ form.sub_service }}
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 custom-pad-20">
-                        <div class="tp-contact-form-field mb-20">
-                            {{ form.message }}
-                        </div>
-                    </div>
-                    <div class="col-md-12 custom-pad-20">
-                        <div class="tp-contact-form-field">
-                            <button type="submit" class="theme-btn home2-btn btn-before"><i class="fal fa-angle-double-right"></i> Send Message</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</section>
-<!-- services area end -->
-
-
-
-<!--service Achievement area start -->
-<section class="service-achievement pt-110 pb-90">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-10">
-                <div class="section_title_wrapper text-center mb-50 wow fadeInUp" data-wow-delay="0.3s">
-                    <span class="subtitle price-sb-title">
-                        Our Service Catalogue
-                    </span>                       
-                    <h2 class="section-title section-title-black">
-                        Explore what we offer
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid product-nav">
-            <ul class="nav nav-tabs scroll-emm-container" style=" overflow-x: auto; overflow-y:hidden; flex-wrap: nowrap;">
-            {% for i in product_data %}
-            <li class="nav-item">
-              <a class="nav-link {% if forloop.first %} active {% endif %}" style="white-space: nowrap;" data-toggle="tab" href="#menu{{ i.0.pk }}">{{ i.0.name }}</a>
-            </li>
-            {% endfor %}
-            </ul>
-
-        <div class="tab-content">
-        {% for i in product_data %}
-        <div id="menu{{ i.0.pk }}" class="tab-pane fade {% if forloop.first %} show active {% endif %}">
-          <div class="mt-3">
+    <!-- services area start -->
+    <section class="services-area pb-90">
+        <div class="container">
             <div class="row">
-              <div class="col-md-3 mb-4">
-                <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
-                  {% for j in i.1 %}
-                  <li class="nav-item">
-                    <a class="nav-link {% if forloop.first %} active {% endif %}" id="menu{{ i.0.pk }}-tab{{ j.pk }}-tab" data-toggle="pill" href="#menu{{ i.0.pk }}-tab{{ j.pk }}" role="tab" aria-controls="menu{{ i.0.pk }}-tab{{ j.pk }}" aria-selected="true">{{ j.name }}</a>
-                  </li>
-                  {% endfor %}
+                {% for i in services %}
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="services mb-30 text-center wow fadeInUp" data-wow-delay="0.3s"
+                        style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+                        <div class="services__icon">
+                            <i class="flaticon-medal"></i>
+                        </div>
+                        <div class="services__content transition-3">
+                            <h3 class="services__title"><a href="/services/{{ i.slug }}">{{ i.name }}</a></h3>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="services-area pb-90">
+        <div class="container">
+            <h2 class="msection-title mb-35">
+                Get your <span>Free</span> Service Quote
+            </h2>
+            <form action="{{ request.path }}" method="POST">
+                {% csrf_token %}
+                <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
+                    <div class="row custom-mar-20">
+                        <div class="col-md-6 custom-pad-20">
+                            <div class="tp-contact-form-field mb-20">
+                                {{ form.name }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-pad-20">
+                            <div class="tp-contact-form-field mb-20">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-pad-20">
+                            <div class="tp-contact-form-field mb-20">
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-pad-20">
+                            <div class="tp-contact-form-field mb-20">
+                                {{ form.location }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-pad-20 mb-20">
+                            <div class="tp-contact-form-field select-field-arrow ">
+                                {{ form.service }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-pad-20 mb-20">
+                            <div class="tp-contact-form-field select-field-arrow ">
+                                {{ form.sub_service }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 custom-pad-20">
+                            <div class="tp-contact-form-field mb-20">
+                                {{ form.message }}
+                            </div>
+                        </div>
+                        <div class="col-md-12 custom-pad-20">
+                            <div class="tp-contact-form-field">
+                                <button type="submit" class="theme-btn home2-btn btn-before"><i
+                                        class="fal fa-angle-double-right"></i> Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- services area end -->
+
+
+
+    <!--service Achievement area start -->
+    <section class="service-achievement pt-110 pb-90">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-10">
+                    <div class="section_title_wrapper text-center mb-50 wow fadeInUp" data-wow-delay="0.3s">
+                        <span class="subtitle price-sb-title">
+                            Our Service Catalogue
+                        </span>
+                        <h2 class="section-title section-title-black">
+                            Explore what we offer
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid product-nav">
+                <ul class="nav nav-tabs scroll-emm-container"
+                    style=" overflow-x: auto; overflow-y:hidden; flex-wrap: nowrap;">
+                    {% for i in product_data %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if forloop.first %} active {% endif %}" style="white-space: nowrap;"
+                            data-toggle="tab" href="#menu{{ i.0.pk }}">{{ i.0.name }}</a>
+                    </li>
+                    {% endfor %}
                 </ul>
-              </div>
-              <div class="col-md-9">
-                <div class="tab-content" id="myTabContent">
-                {% for j in i.1 %}
-                  <div class="tab-pane fade {% if forloop.first %} show active {% endif %}" id="menu{{ i.0.pk }}-tab{{ j.pk }}" role="tabpanel" aria-labelledby="menu{{ i.0.pk }}-tab{{ j.pk }}-tab">
-                    <div class="row">
-                      <div class="col-md-6 mb-4">
-                        <!-- <video class="video-container" preload="none" controls>
+
+                <div class="tab-content">
+                    {% for i in product_data %}
+                    <div id="menu{{ i.0.pk }}" class="tab-pane fade {% if forloop.first %} show active {% endif %}">
+                        <div class="mt-3">
+                            <div class="row">
+                                <div class="col-md-3 mb-4">
+                                    <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+                                        {% for j in i.1 %}
+                                        <li class="nav-item">
+                                            <a class="nav-link {% if forloop.first %} active {% endif %}"
+                                                id="menu{{ i.0.pk }}-tab{{ j.pk }}-tab" data-toggle="pill"
+                                                href="#menu{{ i.0.pk }}-tab{{ j.pk }}" role="tab"
+                                                aria-controls="menu{{ i.0.pk }}-tab{{ j.pk }}" aria-selected="true">{{
+                                                j.name }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="tab-content" id="myTabContent">
+                                        {% for j in i.1 %}
+                                        <div class="tab-pane fade {% if forloop.first %} show active {% endif %}"
+                                            id="menu{{ i.0.pk }}-tab{{ j.pk }}" role="tabpanel"
+                                            aria-labelledby="menu{{ i.0.pk }}-tab{{ j.pk }}-tab">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <!-- <video class="video-container" preload="none" controls>
                           <source src="{{ j.video_url }}" type="video/mp4">
                           Your browser does not support the video tag.
                         </video> -->
 
 
-                        <iframe width="100%" height="100%" src="{{ j.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                    <iframe width="100%" height="100%" src="{{ j.video_url }}"
+                                                        title="YouTube video player" frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        allowfullscreen></iframe>
 
-                        
-                      </div>
-                      <div class="col-md-6 mb-4">
 
-                        <div class="swiper menu{{ i.0.pk }}-tab{{ j.pk }}-swiper">
-                          <div class="swiper-wrapper">
-                            {% for k in j.product_images.all %}
-                            <div class="swiper-slide swiper-slide-product-emma"><img src="{{ k.image_url }}"></div>
-                            {% endfor %}
-                          </div>
-                          <div class="swiper-button-next emma-btn-next-menu{{ i.0.pk }}-tab{{ j.pk }}"><i class="fal fa-long-arrow-right"></i></div>
-                          <div class="swiper-button-prev emma-btn-prev-menu{{ i.0.pk }}-tab{{ j.pk }}"><i class="fal fa-long-arrow-left"></i></div>
-                        </div>
+                                                </div>
+                                                <div class="col-md-6 mb-4">
 
-                      </div>
-                    </div>
-                    <div class="">
-                        <div>Product id: {{ j.pk }}</div>
-                        <div class="mt-3">{{ j.content|safe }}</div>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        </div>
-    </div>
-</div>
-</section>
-<!--service Achievement area end -->
+                                                    <div class="swiper menu{{ i.0.pk }}-tab{{ j.pk }}-swiper">
+                                                        <div class="swiper-wrapper">
+                                                            {% for k in j.product_images.all %}
+                                                            <div class="swiper-slide swiper-slide-product-emma"><img
+                                                                    src="{{ k.image_url }}"></div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div
+                                                            class="swiper-button-next emma-btn-next-menu{{ i.0.pk }}-tab{{ j.pk }}">
+                                                            <i class="fal fa-long-arrow-right"></i></div>
+                                                        <div
+                                                            class="swiper-button-prev emma-btn-prev-menu{{ i.0.pk }}-tab{{ j.pk }}">
+                                                            <i class="fal fa-long-arrow-left"></i></div>
+                                                    </div>
 
-<!-- services Expricence area start -->
-<section class="service-experience services-ex-bg pt-120 pb-275">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-6 col-lg-6">
-                <div class="service-ex__thumb mb-50 wow fadeInUp" style="height: 100%; width: 100%" data-wow-delay="0.3s">
-                    <img src="{% static 'assets/img/bomach/new2/Bomach-Real4.jpg' %}" style="object-fit: cover; width: 100%; height: 100%" alt="service-ex-img">
-               </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="services-expricence-right mt-10">
-                    <div class="section_title_wrapper mb-40 wow fadeInUp" data-wow-delay="0.3s">
-                        <span class="subtitle service-ex-subtitle">
-                            Service Experience
-                        </span>                       
-                        <h2 class="section-title services-ex-title mb-20">
-                            EXPERIENCE EXCELLENCE WITH US
-                        </h2>
-                        <div class="section-subtitle ex-subtitle">
-                            <p>With
-                            decades of experience and a team of industry
-                            professionals, we are committed to delivering
-                            optimum output and efficient results in all our
-                            project endeavours.</p>
-                        </div>
-                    </div>
-                    <div class="mg-skill--content wow fadeInUp" data-wow-delay="0.6s">
-                        {% for i in services %}
-                        <div class="mg-skill__wrapper {% if not forloop.last %} mb-40 {% endif %}">
-                            <div class="mg-skill--title__wrapper">
-                                <h5 class="mg-skill--title heading-color-black">{{ i.name }}</h5>
-                                <span style="left:85%">{{ i.rating }}%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar wow slideInLeft" data-wow-duration="1s" data-wow-delay="0.5s" role="progressbar" style="width: {{ i.rating }}%; visibility: visible; animation-duration: 1s; animation-delay: 0.5s; animation-name: slideInLeft;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><span></span></div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- services Expricence area end -->
-
-<!--histry-summery area start -->
-<section class="histry-summery pb-65">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-6 col-lg-6">
-                <div class="section_title_wrapper mb-35">
-                    <!-- <span class="subtitle service-ex-subtitle" style="color: transparent; background-color: transparent;">&#160;</span>  -->                      
-                    <h2 class="section-title services-ex-title">
-                        Our success Journey
-                    </h2>
-                </div>
-
-               <div class="success pt-100 pt-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="success__single d-flex align-items-center mb-40">
-                        <div class="success__single-icon success__single-icon-none mr-30 ">
-                            <a href="about"><i class="flaticon-office-building"></i></a>
-                        </div>
-                        <div class="success__single-text">
-                            <h5 class="success-title mb-10"> <a href="about">Delivering Excellence and Innovation</a></h5>
-                            <div>Welcome to Bomach Group of Company, a dynamic business consortium wholly dedicated to our valued customers and partners. With a strong foothold in Nigeria and years of experience, we have established ourselves as industry leaders in multiple sectors.. <a class="read-more-link" href="/about">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="success__single d-flex align-items-center mb-40">
-                        <div class="success__single-icon mr-30">
-                            <a href="about"><i class="flaticon-trophy"></i></a>
-                        </div>
-                        <div class="success__single-text">
-                            <span></span>
-                            <h5 class="success-title mb-10"> <a href="/about">Vision</a></h5>
-                            <div>To revolutionize the real estate and construction industry through cutting-edge technology(BOS).. <a class="read-more-link" href="/about">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="success__single d-flex align-items-center mb-40">
-                        <div class="success__single-icon mr-30">
-                            <a href="about"><i class="flaticon-famous"></i></a>
-                        </div>
-                        <div class="success__single-text">
-                            <!-- <span>feb - 2021</span> -->
-                            <h5 class="success-title mb-10"> <a href="/about">Our Core Values </a></h5>
-                            <div>Excellence: Striving for high-quality performance and continuous improvement, Prioritizing customer satisfaction and delivering value to clients.. <a class="read-more-link" href="/about">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="histry-right px-10 pt-10">
-                    <div class="histry-button m-0">
-                        <span class="histry-btn theme-bg">Book Appointment</span>
-                    </div>
-                    <div class="project__quoite">
-                        <div class="project__thumb">
-                            <img src="{% static 'assets/img/bomach/new2/Bomach-IT.jpg' %}" alt="">
-                            <div class="project__thumb-content">
-                                <h2>Have any queries <br>
-                                Reach out</h2>
-                                <div>
-                                    <h2 class="">
-                                        <a href="/booking" class="theme-btn">Book Appointment</a>
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-            </div>
-        </div>
-    </div>
-</section>
-<!--histry-summery end start -->
-
-<!--popular-services area start -->
-<section class="popular-services pt-110 pb-90 gry-bg">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-10">
-                <div class="section_title_wrapper text-center mb-50 wow fadeInUp" data-wow-delay="0.3s">
-                    <span class="subtitle price-sb-title">
-                        Blog post
-                    </span>                       
-                    <h2 class="section-title section-title-black">
-                        Checkout our blog
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            {% for i in blogs3 %}
-            <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                <div class="popular__services wow fadeInUp" style="height: 60vh; width: 100%;" data-wow-delay="0.3s">
-                    <div class="popular__services-thumb p-relative" style="height: 100%; width: 100%;">
-                        <img src="{{ i.image_url }}" style="height: 100%; width: 100%; object-fit: cover;" alt="img not found">
-                        <div class="popular__services-thumb-title">
-                           <h5><a href="blog/{{ i.slug }}">{{ i.title }}</a></h5>
-                        </div>
-                        <div class="popular__services-thumb-text text-center">
-                            <div class="popular__services-thumb-text-icon mb-30">
-                                <a href="blog/{{ i.slug }}"><i class="flaticon-robot-arm"></i></a>
-                            </div>
-                            <div class="popular__services-thumb-text-content transition-3">
-                                <h3 class="services__title"><a href="blog/{{ i.slug }}">{{ i.title }} </a></h3>
-                                <p class="text-ellipsis-hidden">{{ i.short_content|safe }}...</p>
-                                <div class="popular__services-thumb-text-button">
-                                    <a href="blog/{{ i.slug }}">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!--popular-services area end -->
-<div class="services-ex-bg">
-
-<div class="recent-project-area theme-bg p-relative pt-120 pb-55 fix" >
-    <div class="thumb-left">
-    <img src="{% static 'assets/img/recent-project/reect-project1.jpg' %}" alt="img not found">
-    </div>
-    <div class="custom-container">
-        <div class="row">
-            <div class="col-xxl-4">
-                <div class="recent-project-thumb">
-                    <div class="section_title_wrapper mb-50 fadeInUp" data-wow-delay="0.3s">
-                        <span class="subtitle service-ex-subtitle">
-                        recent Project
-                        </span>                       
-                        <h2 class="section-title custom-size white-color mb-15">
-                        Every Project <br> is important for <br> our team
-                        </h2>
-                        <div class="section-subtitle custom-subtitle mb-40">
-                            <p class="white-color">your one-stop solution for
-                                real estate services, land services,
-                                engineering, digital innovation, and food
-                                production.</p>
-                        </div>
-                        <div class="recent-project-button mb-40">
-                            <a href="/project" class="theme-btn">All Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-8">
-                <div class="padding-swiper p-relative" style="height: 60vh; width: 100%;">
-                    <div class="swiper-container project-active-1 wow fadeInUp" style="height: 100%; width: 100%;" data-wow-delay="1s">
-                        <div class="swiper-wrapper" style="height: 100%; width: 100%;">
-                            {% for i in projects %} 
-                            <div class="mproject__1 swiper-slide" style="height: 100%; width: 100%;" data-swiper-autoplay="8000">
-                                <div class="mproject__1--img" style="height: 100%; width: 100%;">
-                                    <img src="{{ i.image_url }}" style="height: 100%; width: 100%; object-fit: cover;" class="img-fluid" alt="img">
-                                </div>
-                                <div class="mproject__1--overlay">
-                                    <div class="mproject__1--overlay__social">
-                                        <a href="/project/{{ i.slug }}"><i class="far fa-long-arrow-right"></i></a>
-                                    </div>
-                                    <div class="mproject__1--overlay__text">
-                                        <span class="theme-color">{{ i.name }}</span>
-                                        <h4 class="mproject__1--title"><a href="/project/{{ i.slug }}">{{ i.short_content }}</a></h4>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div>Product id: {{ j.pk }}</div>
+                                                <div class="mt-3">{{ j.content|safe }}</div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
-                            {% endfor %}
-                        </div> 
-                    </div>  
-                    <!-- If we need navigation buttons -->
-                    <div class="mt-testimonial-slider-arrow">
-                        <div class=" project-button-next"><i class="fal fa-long-arrow-left"></i></div>
-                        <div class=" project-button-prev"><i class="fal fa-long-arrow-right"></i></div>
-                    </div>     
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</div>
-<!--recent project area end -->
+    </section>
+    <!--service Achievement area end -->
 
-
-<!-- Client Reviews area start -->
-<section class="client-reviews-area services-ex-bg pt-110 pb-120 ">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-6 col-lg-6 p-relative mb-40">
-                <div class="section_title_wrapper mb-25 wow fadeInUp" data-wow-delay="0.3s">
-                    <span class="subtitle service-ex-subtitle">
-                        Client feedback
-                    </span>                       
-                    <h2 class="section-title services-ex-title">
-                        Happy customer says <br> about bomach group
-                    </h2>
+    <!-- services Expricence area start -->
+    <section class="service-experience services-ex-bg pt-120 pb-275">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="service-ex__thumb mb-50 wow fadeInUp" style="height: 100%; width: 100%"
+                        data-wow-delay="0.3s">
+                        <img src="{% static 'assets/img/bomach/new2/Bomach-Real4.jpg' %}"
+                            style="object-fit: cover; width: 100%; height: 100%" alt="service-ex-img">
+                    </div>
                 </div>
-                <div class="client-active swiper-container wow fadeInUp" data-wow-delay="0.6s">
-                    <div class="swiper-wrapper">
-                        {% for i in happy_customer %}
-                        <div class="client swiper-slide">
-                            <div class="testimonial-text mb-50">
-                                <p>{{ i.review }}</p>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="services-expricence-right mt-10">
+                        <div class="section_title_wrapper mb-40 wow fadeInUp" data-wow-delay="0.3s">
+                            <span class="subtitle service-ex-subtitle">
+                                Service Experience
+                            </span>
+                            <h2 class="section-title services-ex-title mb-20">
+                                EXPERIENCE EXCELLENCE WITH US
+                            </h2>
+                            <div class="section-subtitle ex-subtitle">
+                                <p>With
+                                    decades of experience and a team of industry
+                                    professionals, we are committed to delivering
+                                    optimum output and efficient results in all our
+                                    project endeavours.</p>
                             </div>
-                            <div class="testimonial-author d-flex align-items-center">
-                                <div class="testimonial-author-icon mr-30">
-                                    <i class="fal fa-quote-left"></i>
+                        </div>
+                        <div class="mg-skill--content wow fadeInUp" data-wow-delay="0.6s">
+                            {% for i in services %}
+                            <div class="mg-skill__wrapper {% if not forloop.last %} mb-40 {% endif %}">
+                                <div class="mg-skill--title__wrapper">
+                                    <h5 class="mg-skill--title heading-color-black">{{ i.name }}</h5>
+                                    <span style="left:85%">{{ i.rating }}%</span>
                                 </div>
-                                <div class="testimonial-author-text">
-                                    <h5 class="uppercase">{{ i.name }}</h5>
-                                    <span>{{ i.occupation }}</span>
+                                <div class="progress">
+                                    <div class="progress-bar wow slideInLeft" data-wow-duration="1s"
+                                        data-wow-delay="0.5s" role="progressbar"
+                                        style="width: {{ i.rating }}%; visibility: visible; animation-duration: 1s; animation-delay: 0.5s; animation-name: slideInLeft;"
+                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- services Expricence area end -->
+
+    <!--histry-summery area start -->
+    <section class="histry-summery pb-65">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="section_title_wrapper mb-35">
+                        <!-- <span class="subtitle service-ex-subtitle" style="color: transparent; background-color: transparent;">&#160;</span>  -->
+                        <h2 class="section-title services-ex-title">
+                            Our success Journey
+                        </h2>
+                    </div>
+
+                    <div class="success pt-100 pt-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="success__single d-flex align-items-center mb-40">
+                            <div class="success__single-icon success__single-icon-none mr-30 ">
+                                <a href="about"><i class="flaticon-office-building"></i></a>
+                            </div>
+                            <div class="success__single-text">
+                                <h5 class="success-title mb-10"> <a href="about">Delivering Excellence and
+                                        Innovation</a></h5>
+                                <div>Welcome to Bomach Group of Company, a dynamic business consortium wholly dedicated
+                                    to our valued customers and partners. With a strong foothold in Nigeria and years of
+                                    experience, we have established ourselves as industry leaders in multiple sectors..
+                                    <a class="read-more-link" href="/about">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
+                        <div class="success__single d-flex align-items-center mb-40">
+                            <div class="success__single-icon mr-30">
+                                <a href="about"><i class="flaticon-trophy"></i></a>
+                            </div>
+                            <div class="success__single-text">
+                                <span></span>
+                                <h5 class="success-title mb-10"> <a href="/about">Vision</a></h5>
+                                <div>To revolutionize the real estate and construction industry through cutting-edge
+                                    technology(BOS).. <a class="read-more-link" href="/about">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="success__single d-flex align-items-center mb-40">
+                            <div class="success__single-icon mr-30">
+                                <a href="about"><i class="flaticon-famous"></i></a>
+                            </div>
+                            <div class="success__single-text">
+                                <!-- <span>feb - 2021</span> -->
+                                <h5 class="success-title mb-10"> <a href="/about">Our Core Values </a></h5>
+                                <div>Excellence: Striving for high-quality performance and continuous improvement,
+                                    Prioritizing customer satisfaction and delivering value to clients.. <a
+                                        class="read-more-link" href="/about">Read more</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- If we need navigation buttons -->
-                <div class="tp-testimonial-slider-arrow wow fadeInUp" data-wow-delay="0.6s">
-                    <div class="testimonial-button-next swiper-button-next"><i class="fal fa-long-arrow-left"></i></div>
-                    <div class="testimonial-button-prev swiper-button-prev">  <i class="fal fa-long-arrow-right"></i></div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="achievement-group ml-100">
-                    <div class="achievement-item mb-30 wow fadeInUp" data-wow-delay="0.3s">
-                        <ul class="achievement-item-box d-flex align-items-center">
-                            <li><i class="flaticon-support"></i>
-                            </li>
-                            <li><h2 class="counter-count"><span class="">{{ employees_count }}</span>+</h2>
-                                <p class="counter-title">expert employee</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="achievement-item mb-30 wow fadeInUp" data-wow-delay="0.6s">
-                        <ul class="achievement-item-box d-flex align-items-center">
-                            <li><i class="flaticon-medal"></i>
-                            </li>
-                            <li><h2 class="counter-count"><span class="">{{ project_count }}</span>+</h2>
-                                <p class="counter-title">Completed Project</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="achievement-item wow fadeInUp" data-wow-delay="0.9s">
-                        <ul class="achievement-item-box d-flex align-items-center">
-                            <li><i class="flaticon-recovered"></i>
-                            </li>
-                            <li><h2 class="counter-count"><span class="">{{ happy_customer_count }}</span>+</h2>
-                                <p class="counter-title">Happy customer</p>
-                            </li>
-                        </ul>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="histry-right px-10 pt-10">
+                        <div class="histry-button m-0">
+                            <span class="histry-btn theme-bg">Book Appointment</span>
+                        </div>
+                        <div class="project__quoite">
+                            <div class="project__thumb">
+                                <img src="{% static 'assets/img/bomach/new2/Bomach-IT.jpg' %}" alt="">
+                                <div class="project__thumb-content">
+                                    <h2>Have any queries <br>
+                                        Reach out</h2>
+                                    <div>
+                                        <h2 class="">
+                                            <a href="/booking" class="theme-btn">Book Appointment</a>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <!--histry-summery end start -->
 
- <!-- brand area end here -->
- <div class="brand-area pt-120 pb-120">
-    <div class="container">
-        <div class="brand-active swiper-container">
-            <div class="swiper-wrapper align-items-center">
-                {% for i in partners %} 
-                <div class="brand-wrapper swiper-slide wow fadeInUp" data-wow-delay=".3s" data-swiper-autoplay="10000">
-                    <a href="#"><img src="{{ i.image_url }}" class="img-fluid" alt="img"></a>
+    <!--popular-services area start -->
+    <section class="popular-services pt-110 pb-90 gry-bg">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-10">
+                    <div class="section_title_wrapper text-center mb-50 wow fadeInUp" data-wow-delay="0.3s">
+                        <span class="subtitle price-sb-title">
+                            Blog post
+                        </span>
+                        <h2 class="section-title section-title-black">
+                            Checkout our blog
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for i in blogs3 %}
+                <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+                    <div class="popular__services wow fadeInUp" style="height: 60vh; width: 100%;"
+                        data-wow-delay="0.3s">
+                        <div class="popular__services-thumb p-relative" style="height: 100%; width: 100%;">
+                            <img src="{{ i.image_url }}" style="height: 100%; width: 100%; object-fit: cover;"
+                                alt="img not found">
+                            <div class="popular__services-thumb-title">
+                                <h5><a href="blog/{{ i.slug }}">{{ i.title }}</a></h5>
+                            </div>
+                            <div class="popular__services-thumb-text text-center">
+                                <div class="popular__services-thumb-text-icon mb-30">
+                                    <a href="blog/{{ i.slug }}"><i class="flaticon-robot-arm"></i></a>
+                                </div>
+                                <div class="popular__services-thumb-text-content transition-3">
+                                    <h3 class="services__title"><a href="blog/{{ i.slug }}">{{ i.title }} </a></h3>
+                                    <p class="text-ellipsis-hidden">{{ i.short_content|safe }}...</p>
+                                    <div class="popular__services-thumb-text-button">
+                                        <a href="blog/{{ i.slug }}">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
+    </section>
+
+    <!--popular-services area end -->
+    <div class="services-ex-bg">
+
+        <div class="recent-project-area theme-bg p-relative pt-120 pb-55 fix">
+            <div class="thumb-left">
+                <img src="{% static 'assets/img/recent-project/reect-project1.jpg' %}" alt="img not found">
+            </div>
+            <div class="custom-container">
+                <div class="row">
+                    <div class="col-xxl-4">
+                        <div class="recent-project-thumb">
+                            <div class="section_title_wrapper mb-50 fadeInUp" data-wow-delay="0.3s">
+                                <span class="subtitle service-ex-subtitle">
+                                    recent Project
+                                </span>
+                                <h2 class="section-title custom-size white-color mb-15">
+                                    Every Project <br> is important for <br> our team
+                                </h2>
+                                <div class="section-subtitle custom-subtitle mb-40">
+                                    <p class="white-color">your one-stop solution for
+                                        real estate services, land services,
+                                        engineering, digital innovation, and food
+                                        production.</p>
+                                </div>
+                                <div class="recent-project-button mb-40">
+                                    <a href="/project" class="theme-btn">All Project</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-8">
+                        <div class="padding-swiper p-relative" style="height: 60vh; width: 100%;">
+                            <div class="swiper-container project-active-1 wow fadeInUp"
+                                style="height: 100%; width: 100%;" data-wow-delay="1s">
+                                <div class="swiper-wrapper" style="height: 100%; width: 100%;">
+                                    {% for i in projects %}
+                                    <div class="mproject__1 swiper-slide" style="height: 100%; width: 100%;"
+                                        data-swiper-autoplay="8000">
+                                        <div class="mproject__1--img" style="height: 100%; width: 100%;">
+                                            <img src="{{ i.image_url }}"
+                                                style="height: 100%; width: 100%; object-fit: cover;" class="img-fluid"
+                                                alt="img">
+                                        </div>
+                                        <div class="mproject__1--overlay">
+                                            <div class="mproject__1--overlay__social">
+                                                <a href="/project/{{ i.slug }}"><i
+                                                        class="far fa-long-arrow-right"></i></a>
+                                            </div>
+                                            <div class="mproject__1--overlay__text">
+                                                <span class="theme-color">{{ i.name }}</span>
+                                                <h4 class="mproject__1--title"><a href="/project/{{ i.slug }}">{{
+                                                        i.short_content }}</a></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- If we need navigation buttons -->
+                            <div class="mt-testimonial-slider-arrow">
+                                <div class=" project-button-next"><i class="fal fa-long-arrow-left"></i></div>
+                                <div class=" project-button-prev"><i class="fal fa-long-arrow-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<!-- brand area start here -->
+    <!--recent project area end -->
 
-{% include "./include/footer.html" %}
-{% include "./include/foot.html" %}
 
-<script>
-    $(document).ready(function() {
-    $('#id_service').change(function() {
-        console.log('in the servie')
-        var service_id = $(this).val();
+    <!-- Client Reviews area start -->
+    <section class="client-reviews-area services-ex-bg pt-110 pb-120 ">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 p-relative mb-40">
+                    <div class="section_title_wrapper mb-25 wow fadeInUp" data-wow-delay="0.3s">
+                        <span class="subtitle service-ex-subtitle">
+                            Client feedback
+                        </span>
+                        <h2 class="section-title services-ex-title">
+                            Happy customer says <br> about bomach group
+                        </h2>
+                    </div>
+                    <div class="client-active swiper-container wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="swiper-wrapper">
+                            {% for i in happy_customer %}
+                            <div class="client swiper-slide">
+                                <div class="testimonial-text mb-50">
+                                    <p>{{ i.review }}</p>
+                                </div>
+                                <div class="testimonial-author d-flex align-items-center">
+                                    <div class="testimonial-author-icon mr-30">
+                                        <i class="fal fa-quote-left"></i>
+                                    </div>
+                                    <div class="testimonial-author-text">
+                                        <h5 class="uppercase">{{ i.name }}</h5>
+                                        <span>{{ i.occupation }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- If we need navigation buttons -->
+                    <div class="tp-testimonial-slider-arrow wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="testimonial-button-next swiper-button-next"><i class="fal fa-long-arrow-left"></i>
+                        </div>
+                        <div class="testimonial-button-prev swiper-button-prev"> <i class="fal fa-long-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="achievement-group ml-100">
+                        <div class="achievement-item mb-30 wow fadeInUp" data-wow-delay="0.3s">
+                            <ul class="achievement-item-box d-flex align-items-center">
+                                <li><i class="flaticon-support"></i>
+                                </li>
+                                <li>
+                                    <h2 class="counter-count"><span class="">{{ employees_count }}</span>+</h2>
+                                    <p class="counter-title">expert employee</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="achievement-item mb-30 wow fadeInUp" data-wow-delay="0.6s">
+                            <ul class="achievement-item-box d-flex align-items-center">
+                                <li><i class="flaticon-medal"></i>
+                                </li>
+                                <li>
+                                    <h2 class="counter-count"><span class="">{{ project_count }}</span>+</h2>
+                                    <p class="counter-title">Completed Project</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="achievement-item wow fadeInUp" data-wow-delay="0.9s">
+                            <ul class="achievement-item-box d-flex align-items-center">
+                                <li><i class="flaticon-recovered"></i>
+                                </li>
+                                <li>
+                                    <h2 class="counter-count"><span class="">{{ happy_customer_count }}</span>+</h2>
+                                    <p class="counter-title">Happy customer</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Get the CSRF token value
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    <!-- brand area end here -->
+    <div class="brand-area pt-120 pb-120">
+        <div class="container">
+            <div class="brand-active swiper-container">
+                <div class="swiper-wrapper align-items-center">
+                    {% for i in partners %}
+                    <div class="brand-wrapper swiper-slide wow fadeInUp" data-wow-delay=".3s"
+                        data-swiper-autoplay="10000">
+                        <a href="#"><img src="{{ i.image_url }}" class="img-fluid" alt="img"></a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- brand area start here -->
 
-        $.ajax({
-            url: '/get-sub-service',
-            type: 'POST',
-            data: {
-                'service_id': service_id,
-                'csrfmiddlewaretoken': csrftoken
-            },
-            success: function(data) {
-                var childField = $('#id_sub_service');
-                childField.empty();
+    {% include "./include/footer.html" %}
+    {% include "./include/foot.html" %}
 
-                for (var i = 0; i < data.length; i++) {
-                    var option = $('<option selected>').val(data[i].id).text(data[i].name);
-                    if (i != 0){
-                        // option.attr('selected', '');
-                        option.removeAttr('selected')
-                    }
-                    childField.append(option);
-                }
+    <script>
+        $(document).ready(function () {
+            $('#id_service').change(function () {
+                console.log('in the servie')
+                var service_id = $(this).val();
 
-                var niceSelect = $('.nice-select:eq(1)');
+                // Get the CSRF token value
+                var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
-                ul = niceSelect.children('.list').children();
-                niceSelect.children('.current').text('')
+                $.ajax({
+                    url: '/get-sub-service',
+                    type: 'POST',
+                    data: {
+                        'service_id': service_id,
+                        'csrfmiddlewaretoken': csrftoken
+                    },
+                    success: function (data) {
+                        var childField = $('#id_sub_service');
+                        childField.empty();
 
-                for (i=0; i < ul.length; i++){
-                    ul.eq(i).remove()
-                }
-
-                try {
-                    niceSelect.children('.current').text(data[0].name)
-                    niceSelect.children('.list')
-
-                    for (var i = 0; i < data.length; i++) {
-                        var li = $('<li>').text(data[i].name);
-                        li.addClass('option');
-                        li.attr('data-value', `${data[i].id}`);
-                        if (i == 0){
-                            li.addClass('selected');
+                        for (var i = 0; i < data.length; i++) {
+                            var option = $('<option selected>').val(data[i].id).text(data[i].name);
+                            if (i != 0) {
+                                // option.attr('selected', '');
+                                option.removeAttr('selected')
+                            }
+                            childField.append(option);
                         }
-                        console.log(li);
-                        niceSelect.children('.list').append(li);
+
+                        var niceSelect = $('.nice-select:eq(1)');
+
+                        ul = niceSelect.children('.list').children();
+                        niceSelect.children('.current').text('')
+
+                        for (i = 0; i < ul.length; i++) {
+                            ul.eq(i).remove()
+                        }
+
+                        try {
+                            niceSelect.children('.current').text(data[0].name)
+                            niceSelect.children('.list')
+
+                            for (var i = 0; i < data.length; i++) {
+                                var li = $('<li>').text(data[i].name);
+                                li.addClass('option');
+                                li.attr('data-value', `${data[i].id}`);
+                                if (i == 0) {
+                                    li.addClass('selected');
+                                }
+                                console.log(li);
+                                niceSelect.children('.list').append(li);
+                            }
+
+                            console.log(niceSelect.children('.list'), 'chi')
+                        } catch (e) {
+                            console.log('empty data')
+                        }
+
+                        // <li data-value="1" class="option selected">ihjsdhjdsjkd</li>
                     }
-                    
-                    console.log(niceSelect.children('.list'), 'chi')
-                }catch (e){
-                    console.log('empty data')
-                }
-
-                // <li data-value="1" class="option selected">ihjsdhjdsjkd</li>
-            }
+                });
+            });
         });
-    });
-});
 
-</script>  
+    </script>
 
-<script>
+    <script>
 
-var validOptions = [
-    {% for item in valid_options %}
-      "{{ item }}"{% if not forloop.last %}, {% endif %}
-    {% endfor %}
+        var validOptions = [
+            {% for item in valid_options %}
+        "{{ item }}"{% if not forloop.last %}, {% endif %}
+        {% endfor %}
   ];
 
-console.log(validOptions)
-niceSelectUl = $('.nice-select:eq(1)').children('.list').children();
+        console.log(validOptions)
+        niceSelectUl = $('.nice-select:eq(1)').children('.list').children();
 
-niceSelectUl.each(function() {
-  var liText = $(this).text().trim();
-    console.log(liText, 'emmaaaa')
-  // Check if the <li> text is not in the validOptions
-  if (validOptions.indexOf(liText) === -1) {
-    $(this).remove(); // Remove the unmatched <li> element
-  }
-});
-</script>
+        niceSelectUl.each(function () {
+            var liText = $(this).text().trim();
+            console.log(liText, 'emmaaaa')
+            // Check if the <li> text is not in the validOptions
+            if (validOptions.indexOf(liText) === -1) {
+                $(this).remove(); // Remove the unmatched <li> element
+            }
+        });
+    </script>
 
-<script>
-    {% for i in product_data %}
+    <script>
+        {% for i in product_data %}
         {% for j in i.1 %}
-            var swiper = new Swiper(".menu{{ i.0.pk }}-tab{{ j.pk }}-swiper", {
-              navigation: {
+        var swiper = new Swiper(".menu{{ i.0.pk }}-tab{{ j.pk }}-swiper", {
+            navigation: {
                 nextEl: ".emma-btn-next-menu{{ i.0.pk }}-tab{{ j.pk }}",
                 prevEl: ".emma-btn-prev-menu{{ i.0.pk }}-tab{{ j.pk }}",
-              },
-            });
+            },
+        });
         {% endfor %}
-    {% endfor %}
+        {% endfor %}
 
 
-</script>
+    </script>
 
 </body>
 
