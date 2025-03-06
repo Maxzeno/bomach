@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='property',
             name='email',
-            field=models.EmailField(default='contact@bomachgroup.com', max_length=250),
+            field=models.EmailField(default='bomachgroupmanagement@gmail.com', max_length=250),
         ),
         migrations.AlterField(
             model_name='property',

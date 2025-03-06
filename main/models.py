@@ -12,7 +12,7 @@ from .utils import (
 
 # Create your models here.
 
-STAFF_EMAILS = ['benantoto@gmail.com', 'contact@bomachgroup.com', 'bomachgroupmanagement@gmail.com']
+STAFF_EMAILS = ['maxzenorhymegod@gmail.com', 'bomachgroupmanagement@gmail.com']
 
 class ImageUrl:
     def image_url(self):
@@ -101,27 +101,25 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     id = models.CharField(primary_key=True, max_length=6, default=property_id)
     activate = models.BooleanField(default=False)
     from_admin = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='images/')
 
     name = models.CharField(max_length=250, default='Bomach admin')
     phone = models.CharField(max_length=250, default='080 3665 6173')
-    email = models.EmailField(max_length=250, default='contact@bomachgroup.com')
+    email = models.EmailField(max_length=250, default='bomachgroupmanagement@gmail.com')
     slug = models.CharField(max_length=250, unique=True, blank=True)
     property_title = models.CharField(max_length=250, default='Title')
     sub_property_category = models.ForeignKey(SubPropertyCategory, on_delete=models.CASCADE, null=True, blank=True)
     location = models.CharField(max_length=500)
     content = SummernoteTextField()
+    conclusion = models.TextField(default='')
+    contact_us_heading = models.TextField(default='If you Have Any Query, Don’t Hesitate Contact with us')
+
     priority = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now)
 
-    def image_url(self):
-        pass
-        """
-            Gets the first product image NOTE they can be more that one property image
-        """
-        image = self.images.all().order_by('-priority').first()
-        if image:
-            return image.image_url()
-        return '/static/assets/img/logo/bomach-logo-full.jpeg'
+    def get_images(self):
+        images = self.images.all().order_by('-priority')
+        return [ image.image_url() for image in images ]
 
     def create_slug(self):
         slug_val = ''
@@ -428,6 +426,5 @@ def send_user_booking_email_signal(sender, instance, *args, **kwargs):
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
 post_save.connect(send_quote_email_signal, sender=Quote)
-post_save.connect(send_contact_email_signal, sender=ContactUs)
-post_save.connect(send_email_property_signal, sender=Property)
-
+# post_save.connect(send_contact_email_signal, sender=ContactUs)
+# post_save.connect(send_email_property_signal, sender=Property)

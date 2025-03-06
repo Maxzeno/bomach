@@ -15,132 +15,136 @@
 </head>
 
 <body>
-{% include "./include/header_others.html" %}
+    {% include "./include/header_others.html" %}
 
-<!-- page title area start here-->
-<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="page-title-wrapper text-center">
-                    <h1 class="page-title">Contact us</h1>
-                    <div class="breadcrumb breadcrumb-list">
-                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
-                            <ul class="trail-items">
-                                <li  class="trail-item trail-begin">
-                                    <a href="/"><span >Home</span></a>  
-                                </li>
-                                <li class="trail-item trail-end"><span>Contact us</span></li>
-                            </ul>
-                        </nav>                            
+    <!-- page title area start here-->
+    <div class="page-title-area pt-70 pb-70"
+        data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-title-wrapper text-center">
+                        <h1 class="page-title">Contact us</h1>
+                        <div class="breadcrumb breadcrumb-list">
+                            <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                                <ul class="trail-items">
+                                    <li class="trail-item trail-begin">
+                                        <a href="/"><span>Home</span></a>
+                                    </li>
+                                    <li class="trail-item trail-end"><span>Contact us</span></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- page title area end here-->
+    <!-- page title area end here-->
 
-<!-- contact area start here -->
-<section class="tp-contact-area pb-120">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10">
-                <div class="section_title_wrapper mb-50 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                    <span class="subtitle service-ex-subtitle">
-                        Contact us
-                    </span>                       
-                    <h2 class="msection-title mb-35">
-                        If you Have Any Query, Don’t Hesitate <span>Contact</span>  with us 
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="row custom-mar-20">
-                    <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
-                        <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".4s">
-                            <div class="tp-contact-info-icon">
-                                <i class="flaticon-location"></i>
-                            </div>
-                            <div class="tp-contact-info-text">
-                                <h4 class="tp-contact-info-title mb-15">Address</h4>
-                                <p>Suite 9 Swiss Guard Plaza, 450 Ogui Road <br>Enugu State</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
-                        <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".6s">
-                            <div class="tp-contact-info-icon tp-contact-info-icon-phone">
-                                <i class="flaticon-phone-call"></i>
-                            </div>
-                            <div class="tp-contact-info-text">
-                                <h4 class="tp-contact-info-title mb-15">Phone</h4>
-                                <a href="tel:08036656173">080 3665 6173</a>
-                                <a href="tel:09015555159">090 1555 5159</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
-                        <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".8s">
-                            <div class="tp-contact-info-icon">
-                                <i class="flaticon-letter"></i>
-                            </div>
-                            <div class="tp-contact-info-text">
-                                <h4 class="tp-contact-info-title mb-15">Email</h4>
-                                <a href="mailto:contact@bomachgroup.com"><span>contact@bomachgroup.com</span></a>
-                            </div>
-                        </div>
+    <!-- contact area start here -->
+    <section class="tp-contact-area pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="section_title_wrapper mb-50 wow fadeInUp" data-wow-delay="0.3s"
+                        style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+                        <span class="subtitle service-ex-subtitle">
+                            Contact us
+                        </span>
+                        <h2 class="msection-title mb-35">
+                            If you Have Any Query, Don’t Hesitate <span>Contact</span> with us
+                        </h2>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <form action="{{ request.path }}" method="POST">
-                    {% csrf_token %}
-                    <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
-                        <div class="row custom-mar-20">
-                            <div class="col-md-6 custom-pad-20">
-                                <div class="tp-contact-form-field mb-20">
-                                    {{ form.name }}
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="row custom-mar-20">
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".4s">
+                                <div class="tp-contact-info-icon">
+                                    <i class="flaticon-location"></i>
+                                </div>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Address</h4>
+                                    <p>Suite 9 Swiss Guard Plaza, 450 Ogui Road <br>Enugu State</p>
                                 </div>
                             </div>
-                            <div class="col-md-6 custom-pad-20">
-                                <div class="tp-contact-form-field mb-20">
-                                    {{ form.email }}
+                        </div>
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".6s">
+                                <div class="tp-contact-info-icon tp-contact-info-icon-phone">
+                                    <i class="flaticon-phone-call"></i>
+                                </div>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Phone</h4>
+                                    <a href="tel:08036656173">080 3665 6173</a>
+                                    <a href="tel:09015555159">090 1555 5159</a>
                                 </div>
                             </div>
-                            <div class="col-md-6 custom-pad-20">
-                                <div class="tp-contact-form-field mb-20">
-                                    {{ form.phone }}
+                        </div>
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".8s">
+                                <div class="tp-contact-info-icon">
+                                    <i class="flaticon-letter"></i>
                                 </div>
-                            </div>
-                            <div class="col-md-6 custom-pad-20">
-                                <div class="tp-contact-form-field mb-20">
-                                    {{ form.location }}
-                                </div>
-                            </div>
-                            <div class="col-md-12 custom-pad-20">
-                                <div class="tp-contact-form-field mb-20">
-                                    {{ form.message }}
-                                </div>
-                            </div>
-                            <div class="col-md-12 custom-pad-20">
-                                <div class="tp-contact-form-field">
-                                    <button type="submit" class="theme-btn home2-btn btn-before"><i class="fal fa-angle-double-right"></i> Send Message</button>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Email</h4>
+                                    <a
+                                        href="mailto:bomachgroupmanagement@gmail.com"><span>bomachgroupmanagement@gmail.com</span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="col-lg-8">
+                    <form action="{{ request.path }}" method="POST">
+                        {% csrf_token %}
+                        <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
+                            <div class="row custom-mar-20">
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.location }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.message }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 custom-pad-20">
+                                    <div class="tp-contact-form-field">
+                                        <button type="submit" class="theme-btn home2-btn btn-before"><i
+                                                class="fal fa-angle-double-right"></i> Send Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- contact area end here -->
+    </section>
+    <!-- contact area end here -->
 
-{% include "./include/footer.html" %}
-{% include "./include/foot.html" %}
+    {% include "./include/footer.html" %}
+    {% include "./include/foot.html" %}
 </body>
 
 </html>

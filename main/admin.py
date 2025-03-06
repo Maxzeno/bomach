@@ -52,7 +52,7 @@ class PropertyCategoryAdmin(admin.ModelAdmin):
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     inlines = [PropertyCoordinatesAdminInline, PropertyImageAdminInline]
-    fields = ('id', 'name', 'slug', 'phone', 'email', 'location', 'property_title', 'sub_property_category', 'content', 'priority', 'activate', 'from_admin', 'date')
+    fields = ('id', 'name', 'slug', 'image', 'phone', 'email', 'location', 'property_title', 'sub_property_category', 'content','conclusion', 'contact_us_heading', 'priority', 'activate', 'from_admin', 'date')
     list_display = ('id', 'name', 'slug', 'phone', 'email', 'location', 'property_title', 'priority', 'activate', 'from_admin', 'date')
     search_fields = ('name', 'id', 'location')
 

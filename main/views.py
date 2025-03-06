@@ -45,14 +45,24 @@ class Property(View, Base):
         properties = paginator.get_page(page_number)
         return render(request, 'main/properties.html', {'form': form, 'properties': properties, **self.context})
 
-
 class PropertyDetail(View, Base):
     def get(self, request, slug):
-        the_property = get_object_or_404(PropertyModel, slug=slug)
-        if the_property.activate == True:
-            return render(request, 'main/property-details.html', {'property': the_property, **self.context})
-        else:
-            raise Http404("Property not found")
+        form = ContactForm()
+        the_property = get_object_or_404(PropertyModel, slug=slug, activate=True)
+        return render(request, 'main/property-details.html', {'property': the_property, 'form': form, **self.context})
+    
+    def post(self, request, slug):
+        the_property = get_object_or_404(PropertyModel, slug=slug, activate=True)
+
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Message has been received')
+            form = ContactForm()
+            return render(request, 'main/property-details.html', {'property': the_property, "form": form, **self.context})
+
+        messages.error(request, 'Invalid values filled try again', extra_tags='danger')
+        return render(request, 'main/property-details.html', {'property': the_property, "form": form, **self.context})
 
 
 class PropertyCreate(View, Base):

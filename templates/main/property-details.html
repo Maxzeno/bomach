@@ -2,6 +2,7 @@
 
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -14,71 +15,183 @@
 </head>
 
 <body>
-{% include "./include/header_others.html" %}
+    {% include "./include/header_others.html" %}
 
-<!-- page title area start here-->
-<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="page-title-wrapper text-center">
-                    <h1 class="page-title">{{ property.name }}</h1>
-                    <div class="breadcrumb breadcrumb-list">
-                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
-                            <ul class="trail-items">
-                                <li  class="trail-item trail-begin">
-                                    <a href="/property"><span >Properties</span></a>  
+    <!-- page title area start here-->
+    <div class="page-title-area pt-70 pb-70"
+        data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-title-wrapper text-center">
+                        <h1 class="page-title">{{ property.name }}</h1>
+                        <div class="breadcrumb breadcrumb-list">
+                            <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                                <ul class="trail-items">
+                                    <li class="trail-item trail-begin">
+                                        <a href="/property"><span>Properties</span></a>
+                                    </li>
+                                    <li class="trail-item trail-end"><span>Property Details</span></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page title area end here-->
+
+    <!-- service details area start here -->
+    <section class="service-details-area pt-120 pb-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="service__sidebar mb-50">
+                        <div class="service__sidebar--widget tp-faqs-left-sidebar grey-soft-bg mb-30 wow fadeInUp"
+                            data-wow-delay=".3s">
+                            <h4 class="service__sidebar--widget__title">property Info</h4>
+                            <ul>
+                                <li>ID : <span>{{ property.id }}</span></li>
+                                <li>Category : <span>{{ property.sub_property_category.property_category.name }}</span>
                                 </li>
-                                <li class="trail-item trail-end"><span>Property Details</span></li>
+                                <li>Sub category : <span>{{ property.sub_property_category.name }}</span></li>
+                                <li>Location : <span>{{ property.location }}</span></li>
+                                <li>Date : <span>{{ property.date|date:'F j, Y' }}</span></li>
                             </ul>
-                        </nav>                            
+                        </div>
                     </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="service-details-wrapper mb-50">
+                        <div class="service-details mb-30 fix wow fadeInUp" data-wow-delay=".5s">
+                            <img src="{{ property.image_url }}" class="img-fluid" alt="img">
+                        </div>
+                        <div class="d-flex justify-content-between active-like-link">
+                            <h4 class="service-details-subtitle mb-20 wow fadeInUp" data-wow-delay=".9">
+                                {{ property.name }}
+                            </h4>
+                            <!-- <a href="#" style="text-decoration: none;"><i class="fa fa-location"></i> view on map</a> -->
+                        </div>
+                        <div class="active-like-link">
+                            <p class="mb-30 wow fadeInUp" data-wow-delay=".7s">{{ property.content|safe }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        {% for image in property.get_images %}
+                        <div class="col">
+                            <img src="{{ image }}" class="gallery-img w-100 h-100" style="object-fit: cover;"
+                                alt="{{ property.name }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <p class="text-muted mt-3">{{ property.conclusion }}</p>
+
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- page title area end here-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="section_title_wrapper mb-50 wow fadeInUp" data-wow-delay="0.3s"
+                        style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
 
-<!-- service details area start here -->
-<section class="service-details-area pt-120 pb-90">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="service__sidebar mb-50">
-                    <div class="service__sidebar--widget tp-faqs-left-sidebar grey-soft-bg mb-30 wow fadeInUp" data-wow-delay=".3s">
-                        <h4 class="service__sidebar--widget__title">property Info</h4>
-                        <ul>
-                            <li>ID : <span>{{ property.id }}</span></li>
-                            <li>Category : <span>{{ property.sub_property_category.property_category.name }}</span></li>
-                            <li>Sub category : <span>{{ property.sub_property_category.name }}</span></li>
-                            <li>Location : <span>{{ property.location }}</span></li>
-                            <li>Date : <span>{{ property.date|date:'F j, Y' }}</span></li>
-                        </ul>
+                        <h2 class="msection-title mb-35">
+                            {{ property.contact_us_heading }}
+                        </h2>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <div class="service-details-wrapper mb-50">
-                    <div class="service-details mb-30 fix wow fadeInUp"  data-wow-delay=".5s">
-                        <img src="{{ property.image_url }}" class="img-fluid" alt="img">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="row custom-mar-20">
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".4s">
+                                <div class="tp-contact-info-icon">
+                                    <i class="flaticon-location"></i>
+                                </div>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Address</h4>
+                                    <p>Suite 9 Swiss Guard Plaza, 450 Ogui Road <br>Enugu State</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".6s">
+                                <div class="tp-contact-info-icon tp-contact-info-icon-phone">
+                                    <i class="flaticon-phone-call"></i>
+                                </div>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Phone</h4>
+                                    <a href="tel:08036656173">080 3665 6173</a>
+                                    <a href="tel:09015555159">090 1555 5159</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-4 col-sm-6 custom-pad-20">
+                            <div class="tp-contact-info mb-40 wow fadeInUp" data-wow-delay=".8s">
+                                <div class="tp-contact-info-icon">
+                                    <i class="flaticon-letter"></i>
+                                </div>
+                                <div class="tp-contact-info-text">
+                                    <h4 class="tp-contact-info-title mb-15">Email</h4>
+                                    <a
+                                        href="mailto:bomachgroupmanagement@gmail.com"><span>bomachgroupmanagement@gmail.com</span></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-between active-like-link">
-                        <h4 class="service-details-subtitle mb-20 wow fadeInUp"  data-wow-delay=".9">{{ property.name }}</h4>
-                        <a href="#" style="text-decoration: none;"><i class="fa fa-location"></i> view on map</a>
-                    </div>
-                    <div class="active-like-link">
-                    <p class="mb-30 wow fadeInUp"  data-wow-delay=".7s">{{ property.content|safe }}</p>
-                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <form action="{{ request.path }}" method="POST">
+                        {% csrf_token %}
+                        <div class="tp-contact-form wow fadeInUp" data-wow-delay=".6s">
+                            <div class="row custom-mar-20">
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.location }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 custom-pad-20">
+                                    <div class="tp-contact-form-field mb-20">
+                                        {{ form.message }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 custom-pad-20">
+                                    <div class="tp-contact-form-field">
+                                        <button type="submit" class="theme-btn home2-btn btn-before"><i
+                                                class="fal fa-angle-double-right"></i> Send Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- service details area end here -->
+    </section>
+    <!-- service details area end here -->
 
-{% include "./include/footer.html" %}
-{% include "./include/foot.html" %}
+    {% include "./include/footer.html" %}
+    {% include "./include/foot.html" %}
 
 </body>
+
 </html>
