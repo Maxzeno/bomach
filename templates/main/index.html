@@ -222,8 +222,9 @@
                                     <div class="aslider--title-wrapper" data-animation="fadeInUp" data-delay=".7s">
                                         <h2 class="aslider--title aslider--title-bg mb-30">{{ i.big_text }}</h2>
                                     </div>
-                                    <p class="aslider--subtitle" data-animation="fadeInUp" data-delay=".9s">{{
-                                        i.small_text }}</p>
+                                    <p class="aslider--subtitle" data-animation="fadeInUp" data-delay=".9s">
+                                        {{ i.small_text }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -391,8 +392,8 @@
                                             <a class="nav-link {% if forloop.first %} active {% endif %}"
                                                 id="menu{{ i.0.pk }}-tab{{ j.pk }}-tab" data-toggle="pill"
                                                 href="#menu{{ i.0.pk }}-tab{{ j.pk }}" role="tab"
-                                                aria-controls="menu{{ i.0.pk }}-tab{{ j.pk }}" aria-selected="true">{{
-                                                j.name }}</a>
+                                                aria-controls="menu{{ i.0.pk }}-tab{{ j.pk }}" aria-selected="true">
+                                                {{ j.name }}</a>
                                         </li>
                                         {% endfor %}
                                     </ul>
@@ -429,10 +430,12 @@
                                                         </div>
                                                         <div
                                                             class="swiper-button-next emma-btn-next-menu{{ i.0.pk }}-tab{{ j.pk }}">
-                                                            <i class="fal fa-long-arrow-right"></i></div>
+                                                            <i class="fal fa-long-arrow-right"></i>
+                                                        </div>
                                                         <div
                                                             class="swiper-button-prev emma-btn-prev-menu{{ i.0.pk }}-tab{{ j.pk }}">
-                                                            <i class="fal fa-long-arrow-left"></i></div>
+                                                            <i class="fal fa-long-arrow-left"></i>
+                                                        </div>
                                                     </div>
 
                                                 </div>
