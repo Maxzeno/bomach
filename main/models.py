@@ -426,5 +426,5 @@ def send_user_booking_email_signal(sender, instance, *args, **kwargs):
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
 post_save.connect(send_quote_email_signal, sender=Quote)
-# post_save.connect(send_contact_email_signal, sender=ContactUs)
-# post_save.connect(send_email_property_signal, sender=Property)
+post_save.connect(send_contact_email_signal, sender=ContactUs)
+post_save.connect(send_email_property_signal, sender=Property)
