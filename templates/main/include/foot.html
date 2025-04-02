@@ -1,29 +1,30 @@
 {% load static %}
 
 
-    <script src="{% static 'assets/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/jquery.min.js' %}"></script>
 
-    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
-    <script src="{% static 'assets/js/slick.min.js' %}"></script>
-    <script src="{% static 'assets/js/swiper-bundle.js' %}"></script>
-    <script src="{% static 'assets/js/waypoints.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>    
-    <script src="{% static 'assets/js/venobox.min.js' %}"></script>
-    <script src="{% static 'assets/js/backToTop.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
-    <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
-    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'assets/js/ajax-form.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.counterup.min.js' %}"></script>
-    <script src="{% static 'assets/js/wow.min.js' %}"></script>
-    <script src="{% static 'assets/js/main.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-   <!--Start of Tawk.to Script-->
-<script type="text/javascript">
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/js/slick.min.js' %}"></script>
+<script src="{% static 'assets/js/swiper-bundle.js' %}"></script>
+<script src="{% static 'assets/js/waypoints.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'assets/js/venobox.min.js' %}"></script>
+<script src="{% static 'assets/js/backToTop.js' %}"></script>
+<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/ajax-form.js' %}"></script>
+<script src="{% static 'assets/js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'assets/js/wow.min.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<!--Start of Tawk.to Script-->
+<!-- <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -33,5 +34,17 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
-</script>
+</script> -->
 <!--End of Tawk.to Script-->
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const whatsappButton = document.querySelector(".whatsapp-float");
+        whatsappButton.style.opacity = "0";
+        whatsappButton.style.transition = "opacity 0.5s ease-in-out";
+
+        setTimeout(() => {
+            whatsappButton.style.opacity = "1";
+        }, 500);
+    });
+</script>
