@@ -40,7 +40,7 @@
         event.preventDefault(); // Prevent the form from submitting immediately
 
         grecaptcha.ready(function () {
-            grecaptcha.execute('6Lcl7gkrAAAAAMr-C3eTLrWxliIgLyOas6YO1DNz', { action: 'submit' }).then(function (token) {
+            grecaptcha.execute('6LdmrAwrAAAAAB9YOqAcfFauY58enm84DIhmxVF6', { action: 'submit' }).then(function (token) {
                 // Set the token in the hidden input field
                 document.getElementById('g-recaptcha-response').value = token;
 
