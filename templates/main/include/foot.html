@@ -23,6 +23,35 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const whatsappButton = document.querySelector(".whatsapp-float");
+        whatsappButton.style.opacity = "0";
+        whatsappButton.style.transition = "opacity 0.5s ease-in-out";
+
+        setTimeout(() => {
+            whatsappButton.style.opacity = "1";
+        }, 500);
+    });
+</script>
+
+<script>
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6Lcl7gkrAAAAAMr-C3eTLrWxliIgLyOas6YO1DNz', { action: 'submit' }).then(function (token) {
+                // Set the token in the hidden input field
+                document.getElementById('g-recaptcha-response').value = token;
+
+                // Now submit the form
+                event.target.submit();
+            });
+        });
+    });
+</script>
+
+
 <!--Start of Tawk.to Script-->
 <!-- <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -36,15 +65,3 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script> -->
 <!--End of Tawk.to Script-->
-
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function () {
-        const whatsappButton = document.querySelector(".whatsapp-float");
-        whatsappButton.style.opacity = "0";
-        whatsappButton.style.transition = "opacity 0.5s ease-in-out";
-
-        setTimeout(() => {
-            whatsappButton.style.opacity = "1";
-        }, 500);
-    });
-</script>

@@ -41,6 +41,7 @@ DEBUG = bool(int(config('DEBUG', 0)))
 # use local db, storage, email config create be me
 TRY_LOCAL_STORAGE = bool(int(config('TRY_LOCAL_STORAGE', 0)))
 TRY_LOCAL_EMAIL = bool(int(config('TRY_LOCAL_EMAIL', 0)))
+RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'bomachgroup.com', 'www.bomachgroup.com']
 

@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.utils.crypto import get_random_string
 from pyproj import Proj
+import requests
+from django.conf import settings
 
 # Create your models here.
 
@@ -122,3 +124,17 @@ Best regards Bomach Group.
 """
 	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
 
+
+def verify_google_recaptcha(recaptcha_token):
+	data = {
+		'secret': settings.RECAPTCHA_SECRET_KEY,
+		'response': recaptcha_token
+	}
+
+	verify_response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+	result = verify_response.json()
+	print(result)
+	# Step 2: Check success and score
+	if not result.get('success') or result.get('score', 0) < 0.65:
+		return False
+	return True

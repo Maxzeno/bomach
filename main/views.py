@@ -4,10 +4,8 @@ from django.views import View
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
-from django.http import Http404, HttpResponse, JsonResponse
-from django import forms
+from django.http import JsonResponse
 from django.core.paginator import Paginator
-import json
 from datetime import datetime, timedelta
 from .models import (
     Project as ProjectModel, Blog as BlogModel, PropertyImage, Service as ServiceModel, Product as ProductModel,
@@ -15,7 +13,7 @@ from .models import (
     Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates)
 
 from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM
-from .utils import service_valid_options, property_category_valid_options
+from .utils import service_valid_options, verify_google_recaptcha
 
 # Create your views here.
 
@@ -55,6 +53,13 @@ class PropertyDetail(View, Base):
         the_property = get_object_or_404(PropertyModel, slug=slug, activate=True)
 
         form = ContactForm(request.POST)
+        recaptcha_token = request.POST.get('g-recaptcha-response')
+
+        is_human = verify_google_recaptcha(recaptcha_token)
+        if not is_human:
+            messages.error(request, 'reCAPTCHA verification failed. Try again.', extra_tags='danger')
+            return render(request, 'main/property-details.html', {'property': the_property, "form": form, **self.context})
+
         if form.is_valid():
             form.save()
             messages.success(request, 'Message has been received')
@@ -65,31 +70,31 @@ class PropertyDetail(View, Base):
         return render(request, 'main/property-details.html', {'property': the_property, "form": form, **self.context})
 
 
-class PropertyCreate(View, Base):
-    def get(self, request):
-        form = PropertyForm()
-        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+# class PropertyCreate(View, Base):
+#     def get(self, request):
+#         form = PropertyForm()
+#         return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
-    def post(self, request):
-        form = PropertyForm(request.POST, request.FILES)
-        images = request.FILES.getlist('images')
-        for image in images:
-            if image.size > 5 * 1024 * 1024:  # Checking if the file size is greater than 5MB
-                messages.error(request, 'each file size should be less than 5MB', extra_tags='danger')
-                return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+#     def post(self, request):
+#         form = PropertyForm(request.POST, request.FILES)
+#         images = request.FILES.getlist('images')
+#         for image in images:
+#             if image.size > 5 * 1024 * 1024:  # Checking if the file size is greater than 5MB
+#                 messages.error(request, 'each file size should be less than 5MB', extra_tags='danger')
+#                 return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
             
-        if form.is_valid():
-            property = form.save()
-            for image in images:
-                PropertyImage.objects.create(image=image, property=property)
+#         if form.is_valid():
+#             property = form.save()
+#             for image in images:
+#                 PropertyImage.objects.create(image=image, property=property)
 
-            messages.success(request, 'Success we will review it and get back to you')
-            form = PropertyForm()
-            return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+#             messages.success(request, 'Success we will review it and get back to you')
+#             form = PropertyForm()
+#             return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
-        # print(form.errors)
-        messages.error(request, 'Fill the form properly', extra_tags='danger')
-        return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
+#         # print(form.errors)
+#         messages.error(request, 'Fill the form properly', extra_tags='danger')
+#         return render(request, 'main/property-create.html', {'form': form, 'valid_options': ['select sub category'], **self.context})
 
 # In Production 
 
@@ -141,11 +146,18 @@ class Index(View, Base):
         valid_options = service_valid_options(ServiceModel, SubService)
 
         form = QuoteForm(request.POST)
+        recaptcha_token = request.POST.get('g-recaptcha-response')
+        print(recaptcha_token)
 
         context = {'projects': projects, 'services3': services3, 'product_data': product_data,
                 'employees_count': employees_count, 'project_count': project_count, 'home_sliders': home_sliders, 
                 'happy_customer': happy_customer, 'happy_customer_count': happy_customer_count,
                 'partners': partners, 'form': form, **self.context}
+        
+        is_human = verify_google_recaptcha(recaptcha_token)
+        if not is_human:
+            messages.error(request, 'reCAPTCHA verification failed. Try again.', extra_tags='danger')
+            return render(request, 'main/index.html', context)
 
         if form.is_valid():
             quote_model = form.save()
@@ -289,22 +301,30 @@ class ServiceDetail(View, Base):
         sub_services = SubService.objects.filter(service=service).order_by('-priority')
         return render(request, 'main/service-details.html', {'sub_services': sub_services, 'service': service, **self.context})
 
-
 class Contact(View, Base):
     def get(self, request):
         form = ContactForm()
         return render(request, 'main/contact.html', {'form': form, **self.context})
 
     def post(self, request):
+        print(request.POST)
         form = ContactForm(request.POST)
+        recaptcha_token = request.POST.get('g-recaptcha-response')
+
+        is_human = verify_google_recaptcha(recaptcha_token)
+        if not is_human:
+            messages.error(request, 'reCAPTCHA verification failed. Try again.', extra_tags='danger')
+            return render(request, 'main/contact.html', {'form': form, **self.context})
+
         if form.is_valid():
             form.save()
             messages.success(request, 'Message has been received')
             form = ContactForm()
-            return render(request, 'main/contact.html', {"form": form, **self.context})
+        else:
+            messages.error(request, 'Invalid values filled. Try again.', extra_tags='danger')
 
-        messages.error(request, 'Invalid values filled try again', extra_tags='danger')
-        return render(request, 'main/contact.html', {"form": form, **self.context})
+        return render(request, 'main/contact.html', {'form': form, **self.context})
+
 
 
 class Booking(View, Base):

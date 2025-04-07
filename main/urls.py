@@ -6,7 +6,7 @@ app_name = 'main'
 urlpatterns = [
     # experimental feature
     path('property', views.Property.as_view(), name='property'),
-    path('property/create', views.PropertyCreate.as_view(), name='property-create'),
+    # path('property/create', views.PropertyCreate.as_view(), name='property-create'),
     path('property/<slug:slug>', views.PropertyDetail.as_view(), name='property-details'),
     # in production
     path('', views.Index.as_view(), name='home'),

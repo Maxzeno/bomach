@@ -403,7 +403,7 @@ class Email(models.Model):
 
 # pre_save.connect(create_slug, sender=Service)
 # pre_save.connect(create_slug, sender=SubService)
-# pre_save.connect(create_slug, sender=Project) # note this is proJEct
+# pre_save.connect(create_slug, sender=Project) # note this is project
 # pre_save.connect(create_slug, sender=Product) # and this is proDUct
 # pre_save.connect(create_slug_title, sender=Blog)
 
@@ -425,6 +425,6 @@ def send_user_booking_email_signal(sender, instance, *args, **kwargs):
 
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
-post_save.connect(send_quote_email_signal, sender=Quote)
-post_save.connect(send_contact_email_signal, sender=ContactUs)
+# post_save.connect(send_quote_email_signal, sender=Quote)
+# post_save.connect(send_contact_email_signal, sender=ContactUs)
 post_save.connect(send_email_property_signal, sender=Property)
