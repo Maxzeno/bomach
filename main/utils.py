@@ -135,6 +135,6 @@ def verify_google_recaptcha(recaptcha_token):
 	result = verify_response.json()
 	print(result)
 	# Step 2: Check success and score
-	if not result.get('success') or result.get('score', 0) < 0.65:
+	if not result.get('success') or result.get('score', 0) < 0.80:
 		return False
 	return True
