@@ -110,7 +110,7 @@ class Property(CustomBaseModel, models.Model, ImageUrl):
     property_title = models.CharField(max_length=250, default='Title')
     sub_property_category = models.ForeignKey(SubPropertyCategory, on_delete=models.CASCADE, null=True, blank=True)
     location = models.CharField(max_length=500)
-    content = SummernoteTextField()
+    content = SummernoteTextField(max_length=10_000_000)
     conclusion = models.TextField(default='')
     contact_us_heading = models.TextField(default='If you Have Any Query, Don’t Hesitate Contact with us')
 
