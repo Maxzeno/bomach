@@ -143,7 +143,7 @@ def verify_google_recaptcha(recaptcha_token):
 def send_sms_service(recipients, message):
     username = settings.USERNAME_80KOBO
     password = settings.PASSWORD_80KOBO
-    sender_name_10_characters_long = "Benji"
+    sender_name_10_characters_long = "Bomach"
     recipients_str = ''
     for recipient in recipients:
         if recipient != None:
