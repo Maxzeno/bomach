@@ -141,26 +141,20 @@ def verify_google_recaptcha(recaptcha_token):
 
 
 def send_sms_service(recipients, message):
-    username = settings.USERNAME_80KOBO
-    password = settings.PASSWORD_80KOBO
-    sender_name_10_characters_long = "Bomach"
-    recipients_str = ''
-    for recipient in recipients:
-        if recipient != None:
-            recipients_str += f'{recipient},'
-    
-    if not recipients_str:
-        return None
+	termii_token = settings.TERMII_TOKEN
 
-    params = {
-        "email":username,
-        "password":password,
-        "message":message,
-        "sender_name":sender_name_10_characters_long,
-        "recipients":recipients_str,
-        "forcednd":1,
-    }
-    url= f"https://api.80kobosms.com/v2/app/sms" 
+	url = "https://v3.api.termii.com/api/sms/send/bulk"
+	payload = {
+			"to": recipients,
+			"from": "Bomach",
+			"sms": message,
+			"type": "plain",
+			"channel": "generic", # TODO: change this to dnd
+			"api_key": termii_token,
+		}
+	headers = {
+		'Content-Type': 'application/json',
+	}
+	response = requests.request("POST", url, headers=headers, json=payload)
 
-    response = requests.get(url, params=params)
-    return response.json()
+	return response.json()
