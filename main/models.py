@@ -5,9 +5,10 @@ from django.db.models.signals import post_save, pre_save
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django_summernote.fields import SummernoteTextField
 import bleach
+
 from .utils import (
     send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
-    convert_easting_northing_to_lon_lat, convert_decimal_to_dms
+    convert_easting_northing_to_lon_lat, convert_decimal_to_dms, send_sms_service
     )
 
 # Create your models here.
@@ -391,6 +392,32 @@ class Email(models.Model):
     class Meta:
         verbose_name = 'Email Subscriber' 
         verbose_name_plural = 'Email Subscribers'
+
+
+class BulkSMS(models.Model):  
+    recipients = models.TextField(
+        help_text="Comma-separated list of recipient phone numbers. 234901234567,2348012345678"
+    )
+    message = models.TextField()
+    date = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        # Parse recipients into a Python list
+        email_list = [r.strip() for r in self.recipients.split(",") if r.strip()]
+
+        # Call your SMS sending service
+        send_sms_service(email_list, self.message)
+
+        # Save as usual
+        super().save(*args, **kwargs)
+    
+    class Meta:
+        ordering = ['-date']
+        verbose_name = 'Bulk SMS'
+        verbose_name_plural = 'Bulk SMS'
+
+    def __str__(self):
+        return f"{self.message[:20]}..."
 
 
 # django signal

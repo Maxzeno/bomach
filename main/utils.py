@@ -138,3 +138,29 @@ def verify_google_recaptcha(recaptcha_token):
 	if not result.get('success') or result.get('score', 0) < 0.80:
 		return False
 	return True
+
+
+def send_sms_service(recipients, message):
+    username = settings.USERNAME_80KOBO
+    password = settings.PASSWORD_80KOBO
+    sender_name_10_characters_long = "Benji"
+    recipients_str = ''
+    for recipient in recipients:
+        if recipient != None:
+            recipients_str += f'{recipient},'
+    
+    if not recipients_str:
+        return None
+
+    params = {
+        "email":username,
+        "password":password,
+        "message":message,
+        "sender_name":sender_name_10_characters_long,
+        "recipients":recipients_str,
+        "forcednd":1,
+    }
+    url= f"https://api.80kobosms.com/v2/app/sms" 
+
+    response = requests.get(url, params=params)
+    return response.json()

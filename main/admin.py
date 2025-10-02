@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from .models import (
-    Project, Blog, PropertyCategory, PropertyImage, Service, SubPropertyCategory, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
+    BulkSMS, Project, Blog, PropertyCategory, PropertyImage, Service, SubPropertyCategory, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
     Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property
 )
 
@@ -169,5 +169,12 @@ class ContactUsAdmin(admin.ModelAdmin):
 class EmailAdmin(admin.ModelAdmin):
     list_display = ('email', 'is_active', 'date')
     search_fields = ('email', 'is_active')
+    list_filter = ('date',)
+
+
+@admin.register(BulkSMS)
+class BulkSMSAdmin(admin.ModelAdmin):
+    list_display = ('message', 'date')
+    search_fields = ()
     list_filter = ('date',)
 
