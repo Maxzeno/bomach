@@ -45,6 +45,9 @@ RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'bomachgroup.com', 'www.bomachgroup.com']
 
+USERNAME_80KOBO = config('USERNAME_80KOBO')
+PASSWORD_80KOBO = config('PASSWORD_80KOBO')
+
 _ALLOWED_HOST = config('ALLOWED_HOST')
 if _ALLOWED_HOST:
     ALLOWED_HOSTS.extend(_ALLOWED_HOST.split())
