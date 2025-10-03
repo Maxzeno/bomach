@@ -141,20 +141,24 @@ def verify_google_recaptcha(recaptcha_token):
 
 
 def send_sms_service(recipients, message):
-	termii_token = settings.TERMII_TOKEN
+	sendchamp_token = settings.SENDCHAMP_TOKEN
 
-	url = "https://v3.api.termii.com/api/sms/send/bulk"
+	url = "https://api.sendchamp.com/api/v1/sms/send"
+
 	payload = {
-			"to": recipients,
-			"from": "Bomach",
-			"sms": message,
-			"type": "plain",
-			"channel": "generic", # TODO: change this to dnd
-			"api_key": termii_token,
-		}
-	headers = {
-		'Content-Type': 'application/json',
+		"to": recipients,
+		"message": message,
+		"sender_name": "SC-OTP",
+		"route": "dnd"
 	}
-	response = requests.request("POST", url, headers=headers, json=payload)
+
+	headers = {
+		"Accept": "application/json",
+		"Authorization": f"Bearer {sendchamp_token}",
+		"Content-Type": "application/json"
+	}
+
+	response = requests.post(url, headers=headers, json=payload)
 
 	return response.json()
+

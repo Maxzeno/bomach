@@ -45,7 +45,7 @@ RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'bomachgroup.com', 'www.bomachgroup.com']
 
-TERMII_TOKEN = config('TERMII_TOKEN')
+SENDCHAMP_TOKEN = config('SENDCHAMP_TOKEN')
 
 _ALLOWED_HOST = config('ALLOWED_HOST')
 if _ALLOWED_HOST:

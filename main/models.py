@@ -404,7 +404,7 @@ class BulkSMS(models.Model):
     def save(self, *args, **kwargs):
         # Parse recipients into a Python list
         email_list = [r.strip() for r in self.recipients.split(",") if r.strip()]
-
+        
         # Call your SMS sending service
         send_sms_service(email_list, self.message)
 
