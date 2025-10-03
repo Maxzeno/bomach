@@ -5,6 +5,7 @@ from django.utils.crypto import get_random_string
 from pyproj import Proj
 import requests
 from django.conf import settings
+import re
 
 # Create your models here.
 
@@ -162,3 +163,20 @@ def send_sms_service(recipients, message):
 
 	return response.json()
 
+
+def normalize_nigerian_number(raw_number: str) -> str:
+    # Remove spaces, dashes, brackets, and leading +
+    number = re.sub(r"[^\d]", "", raw_number)
+
+    if number.startswith("234") and len(number) == 13:
+        # Already in correct format
+        return number
+    elif number.startswith("0") and len(number) == 11:
+        # Replace leading 0 with 234
+        return "234" + number[1:]
+    elif len(number) == 10:
+        # Missing leading 0 → assume local number
+        return "234" + number
+    else:
+        return None
+	

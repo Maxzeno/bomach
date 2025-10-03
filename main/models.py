@@ -7,7 +7,7 @@ from django_summernote.fields import SummernoteTextField
 import bleach
 
 from .utils import (
-    send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
+    normalize_nigerian_number, send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
     convert_easting_northing_to_lon_lat, convert_decimal_to_dms, send_sms_service
     )
 
@@ -403,10 +403,10 @@ class BulkSMS(models.Model):
 
     def save(self, *args, **kwargs):
         # Parse recipients into a Python list
-        email_list = [r.strip() for r in self.recipients.split(",") if r.strip()]
-        
+        phone_list = [r.strip() for r in self.recipients.split(",") if r.strip()]
+        phone_list = [normalize_nigerian_number(phone) for phone in phone_list if normalize_nigerian_number(phone) != None]
         # Call your SMS sending service
-        send_sms_service(email_list, self.message)
+        send_sms_service(phone_list, self.message)
 
         # Save as usual
         super().save(*args, **kwargs)
