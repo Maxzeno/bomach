@@ -179,4 +179,35 @@ def normalize_nigerian_number(raw_number: str) -> str:
         return "234" + number
     else:
         return None
-	
+
+
+def send_job_application_email(email, job_application_model):
+	if not isinstance(email, list):
+		email = [email]
+	subject = 'New Job Application Received'
+	message = f"""Name: {job_application_model.name}
+Phone number: {job_application_model.phone}
+Email: {job_application_model.email}
+Job Title: {job_application_model.job.title}
+Applied at: {job_application_model.applied_at.strftime("%A %d %B %Y by %I:%M%p")}
+Message: {job_application_model.message if job_application_model.message else 'N/A'}
+Resume: {job_application_model.resume.name if job_application_model.resume else 'N/A'}
+Cover Letter: {job_application_model.cover_letter.name if job_application_model.cover_letter else 'N/A'}
+"""
+	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+
+
+def send_user_job_application_email(email, job_application_model):
+	if not isinstance(email, list):
+		email = [email]
+	subject = 'Application Received - Bomach Group'
+	message = f"""Dear {job_application_model.name},
+
+Thank you for applying for the {job_application_model.job.title} position at Bomach Group. We have received your application and will review it carefully.
+
+We will get back to you soon with updates regarding your application.
+
+Best regards,
+Bomach Group
+"""
+	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)

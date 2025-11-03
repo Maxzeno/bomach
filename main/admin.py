@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from .models import (
     BulkSMS, Project, Blog, PropertyCategory, PropertyImage, Service, SubPropertyCategory, SubService, HomeSlider, CustomerReview, Email, PropertyCoordinates,
-    Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property
+    Employee, PartnerSlider, Quote, ContactUs, Product, Booking, ProductImage, Property, Job, JobApplication
 )
 
 # Register your models here.
@@ -177,4 +177,30 @@ class BulkSMSAdmin(admin.ModelAdmin):
     list_display = ('message', 'date')
     search_fields = ()
     list_filter = ('date',)
+
+
+class JobApplicationAdminInline(admin.TabularInline):
+    extra = 0
+    model = JobApplication
+    fields = ('name', 'email', 'phone', 'resume', 'cover_letter', 'applied_at')
+    readonly_fields = ('applied_at',)
+    can_delete = True
+
+
+@admin.register(Job)
+class JobAdmin(admin.ModelAdmin):
+    inlines = [JobApplicationAdminInline]
+    fields = ('title', 'slug', 'location', 'job_type', 'salary_range', 'image', 'description', 'requirements', 'responsibilities', 'benefits', 'deadline', 'is_active', 'priority', 'date')
+    list_display = ('title', 'location', 'job_type', 'is_active', 'priority', 'date')
+    search_fields = ('title', 'location', 'job_type')
+    list_filter = ('job_type', 'is_active', 'date')
+
+
+@admin.register(JobApplication)
+class JobApplicationAdmin(admin.ModelAdmin):
+    fields = ('job', 'name', 'email', 'phone', 'resume', 'cover_letter', 'message', 'applied_at')
+    list_display = ('name', 'email', 'job', 'applied_at')
+    readonly_fields = ('applied_at',)
+    search_fields = ('name', 'email', 'job__title')
+    list_filter = ('job', 'applied_at')
 

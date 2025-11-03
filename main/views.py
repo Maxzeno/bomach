@@ -10,9 +10,9 @@ from datetime import datetime, timedelta
 from .models import (
     Project as ProjectModel, Blog as BlogModel, PropertyImage, Service as ServiceModel, Product as ProductModel,
     Employee, PartnerSlider, CustomerReview, HomeSlider, PropertyCategory as PropertyCategoryModel, SubPropertyCategory,
-    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates)
+    Quote as QuoteModel, SubService, Booking as BookingModel, Property as PropertyModel, PropertyCoordinates, Job as JobModel, JobApplication as JobApplicationModel)
 
-from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM
+from .forms import QuoteForm, ContactForm, BookingForm, EmailForm, SearchForm, PropertyForm, dynamic_field, PROPERTY_COORDINATE_NUM, JobApplicationForm
 from .utils import service_valid_options, verify_google_recaptcha
 
 # Create your views here.
@@ -384,4 +384,46 @@ class EmailSubscribe(View):
 
         messages.error(request, 'Email address is invalid or already exists', extra_tags='danger')
         return redirect(referring_url or reverse('main:index'))
+
+
+class Jobs(View, Base):
+    def get(self, request):
+        jobs = JobModel.objects.filter(is_active=True).order_by('-priority')
+        return render(request, 'main/jobs.html', {'jobs': jobs, **self.context})
+
+
+class JobDetail(View, Base):
+    def get(self, request, slug):
+        job = get_object_or_404(JobModel, slug=slug, is_active=True)
+        form = JobApplicationForm()
+        return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
+
+    def post(self, request, slug):
+        job = get_object_or_404(JobModel, slug=slug, is_active=True)
+        form = JobApplicationForm(request.POST, request.FILES)
+
+        # File size validation
+        resume = request.FILES.get('resume')
+        cover_letter = request.FILES.get('cover_letter')
+
+        max_size = 5 * 1024 * 1024  # 5MB
+
+        if resume and resume.size > max_size:
+            messages.error(request, 'Resume file size should be less than 5MB', extra_tags='danger')
+            return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
+
+        if cover_letter and cover_letter.size > max_size:
+            messages.error(request, 'Cover letter file size should be less than 5MB', extra_tags='danger')
+            return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
+
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.save()
+            messages.success(request, 'Your application has been submitted successfully!')
+            form = JobApplicationForm()
+            return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
+
+        messages.error(request, 'Please check your form and try again', extra_tags='danger')
+        return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
 

@@ -1,0 +1,256 @@
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{{ job.title }} - Bomach Group Careers</title>
+    <meta name="description" content="{{ job.title }} position at Bomach Group">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% include "./include/head.html" %}
+
+</head>
+
+<body>
+{% include "./include/header_others.html" %}
+
+<!--    Page title area start here-->
+<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-wrapper text-center">
+                    <h1 class="page-title">{{ job.title }}</h1>
+                    <div class="breadcrumb breadcrumb-list">
+                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                            <ul class="trail-items">
+                                <li  class="trail-item trail-begin">
+                                    <a href="{% url 'main:jobs' %}"><span>Jobs</span></a>
+                                </li>
+                                <li class="trail-item trail-end"><span>Job Details</span></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--   Page title area end here-->
+
+<!-- Job Details area start here-->
+<div class="job-details-area pt-120 pb-80">
+    <div class="container">
+        <div class="row">
+            <!-- Job Details Content -->
+            <div class="col-lg-8">
+                <div class="job-details-wrapper mr-50">
+                    <!-- Job Header -->
+                    <div class="job-header mb-50" style="border-bottom: 2px solid #e0e0e0; padding-bottom: 30px;">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                            <div>
+                                <h2 class="mb-15">{{ job.title }}</h2>
+                                <div class="job-meta d-flex flex-wrap" style="gap: 20px; margin-bottom: 20px;">
+                                    <span style="display: flex; align-items: center;">
+                                        <i class="flaticon-location mr-5" style="margin-right: 8px; font-size: 16px;"></i> {{ job.location }}
+                                    </span>
+                                    <span style="display: flex; align-items: center;">
+                                        <i class="fal fa-briefcase mr-5" style="margin-right: 8px; font-size: 16px;"></i> {{ job.job_type }}
+                                    </span>
+                                    <span style="display: flex; align-items: center;">
+                                        <i class="fal fa-calendar-alt mr-5" style="margin-right: 8px; font-size: 16px;"></i> Posted {{ job.date|date:'M d, Y' }}
+                                    </span>
+                                </div>
+                            </div>
+                            {% if job.salary_range %}
+                            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; text-align: right;">
+                                <p style="font-size: 12px; color: #999; margin-bottom: 5px;">Salary Range</p>
+                                <p style="font-weight: 700; font-size: 18px; color: #333;">{{ job.salary_range }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Job Image -->
+                    {% if job.image %}
+                    <div class="job-image m-img mb-50">
+                        <img src="{{ job.image_url }}" alt="{{ job.title }}" style="border-radius: 8px; width: 100%;">
+                    </div>
+                    {% endif %}
+
+                    <!-- Description -->
+                    <div class="job-section mb-40">
+                        <h3 class="mb-20" style="color: #333; font-weight: 700;">About This Position</h3>
+                        <div style="color: #666; line-height: 1.8;">
+                            {{ job.description|safe }}
+                        </div>
+                    </div>
+
+                    <!-- Responsibilities -->
+                    <div class="job-section mb-40">
+                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Responsibilities</h3>
+                        <div style="color: #666; line-height: 1.8;">
+                            {{ job.responsibilities|safe }}
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="job-section mb-40">
+                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Requirements</h3>
+                        <div style="color: #666; line-height: 1.8;">
+                            {{ job.requirements|safe }}
+                        </div>
+                    </div>
+
+                    <!-- Benefits -->
+                    {% if job.benefits %}
+                    <div class="job-section mb-40">
+                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Benefits</h3>
+                        <div style="color: #666; line-height: 1.8;">
+                            {{ job.benefits|safe }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Application Deadline -->
+                    {% if job.deadline %}
+                    <div class="job-deadline mb-40" style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 4px;">
+                        <p style="margin: 0; color: #856404;">
+                            <strong>Application Deadline:</strong> {{ job.deadline|date:'F d, Y' }}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Application Form Sidebar -->
+            <div class="col-lg-4">
+                <div class="job-apply-sidebar">
+                    <div class="apply-form-wrapper" style="background-color: #f9f9f9; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 20px;">
+                        <h3 class="mb-30" style="color: #333; font-weight: 700;">Apply Now</h3>
+
+                        <!-- Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show mb-20" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form action="{% url 'main:job-details' job.slug %}" method="POST" enctype="multipart/form-data" id="jobApplicationForm">
+                            {% csrf_token %}
+
+                            <div class="form-group mb-20">
+                                <label for="id_name" style="font-weight: 600; margin-bottom: 8px; display: block;">Full Name *</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label for="id_email" style="font-weight: 600; margin-bottom: 8px; display: block;">Email Address *</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label for="id_phone" style="font-weight: 600; margin-bottom: 8px; display: block;">Phone Number *</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.phone.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label for="id_resume" style="font-weight: 600; margin-bottom: 8px; display: block;">Resume (PDF, DOC, DOCX) *</label>
+                                {{ form.resume }}
+                                <small style="color: #999;">Max file size: 5MB</small>
+                                {% if form.resume.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.resume.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label for="id_cover_letter" style="font-weight: 600; margin-bottom: 8px; display: block;">Cover Letter (Optional)</label>
+                                {{ form.cover_letter }}
+                                <small style="color: #999;">Max file size: 5MB</small>
+                                {% if form.cover_letter.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.cover_letter.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label for="id_message" style="font-weight: 600; margin-bottom: 8px; display: block;">Additional Message (Optional)</label>
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.message.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="theme-btn home2-btn btn-before w-100" style="width: 100%; padding: 15px;">
+                                <i class="fal fa-angle-double-right"></i> Submit Application
+                            </button>
+                        </form>
+
+                        <div style="border-top: 1px solid #ddd; margin-top: 30px; padding-top: 20px;">
+                            <p style="font-size: 12px; color: #999; margin-bottom: 10px;">
+                                <strong>Questions?</strong> Contact us at:
+                            </p>
+                            <p style="margin: 5px 0; font-size: 13px;">
+                                <i class="fal fa-envelope mr-5"></i>
+                                <a href="mailto:bomachgroupmanagement@gmail.com" style="color: #333; text-decoration: none;">bomachgroupmanagement@gmail.com</a>
+                            </p>
+                            <p style="margin: 5px 0; font-size: 13px;">
+                                <i class="fal fa-phone mr-5"></i>
+                                <a href="tel:09018000118" style="color: #333; text-decoration: none;">090 1800 0118</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Job Details area end here-->
+
+{% include "./include/footer.html" %}
+{% include "./include/foot.html" %}
+
+<style>
+    .form-control {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
+
+</body>
+</html>

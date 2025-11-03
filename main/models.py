@@ -8,7 +8,7 @@ import bleach
 
 from .utils import (
     normalize_nigerian_number, send_email_quote, send_email_contact, send_booking_email, send_user_booking_email, send_email_property, unique_id,
-    convert_easting_northing_to_lon_lat, convert_decimal_to_dms, send_sms_service
+    convert_easting_northing_to_lon_lat, convert_decimal_to_dms, send_sms_service, send_job_application_email, send_user_job_application_email
     )
 
 # Create your models here.
@@ -450,8 +450,80 @@ def send_user_booking_email_signal(sender, instance, *args, **kwargs):
     send_user_booking_email(instance.email, instance)
 
 
+class Job(models.Model, ImageUrl):
+    title = models.CharField(max_length=250)
+    slug = models.CharField(max_length=250, unique=True, blank=True)
+    location = models.CharField(max_length=250)
+    job_type = models.CharField(max_length=100, choices=[
+        ('Full-time', 'Full-time'),
+        ('Part-time', 'Part-time'),
+        ('Contract', 'Contract'),
+        ('Internship', 'Internship'),
+    ])
+    salary_range = models.CharField(max_length=250, null=True, blank=True, help_text="e.g. ₦100,000 - ₦200,000")
+    image = models.ImageField(upload_to='images/')
+    description = SummernoteTextField(blank=True, null=True, default='')
+    requirements = SummernoteTextField(blank=True, null=True, default='')
+    responsibilities = SummernoteTextField(blank=True, null=True, default='')
+    benefits = SummernoteTextField(null=True, blank=True, default='')
+    deadline = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    priority = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
+
+    def generate_unique_slug(self, val):
+        slug = slugify(val)
+        unique_slug = slug
+        num = 1
+        while Job.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
+            unique_slug = f"{slug}-{num}"
+            num += 1
+        return unique_slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.generate_unique_slug(self.title)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Job'
+        verbose_name_plural = 'Jobs'
+        ordering = ['-priority', '-date']
+
+
+class JobApplication(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')
+    name = models.CharField(max_length=250)
+    email = models.EmailField()
+    phone = models.CharField(max_length=250)
+    resume = models.FileField(upload_to='resumes/')
+    cover_letter = models.FileField(upload_to='cover_letters/', null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    applied_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.name} - {self.job.title}"
+
+    class Meta:
+        verbose_name = 'Job Application'
+        verbose_name_plural = 'Job Applications'
+        ordering = ['-applied_at']
+
+
+def send_job_application_email_signal(sender, instance, *args, **kwargs):
+    send_job_application_email(STAFF_EMAILS, instance)
+
+def send_user_job_application_email_signal(sender, instance, *args, **kwargs):
+    send_user_job_application_email(instance.email, instance)
+
+
 post_save.connect(send_booking_email_signal, sender=Booking)
 post_save.connect(send_user_booking_email_signal, sender=Booking)
 post_save.connect(send_quote_email_signal, sender=Quote)
 post_save.connect(send_contact_email_signal, sender=ContactUs)
 post_save.connect(send_email_property_signal, sender=Property)
+post_save.connect(send_job_application_email_signal, sender=JobApplication)
+post_save.connect(send_user_job_application_email_signal, sender=JobApplication)

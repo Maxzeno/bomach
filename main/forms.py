@@ -1,5 +1,5 @@
 from django import forms
-from .models import PropertyCategory, Quote, Service, SubPropertyCategory, SubService, ContactUs, Booking, Email, Property
+from .models import PropertyCategory, Quote, Service, SubPropertyCategory, SubService, ContactUs, Booking, Email, Property, JobApplication
 from django_summernote.widgets import SummernoteWidget
 
 # Experimental feature
@@ -158,4 +158,29 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ['name', 'phone', 'email', 'service', 'sub_service', 'location', 'message', 'meeting_time']
+
+
+class JobApplicationForm(forms.ModelForm):
+    name = forms.CharField(required=True, label='', max_length=500, widget=forms.TextInput(attrs={
+        'placeholder': 'Full Name', 'id': 'name', 'class': 'form-control'
+    }))
+    email = forms.EmailField(required=True, label='', max_length=500, widget=forms.EmailInput(attrs={
+        'placeholder': 'Email Address', 'id': 'email', 'class': 'form-control'
+    }))
+    phone = forms.CharField(required=True, label='', max_length=500, widget=forms.TextInput(attrs={
+        'placeholder': 'Phone Number', 'id': 'phone', 'class': 'form-control'
+    }))
+    resume = forms.FileField(required=True, label='Resume (PDF, DOC, DOCX)', widget=forms.FileInput(attrs={
+        'id': 'resume', 'class': 'form-control', 'accept': '.pdf,.doc,.docx'
+    }))
+    cover_letter = forms.FileField(required=False, label='Cover Letter (PDF, DOC, DOCX) - Optional', widget=forms.FileInput(attrs={
+        'id': 'cover_letter', 'class': 'form-control', 'accept': '.pdf,.doc,.docx'
+    }))
+    message = forms.CharField(required=False, label='Additional Message', max_length=5000, widget=forms.Textarea(attrs={
+        'placeholder': 'Tell us why you\'re interested in this position...', 'id': 'message', 'class': 'form-control', 'rows': 5
+    }))
+
+    class Meta:
+        model = JobApplication
+        fields = ['name', 'email', 'phone', 'resume', 'cover_letter', 'message']
 
