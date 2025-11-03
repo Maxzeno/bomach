@@ -13,102 +13,240 @@
 </head>
 
 <body>
-{% include "./include/header_others.html" %}
+    {% include "./include/header_others.html" %}
 
-<!--    Page title area start here-->
-<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="page-title-wrapper text-center">
-                    <h1 class="page-title">Careers</h1>
-                    <div class="breadcrumb breadcrumb-list">
-                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
-                            <ul class="trail-items">
-                                <li  class="trail-item trail-begin">
-                                    <a href="/"><span >Home</span></a>
-                                </li>
-                                <li class="trail-item trail-end"><span>Jobs</span></li>
-                            </ul>
-                        </nav>
+    <!--    Page title area start here-->
+    <div class="page-title-area pt-70 pb-70"
+        data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-title-wrapper text-center">
+                        <h1 class="page-title">Careers</h1>
+                        <div class="breadcrumb breadcrumb-list">
+                            <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                                <ul class="trail-items">
+                                    <li class="trail-item trail-begin">
+                                        <a href="/"><span>Home</span></a>
+                                    </li>
+                                    <li class="trail-item trail-end"><span>Jobs</span></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!--   Page title area end here-->
+    <!--   Page title area end here-->
 
-<!-- Jobs area start here-->
-<div class="job-area pt-120 pb-80">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section_title_wrapper mb-50 text-center wow fadeInUp" data-wow-delay="0.3s">
-                    <span class="subtitle service-ex-subtitle">
-                        Join Our Team
-                    </span>
-                    <h2 class="msection-title mb-35">
-                        Explore <span>Job Opportunities</span> with Bomach Group
-                    </h2>
-                    <p>We're always looking for talented and passionate individuals to join our growing team. Check out our current openings below.</p>
+    <!-- Jobs area start here-->
+    <div class="job-area pt-120 pb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section_title_wrapper mb-50 text-center wow fadeInUp" data-wow-delay="0.3s">
+                        <span class="subtitle service-ex-subtitle">
+                            Join Our Team
+                        </span>
+                        <h2 class="msection-title mb-35">
+                            Explore <span>Job Opportunities</span> with Bomach Group
+                        </h2>
+                        <p>We're always looking for talented and passionate individuals to join our growing team. Check
+                            out our current openings below.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            {% if jobs %}
+            <div class="row">
+                {% if jobs %}
                 {% for job in jobs %}
-                <div class="col-lg-6 mb-30 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="job-card p-30" style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease;">
-                        <div class="d-flex justify-content-between align-items-start mb-20">
-                            <div>
-                                <h3 class="mb-10"><a href="{% url 'main:job-details' job.slug %}" style="color: #333; text-decoration: none;">{{ job.title }}</a></h3>
-                                <div class="job-meta d-flex flex-wrap" style="gap: 15px; margin-bottom: 15px;">
-                                    <span style="display: flex; align-items: center; color: #666;">
-                                        <i class="flaticon-location mr-5" style="margin-right: 5px;"></i> {{ job.location }}
-                                    </span>
-                                    <span style="display: flex; align-items: center; color: #666;">
-                                        <i class="fal fa-briefcase mr-5" style="margin-right: 5px;"></i> {{ job.job_type }}
-                                    </span>
-                                </div>
+                <div class="col-lg-6 col-md-12 mb-40 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="job-card-wrapper"
+                        style="height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: white;">
+                        <!-- Job Image -->
+                        {% if job.image %}
+                        <div class="job-card-image m-img"
+                            style="height: 200px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative;">
+                            <img src="{{ job.image_url }}" alt="{{ job.title }}"
+                                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+                            <!-- Job Type Badge -->
+                            <div style="position: absolute; top: 15px; right: 15px;">
+                                <span
+                                    style="background-color: rgba(255,255,255,0.95); color: #333; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                    {{ job.job_type }}
+                                </span>
                             </div>
                         </div>
-
-                        {% if job.salary_range %}
-                        <div class="mb-15" style="padding: 10px; background-color: #f5f5f5; border-radius: 4px;">
-                            <span style="font-weight: 600; color: #333;">{{ job.salary_range }}</span>
+                        {% else %}
+                        <div class="job-card-image-placeholder"
+                            style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                            <i class="fal fa-briefcase" style="font-size: 60px; color: rgba(255,255,255,0.3);"></i>
+                            <div style="position: absolute; top: 15px; right: 15px;">
+                                <span
+                                    style="background-color: rgba(255,255,255,0.95); color: #333; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                    {{ job.job_type }}
+                                </span>
+                            </div>
                         </div>
                         {% endif %}
 
-                        <p class="mb-20" style="color: #666;">{{ job.short_content|safe }}</p>
+                        <!-- Job Content -->
+                        <div class="job-card-content"
+                            style="flex: 1; display: flex; flex-direction: column; padding: 20px">
+                            <!-- Job Title -->
+                            <h3 class="mb-15" style="font-size: 20px; font-weight: 700; margin: 0;">
+                                <a href="{% url 'main:job-details' job.slug %}"
+                                    style="color: #222; text-decoration: none; transition: color 0.3s ease;">
+                                    {{ job.title }}
+                                </a>
+                            </h3>
 
-                        {% if job.deadline %}
-                        <p class="mb-20" style="font-size: 12px; color: #999;">
-                            <i class="fal fa-calendar-alt mr-5"></i> Application deadline: {{ job.deadline|date:'M d, Y' }}
-                        </p>
-                        {% endif %}
+                            <!-- Job Meta -->
+                            <div class="job-meta mb-20"
+                                style="display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0;">
+                                <span style="display: flex; align-items: center; font-size: 13px; color: #666;">
+                                    <i class="flaticon-location"
+                                        style="margin-right: 8px; font-size: 14px; color: #ff6b35;"></i>
+                                    {{ job.location }}
+                                </span>
+                                <span style="display: flex; align-items: center; font-size: 13px; color: #666;">
+                                    <i class="fal fa-clock"
+                                        style="margin-right: 8px; font-size: 14px; color: #ff6b35;"></i>
+                                    Posted {{ job.date|date:'M d' }}
+                                </span>
+                            </div>
 
-                        <a href="{% url 'main:job-details' job.slug %}" class="theme-btn home2-btn btn-before">
-                            <i class="fal fa-angle-double-right"></i>View Details & Apply
-                        </a>
+                            <!-- Salary Range -->
+                            {% if job.salary_range %}
+                            <div class="salary-range mb-20"
+                                style="padding: 12px 15px; background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f7 100%); border-left: 4px solid #ff6b35; border-radius: 4px;">
+                                <p style="margin: 0; font-size: 12px; color: #999; margin-bottom: 4px;">Salary Range</p>
+                                <p style="margin: 0; font-weight: 700; color: #333; font-size: 14px;">
+                                    {{ job.salary_range }}</p>
+                            </div>
+                            {% endif %}
+
+                            <!-- Job Description -->
+                            <p class="job-description mb-20"
+                                style="color: #666; font-size: 14px; line-height: 1.6; flex: 1; margin: 0 0 20px 0;">
+                                {{ job.description|striptags|truncatewords:20 }}
+                            </p>
+
+                            <!-- Deadline -->
+                            {% if job.deadline %}
+                            <div class="deadline-info mb-20"
+                                style="padding: 10px 0; border-top: 1px solid #f0f0f0; color: #e74c3c; font-size: 12px; font-weight: 600;">
+                                <i class="fal fa-exclamation-circle" style="margin-right: 6px;"></i>
+                                Apply by {{ job.deadline|date:'M d, Y' }}
+                            </div>
+                            {% endif %}
+
+                            <!-- Apply Button -->
+                            <a href="{% url 'main:job-details' job.slug %}" class="theme-btn home2-btn btn-before"
+                                style="display: inline-block; width: 100%; text-align: center;">
+                                <i class="fal fa-arrow-right" style="margin-right: 8px;"></i>View & Apply Now
+                            </a>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
-            {% else %}
+                {% else %}
                 <div class="col-lg-12 text-center">
-                    <div class="p-50">
-                        <h3 style="margin-bottom: 20px;">No Jobs Available</h3>
-                        <p style="color: #666;">Currently, there are no open positions. Please check back later or contact us for more information.</p>
+                    <div class="p-80" style="padding: 80px 30px;">
+                        <i class="fal fa-briefcase"
+                            style="font-size: 80px; color: #ddd; margin-bottom: 20px; display: block;"></i>
+                        <h3 style="margin-bottom: 15px; color: #333; font-weight: 700;">No Jobs Available</h3>
+                        <p style="color: #999; font-size: 15px;">Currently, there are no open positions. Please check
+                            back later or contact us for more information.</p>
+                        <a href="/contact" class="theme-btn home2-btn btn-before mt-30"
+                            style="display: inline-block; margin-top: 30px;">
+                            <i class="fal fa-envelope" style="margin-right: 8px;"></i>Get in Touch
+                        </a>
                     </div>
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
-<!-- Jobs area end here-->
+    <!-- Jobs area end here-->
 
-{% include "./include/footer.html" %}
-{% include "./include/foot.html" %}
+    {% include "./include/footer.html" %}
+    {% include "./include/foot.html" %}
+
+    <style>
+        /* Job Card Styling */
+        .job-card-wrapper {
+            position: relative;
+        }
+
+        .job-card-wrapper:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+        }
+
+        .job-card-wrapper:hover .job-card-image img {
+            transform: scale(1.08);
+        }
+
+        .job-card-image img {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .job-card-content h3 a:hover {
+            color: #ff6b35 !important;
+        }
+
+        .job-card-content p {
+            transition: color 0.3s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .job-card-content {
+                padding: 25px !important;
+            }
+
+            .job-card-image {
+                height: 150px !important;
+            }
+
+            .job-card-wrapper {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Badge animation */
+        .job-card-wrapper span[style*="background-color: rgba(255,255,255,0.95)"] {
+            animation: slideInDown 0.5s ease forwards;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Salary range styling */
+        .salary-range:hover {
+            background: linear-gradient(135deg, #eef1f8 0%, #e8ebf5 100%);
+            border-left-color: #ff8c5a;
+        }
+
+        /* Empty state styling */
+        .p-80 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 
 </body>
+
 </html>

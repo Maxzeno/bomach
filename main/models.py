@@ -507,6 +507,48 @@ class JobApplication(models.Model):
     def __str__(self):
         return f"{self.name} - {self.job.title}"
 
+    def get_resume_url(self):
+        """Get proper Cloudinary URL for resume with format"""
+        if self.resume:
+            url = self.resume.url
+            # Get file extension
+            filename = self.resume.name.split('/')[-1]
+            file_ext = filename.split('.')[-1] if '.' in filename else 'pdf'
+
+            # If it's a Cloudinary URL, add the format and attachment flag
+            if 'res.cloudinary.com' in url:
+                # Replace /upload/ with /upload/fl_attachment/ and append format
+                if '/upload/' in url:
+                    url = url.replace('/upload/', f'/upload/fl_attachment:true/')
+                    # Remove query params and add format
+                    if '?' in url:
+                        url = url.split('?')[0]
+                    if not url.endswith(file_ext):
+                        url = f"{url.rstrip('/')}.{file_ext}"
+            return url
+        return None
+
+    def get_cover_letter_url(self):
+        """Get proper Cloudinary URL for cover letter with format"""
+        if self.cover_letter:
+            url = self.cover_letter.url
+            # Get file extension
+            filename = self.cover_letter.name.split('/')[-1]
+            file_ext = filename.split('.')[-1] if '.' in filename else 'pdf'
+
+            # If it's a Cloudinary URL, add the format and attachment flag
+            if 'res.cloudinary.com' in url:
+                # Replace /upload/ with /upload/fl_attachment/ and append format
+                if '/upload/' in url:
+                    url = url.replace('/upload/', f'/upload/fl_attachment:true/')
+                    # Remove query params and add format
+                    if '?' in url:
+                        url = url.split('?')[0]
+                    if not url.endswith(file_ext):
+                        url = f"{url.rstrip('/')}.{file_ext}"
+            return url
+        return None
+
     class Meta:
         verbose_name = 'Job Application'
         verbose_name_plural = 'Job Applications'
@@ -514,10 +556,18 @@ class JobApplication(models.Model):
 
 
 def send_job_application_email_signal(sender, instance, *args, **kwargs):
-    send_job_application_email(STAFF_EMAILS, instance)
+    try:
+        send_job_application_email(STAFF_EMAILS, instance)
+    except Exception as e:
+        # Log the error but don't crash the application
+        print(f"Error sending job application email to staff: {str(e)}")
 
 def send_user_job_application_email_signal(sender, instance, *args, **kwargs):
-    send_user_job_application_email(instance.email, instance)
+    try:
+        send_user_job_application_email(instance.email, instance)
+    except Exception as e:
+        # Log the error but don't crash the application
+        print(f"Error sending job application confirmation email to user: {str(e)}")
 
 
 post_save.connect(send_booking_email_signal, sender=Booking)

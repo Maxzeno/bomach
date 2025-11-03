@@ -15,242 +15,384 @@
 </head>
 
 <body>
-{% include "./include/header_others.html" %}
+    {% include "./include/header_others.html" %}
 
-<!--    Page title area start here-->
-<div class="page-title-area pt-70 pb-70" data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="page-title-wrapper text-center">
-                    <h1 class="page-title">{{ job.title }}</h1>
-                    <div class="breadcrumb breadcrumb-list">
-                        <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
-                            <ul class="trail-items">
-                                <li  class="trail-item trail-begin">
-                                    <a href="{% url 'main:jobs' %}"><span>Jobs</span></a>
-                                </li>
-                                <li class="trail-item trail-end"><span>Job Details</span></li>
-                            </ul>
-                        </nav>
+    <!--    Page title area start here-->
+    <div class="page-title-area pt-70 pb-70"
+        data-background="{% static 'assets/img/bomach/new/Bomach-Engineering.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-title-wrapper text-center">
+                        <h1 class="page-title">{{ job.title }}</h1>
+                        <div class="breadcrumb breadcrumb-list">
+                            <nav aria-label="Breadcrumbs" class="breadcrumb-trail breadcrumbs">
+                                <ul class="trail-items">
+                                    <li class="trail-item trail-begin">
+                                        <a href="{% url 'main:jobs' %}"><span>Jobs</span></a>
+                                    </li>
+                                    <li class="trail-item trail-end"><span>Job Details</span></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!--   Page title area end here-->
+    <!--   Page title area end here-->
 
-<!-- Job Details area start here-->
-<div class="job-details-area pt-120 pb-80">
-    <div class="container">
-        <div class="row">
-            <!-- Job Details Content -->
-            <div class="col-lg-8">
-                <div class="job-details-wrapper mr-50">
-                    <!-- Job Header -->
-                    <div class="job-header mb-50" style="border-bottom: 2px solid #e0e0e0; padding-bottom: 30px;">
-                        <div class="d-flex justify-content-between align-items-start flex-wrap">
-                            <div>
-                                <h2 class="mb-15">{{ job.title }}</h2>
-                                <div class="job-meta d-flex flex-wrap" style="gap: 20px; margin-bottom: 20px;">
-                                    <span style="display: flex; align-items: center;">
-                                        <i class="flaticon-location mr-5" style="margin-right: 8px; font-size: 16px;"></i> {{ job.location }}
-                                    </span>
-                                    <span style="display: flex; align-items: center;">
-                                        <i class="fal fa-briefcase mr-5" style="margin-right: 8px; font-size: 16px;"></i> {{ job.job_type }}
-                                    </span>
-                                    <span style="display: flex; align-items: center;">
-                                        <i class="fal fa-calendar-alt mr-5" style="margin-right: 8px; font-size: 16px;"></i> Posted {{ job.date|date:'M d, Y' }}
-                                    </span>
+    <!-- Job Details area start here-->
+    <div class="job-details-area pt-120 pb-80">
+        <div class="container">
+            <div class="row">
+                <!-- Job Details Content -->
+                <div class="col-lg-8">
+                    <div class="job-details-wrapper">
+                        <!-- Job Header -->
+                        <div class="job-header mb-50"
+                            style="background: linear-gradient(135deg, #f8f9ff 0%, #f5f7ff 100%); border-radius: 12px; padding: 35px; border: 1px solid #e8ecf6; margin-bottom: 50px;">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap" style="gap: 30px;">
+                                <div style="flex: 1;">
+                                    <h2 class="mb-15"
+                                        style="font-size: 32px; font-weight: 700; color: #222; margin: 0 0 20px 0;">
+                                        {{ job.title }}</h2>
+                                    <div class="job-meta d-flex flex-wrap" style="gap: 25px;">
+                                        <span style="display: flex; align-items: center; color: #666; font-size: 14px;">
+                                            <i class="flaticon-location"
+                                                style="margin-right: 10px; font-size: 16px; color: #ff6b35;"></i>
+                                            {{ job.location }}
+                                        </span>
+                                        <span style="display: flex; align-items: center; color: #666; font-size: 14px;">
+                                            <i class="fal fa-briefcase"
+                                                style="margin-right: 10px; font-size: 16px; color: #ff6b35;"></i>
+                                            {{ job.job_type }}
+                                        </span>
+                                        <span style="display: flex; align-items: center; color: #666; font-size: 14px;">
+                                            <i class="fal fa-calendar-alt"
+                                                style="margin-right: 10px; font-size: 16px; color: #ff6b35;"></i>
+                                            Posted {{ job.date|date:'M d, Y' }}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            {% if job.salary_range %}
-                            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; text-align: right;">
-                                <p style="font-size: 12px; color: #999; margin-bottom: 5px;">Salary Range</p>
-                                <p style="font-weight: 700; font-size: 18px; color: #333;">{{ job.salary_range }}</p>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Job Image -->
-                    {% if job.image %}
-                    <div class="job-image m-img mb-50">
-                        <img src="{{ job.image_url }}" alt="{{ job.title }}" style="border-radius: 8px; width: 100%;">
-                    </div>
-                    {% endif %}
-
-                    <!-- Description -->
-                    <div class="job-section mb-40">
-                        <h3 class="mb-20" style="color: #333; font-weight: 700;">About This Position</h3>
-                        <div style="color: #666; line-height: 1.8;">
-                            {{ job.description|safe }}
-                        </div>
-                    </div>
-
-                    <!-- Responsibilities -->
-                    <div class="job-section mb-40">
-                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Responsibilities</h3>
-                        <div style="color: #666; line-height: 1.8;">
-                            {{ job.responsibilities|safe }}
-                        </div>
-                    </div>
-
-                    <!-- Requirements -->
-                    <div class="job-section mb-40">
-                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Requirements</h3>
-                        <div style="color: #666; line-height: 1.8;">
-                            {{ job.requirements|safe }}
-                        </div>
-                    </div>
-
-                    <!-- Benefits -->
-                    {% if job.benefits %}
-                    <div class="job-section mb-40">
-                        <h3 class="mb-20" style="color: #333; font-weight: 700;">Benefits</h3>
-                        <div style="color: #666; line-height: 1.8;">
-                            {{ job.benefits|safe }}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- Application Deadline -->
-                    {% if job.deadline %}
-                    <div class="job-deadline mb-40" style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 4px;">
-                        <p style="margin: 0; color: #856404;">
-                            <strong>Application Deadline:</strong> {{ job.deadline|date:'F d, Y' }}
-                        </p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Application Form Sidebar -->
-            <div class="col-lg-4">
-                <div class="job-apply-sidebar">
-                    <div class="apply-form-wrapper" style="background-color: #f9f9f9; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 20px;">
-                        <h3 class="mb-30" style="color: #333; font-weight: 700;">Apply Now</h3>
-
-                        <!-- Messages -->
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show mb-20" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                {% if job.salary_range %}
+                                <div
+                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; text-align: right; color: white; box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);">
+                                    <p
+                                        style="font-size: 12px; color: rgba(255,255,255,0.9); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">
+                                        Salary Range</p>
+                                    <p style="font-weight: 700; font-size: 20px; color: white; margin: 0;">
+                                        {{ job.salary_range }}</p>
                                 </div>
-                            {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Job Image -->
+                        {% if job.image %}
+                        <div class="job-image m-img mb-50">
+                            <img src="{{ job.image_url }}" alt="{{ job.title }}"
+                                style="border-radius: 8px; width: 100%;">
+                        </div>
                         {% endif %}
 
-                        <form action="{% url 'main:job-details' job.slug %}" method="POST" enctype="multipart/form-data" id="jobApplicationForm">
-                            {% csrf_token %}
+                        <!-- Description -->
+                        <div class="job-section mb-40">
+                            <h3 class="mb-20" style="color: #333; font-weight: 700;">About This Position</h3>
+                            <div style="color: #666; line-height: 1.8;">
+                                {{ job.description|safe }}
+                            </div>
+                        </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_name" style="font-weight: 600; margin-bottom: 8px; display: block;">Full Name *</label>
-                                {{ form.name }}
-                                {% if form.name.errors %}
+                        <!-- Responsibilities -->
+                        <div class="job-section mb-40">
+                            <h3 class="mb-20" style="color: #333; font-weight: 700;">Responsibilities</h3>
+                            <div style="color: #666; line-height: 1.8;">
+                                {{ job.responsibilities|safe }}
+                            </div>
+                        </div>
+
+                        <!-- Requirements -->
+                        <div class="job-section mb-40">
+                            <h3 class="mb-20" style="color: #333; font-weight: 700;">Requirements</h3>
+                            <div style="color: #666; line-height: 1.8;">
+                                {{ job.requirements|safe }}
+                            </div>
+                        </div>
+
+                        <!-- Benefits -->
+                        {% if job.benefits %}
+                        <div class="job-section mb-40">
+                            <h3 class="mb-20" style="color: #333; font-weight: 700;">Benefits</h3>
+                            <div style="color: #666; line-height: 1.8;">
+                                {{ job.benefits|safe }}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Application Deadline -->
+                        {% if job.deadline %}
+                        <div class="job-deadline mb-40"
+                            style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 4px;">
+                            <p style="margin: 0; color: #856404;">
+                                <strong>Application Deadline:</strong> {{ job.deadline|date:'F d, Y' }}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Application Form Sidebar -->
+                <div class="col-lg-4">
+                    <div class="job-apply-sidebar">
+                        <div class="apply-form-wrapper"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 12px; box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2); position: sticky; top: 20px; color: white;">
+                            <!-- Header -->
+                            <div class="apply-header mb-30">
+                                <i class="fal fa-file-alt"
+                                    style="font-size: 28px; display: block; margin-bottom: 15px; opacity: 0.9;"></i>
+                                <h3 style="color: white; font-weight: 700; margin: 0; font-size: 24px;">Apply Now</h3>
+                                <p style="color: rgba(255,255,255,0.9); font-size: 13px; margin: 8px 0 0 0;">Complete
+                                    the form below to apply</p>
+                            </div>
+
+                            <form action="{% url 'main:job-details' job.slug %}" method="POST"
+                                enctype="multipart/form-data" id="jobApplicationForm">
+                                {% csrf_token %}
+
+                                <!-- Full Name -->
+                                <div class="form-group mb-20">
+                                    <label for="id_name"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-user" style="margin-right: 6px;"></i>Full Name *
+                                    </label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
                                     <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
-                                {% endif %}
-                            </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_email" style="font-weight: 600; margin-bottom: 8px; display: block;">Email Address *</label>
-                                {{ form.email }}
-                                {% if form.email.errors %}
+                                <!-- Email -->
+                                <div class="form-group mb-20">
+                                    <label for="id_email"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-envelope" style="margin-right: 6px;"></i>Email Address *
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
                                     <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
-                                {% endif %}
-                            </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_phone" style="font-weight: 600; margin-bottom: 8px; display: block;">Phone Number *</label>
-                                {{ form.phone }}
-                                {% if form.phone.errors %}
+                                <!-- Phone -->
+                                <div class="form-group mb-20">
+                                    <label for="id_phone"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-phone-alt" style="margin-right: 6px;"></i>Phone Number *
+                                    </label>
+                                    {{ form.phone }}
+                                    {% if form.phone.errors %}
                                     <div class="invalid-feedback d-block">{{ form.phone.errors.0 }}</div>
-                                {% endif %}
-                            </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_resume" style="font-weight: 600; margin-bottom: 8px; display: block;">Resume (PDF, DOC, DOCX) *</label>
-                                {{ form.resume }}
-                                <small style="color: #999;">Max file size: 5MB</small>
-                                {% if form.resume.errors %}
+                                <!-- Resume -->
+                                <div class="form-group mb-20">
+                                    <label for="id_resume"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-file-pdf" style="margin-right: 6px;"></i>Resume - CV (PDF, DOC,
+                                        DOCX) *
+                                    </label>
+                                    <div class="file-upload-wrapper" style="position: relative;">
+                                        {{ form.resume }}
+                                        <div style="font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 8px;">
+                                            <i class="fal fa-info-circle" style="margin-right: 4px;"></i>Max 5MB
+                                        </div>
+                                    </div>
+                                    {% if form.resume.errors %}
                                     <div class="invalid-feedback d-block">{{ form.resume.errors.0 }}</div>
-                                {% endif %}
-                            </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_cover_letter" style="font-weight: 600; margin-bottom: 8px; display: block;">Cover Letter (Optional)</label>
-                                {{ form.cover_letter }}
-                                <small style="color: #999;">Max file size: 5MB</small>
-                                {% if form.cover_letter.errors %}
+                                <!-- Cover Letter -->
+                                <div class="form-group mb-20">
+                                    <label for="id_cover_letter"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-file-alt" style="margin-right: 6px;"></i>Cover Letter
+                                        (Optional)
+                                    </label>
+                                    <div class="file-upload-wrapper" style="position: relative;">
+                                        {{ form.cover_letter }}
+                                        <div style="font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 8px;">
+                                            <i class="fal fa-info-circle" style="margin-right: 4px;"></i>Max 5MB
+                                        </div>
+                                    </div>
+                                    {% if form.cover_letter.errors %}
                                     <div class="invalid-feedback d-block">{{ form.cover_letter.errors.0 }}</div>
-                                {% endif %}
-                            </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="form-group mb-20">
-                                <label for="id_message" style="font-weight: 600; margin-bottom: 8px; display: block;">Additional Message (Optional)</label>
-                                {{ form.message }}
-                                {% if form.message.errors %}
+                                <!-- Additional Message -->
+                                <div class="form-group mb-25">
+                                    <label for="id_message"
+                                        style="font-weight: 600; margin-bottom: 10px; display: block; color: white; font-size: 13px;">
+                                        <i class="fal fa-comment-alt" style="margin-right: 6px;"></i>Why You're
+                                        Interested (Optional)
+                                    </label>
+                                    {{ form.message }}
+                                    {% if form.message.errors %}
                                     <div class="invalid-feedback d-block">{{ form.message.errors.0 }}</div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="theme-btn home2-btn btn-before"
+                                    style="display: block; width: 100%; text-align: center; background-color: rgba(255,255,255,0.95); color: #333; border: none; font-weight: 700;">
+                                    <i class="fal fa-paper-plane" style="margin-right: 8px;"></i>Submit Application
+                                </button>
+                            </form>
+
+                            <!-- Contact Section -->
+                            <div
+                                style="border-top: 1px solid rgba(255,255,255,0.3); margin-top: 30px; padding-top: 25px;">
+                                <p
+                                    style="font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 15px; font-weight: 600;">
+                                    <i class="fal fa-question-circle" style="margin-right: 8px;"></i>Have Questions?
+                                </p>
+                                <div
+                                    style="background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
+                                    <p style="margin: 8px 0; font-size: 12px;">
+                                        <i class="fal fa-envelope"
+                                            style="margin-right: 8px; color: rgba(255,255,255,0.8);"></i>
+                                        <a href="mailto:bomachgroupmanagement@gmail.com"
+                                            style="color: rgba(255,255,255,0.95); text-decoration: none;">bomachgroupmanagement@gmail.com</a>
+                                    </p>
+                                    <p style="margin: 8px 0; font-size: 12px;">
+                                        <i class="fal fa-phone"
+                                            style="margin-right: 8px; color: rgba(255,255,255,0.8);"></i>
+                                        <a href="tel:09018000118"
+                                            style="color: rgba(255,255,255,0.95); text-decoration: none;">090 1800
+                                            0118</a>
+                                    </p>
+                                </div>
                             </div>
-
-                            <button type="submit" class="theme-btn home2-btn btn-before w-100" style="width: 100%; padding: 15px;">
-                                <i class="fal fa-angle-double-right"></i> Submit Application
-                            </button>
-                        </form>
-
-                        <div style="border-top: 1px solid #ddd; margin-top: 30px; padding-top: 20px;">
-                            <p style="font-size: 12px; color: #999; margin-bottom: 10px;">
-                                <strong>Questions?</strong> Contact us at:
-                            </p>
-                            <p style="margin: 5px 0; font-size: 13px;">
-                                <i class="fal fa-envelope mr-5"></i>
-                                <a href="mailto:bomachgroupmanagement@gmail.com" style="color: #333; text-decoration: none;">bomachgroupmanagement@gmail.com</a>
-                            </p>
-                            <p style="margin: 5px 0; font-size: 13px;">
-                                <i class="fal fa-phone mr-5"></i>
-                                <a href="tel:09018000118" style="color: #333; text-decoration: none;">090 1800 0118</a>
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Job Details area end here-->
+    <!-- Job Details area end here-->
 
-{% include "./include/footer.html" %}
-{% include "./include/foot.html" %}
+    {% include "./include/footer.html" %}
+    {% include "./include/foot.html" %}
 
-<style>
-    .form-control {
-        border: 1px solid #ddd;
-        padding: 12px;
-        border-radius: 4px;
-        font-size: 14px;
-        transition: border-color 0.3s ease;
-    }
+    <style>
+        /* Form styling for gradient background */
+        .apply-form-wrapper .form-control {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #333;
+        }
 
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+        .apply-form-wrapper .form-control::placeholder {
+            color: #999;
+        }
 
-    textarea.form-control {
-        resize: vertical;
-        min-height: 100px;
-    }
+        .apply-form-wrapper .form-control:focus {
+            background-color: white;
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
 
-    .invalid-feedback {
-        color: #dc3545;
-        font-size: 12px;
-        margin-top: 5px;
-    }
-</style>
+        .apply-form-wrapper textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .apply-form-wrapper .invalid-feedback {
+            color: #ffd4d4;
+            font-size: 12px;
+            margin-top: 6px;
+            display: block;
+            font-weight: 500;
+        }
+
+        /* File input styling */
+        .apply-form-wrapper input[type="file"] {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            color: #333;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-form-wrapper input[type="file"]:hover {
+            background-color: white;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .apply-form-wrapper input[type="file"]::file-selector-button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .apply-form-wrapper input[type="file"]::file-selector-button:hover {
+            background-color: #5568d3;
+        }
+
+        /* Button styling */
+        .apply-form-wrapper button[type="submit"] {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .apply-form-wrapper button[type="submit"]:hover {
+            background-color: white !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .apply-form-wrapper {
+                margin-top: 40px;
+                position: static !important;
+            }
+        }
+
+        /* Alert styling */
+        .apply-form-wrapper .alert {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            color: white !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .apply-form-wrapper .alert .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .apply-form-wrapper .alert .close:hover {
+            opacity: 1;
+        }
+    </style>
 
 </body>
+
 </html>
