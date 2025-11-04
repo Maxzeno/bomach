@@ -404,6 +404,7 @@ class JobDetail(View, Base):
 
         # File size validation
         resume = request.FILES.get('resume')
+
         cover_letter = request.FILES.get('cover_letter')
 
         max_size = 5 * 1024 * 1024  # 5MB

@@ -64,7 +64,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
 ]
-    
+
+
 if not TRY_LOCAL_STORAGE:
     INSTALLED_APPS.insert(7, 'cloudinary_storage')
     INSTALLED_APPS.insert(9, 'cloudinary')

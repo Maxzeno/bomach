@@ -25,10 +25,10 @@ class PropertyCoordinatesAdminInline(admin.TabularInline):
     model = PropertyCoordinates
     fields = ('easting', 'northing', 'zone', 'lon', 'lat', 'lon_dms', 'lat_dms', 'date')
 
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # Make the field read-only when editing an existing object
-            return ['lon', 'lat', 'lon_dms', 'lat_dms']
-        return []
+    # def get_readonly_fields(self, request, obj=None):
+    #     if obj:  # Make the field read-only when editing an existing object
+    #         return ['lon', 'lat', 'lon_dms', 'lat_dms']
+    #     return []
 
 class SubPropertyCategoryAdminInline(admin.TabularInline):
     extra = 1
@@ -182,35 +182,8 @@ class BulkSMSAdmin(admin.ModelAdmin):
 class JobApplicationAdminInline(admin.TabularInline):
     extra = 0
     model = JobApplication
-    fields = ('name', 'email', 'phone', 'resume_link', 'cover_letter_link', 'applied_at')
-    readonly_fields = ('applied_at', 'resume_link', 'cover_letter_link')
+    fields = ('name', 'email', 'phone', 'resume', 'cover_letter', 'applied_at')
     can_delete = True
-
-    def resume_link(self, obj):
-        """Display resume as a clickable link with proper Cloudinary URL"""
-        if obj.resume:
-            url = obj.get_resume_url()
-            filename = obj.resume.name.split('/')[-1]
-            return format_html(
-                '<a href="{}" target="_blank" download>{}</a>',
-                url,
-                filename
-            )
-        return '-'
-    resume_link.short_description = 'Resume'
-
-    def cover_letter_link(self, obj):
-        """Display cover letter as a clickable link with proper Cloudinary URL"""
-        if obj.cover_letter:
-            url = obj.get_cover_letter_url()
-            filename = obj.cover_letter.name.split('/')[-1]
-            return format_html(
-                '<a href="{}" target="_blank" download>{}</a>',
-                url,
-                filename
-            )
-        return '-'
-    cover_letter_link.short_description = 'Cover Letter'
 
 
 @admin.register(Job)
@@ -224,35 +197,8 @@ class JobAdmin(admin.ModelAdmin):
 
 @admin.register(JobApplication)
 class JobApplicationAdmin(admin.ModelAdmin):
-    fields = ('job', 'name', 'email', 'phone', 'resume', 'resume_link', 'cover_letter', 'cover_letter_link', 'message', 'applied_at')
+    fields = ('job', 'name', 'email', 'phone', 'resume', 'cover_letter', 'message', 'applied_at')
     list_display = ('name', 'email', 'job', 'applied_at')
-    readonly_fields = ('applied_at', 'resume_link', 'cover_letter_link')
     search_fields = ('name', 'email', 'job__title')
     list_filter = ('job', 'applied_at')
-
-    def resume_link(self, obj):
-        """Display resume as a clickable link with proper Cloudinary URL"""
-        if obj.resume:
-            url = obj.get_resume_url()
-            filename = obj.resume.name.split('/')[-1]
-            return format_html(
-                '<a href="{}" target="_blank" download>{}</a>',
-                url,
-                filename
-            )
-        return '-'
-    resume_link.short_description = 'Resume File'
-
-    def cover_letter_link(self, obj):
-        """Display cover letter as a clickable link with proper Cloudinary URL"""
-        if obj.cover_letter:
-            url = obj.get_cover_letter_url()
-            filename = obj.cover_letter.name.split('/')[-1]
-            return format_html(
-                '<a href="{}" target="_blank" download>{}</a>',
-                url,
-                filename
-            )
-        return '-'
-    cover_letter_link.short_description = 'Cover Letter File'
 
