@@ -1,4 +1,3 @@
-from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
 from django.utils.crypto import get_random_string
@@ -6,8 +5,79 @@ from pyproj import Proj
 import requests
 from django.conf import settings
 import re
+import json
+from django.conf import settings
+from django.template.loader import render_to_string
 
-# Create your models here.
+
+def _chunk_list(lst, size):
+    for i in range(0, len(lst), size):
+        yield lst[i:i + size]
+
+
+def send_email_service(
+    recipients: list,
+    title: str = "Bomach",
+    path: str = "main/email_template/custom.html",
+    context_data: dict = {},
+):
+	# Normalize recipients to list if single string
+	if isinstance(recipients, str):
+		recipients = [recipients]
+
+	# Convert string emails to dict format
+	normalized_recipients = []
+	for recipient in recipients:
+		if isinstance(recipient, str):
+			normalized_recipients.append({"email": recipient, "name": ""})
+		else:
+			normalized_recipients.append(recipient)
+
+	# Render HTML content from template
+	html_content = render_to_string(path, context_data)
+
+	from_email: str = "noreply@bomachgroup.com"
+	url = "https://api.zeptomail.com/v1.1/email"
+	headers = {
+		"accept": "application/json",
+		"content-type": "application/json",
+		"authorization": settings.ZOHOZEPTOMAIL_KEY,
+	}
+
+	responses = []
+	# Process recipients in batches of 100 (ZeptoMail limit)
+	for chunk in _chunk_list(normalized_recipients, 100):
+		to_recipients = []
+		for recipient in chunk:
+			if recipient and recipient.get("email"):
+				to_recipients.append({
+					"email_address": {
+						"address": recipient.get("email"),
+						"name": recipient.get("name", ""),
+					}
+				})
+
+		if not to_recipients:
+			continue
+
+		payload = {
+			"from": {"address": from_email},
+			"to": to_recipients,
+			"subject": title,
+			"htmlbody": html_content,
+		}
+
+		try:
+			response = requests.post(
+				url, data=json.dumps(payload), headers=headers, timeout=10
+			)
+			responses.append(response)
+		except Exception as e:
+			print(f"Error sending email via ZeptoMail: {str(e)}")
+			responses.append(None)
+
+	return responses  # returns a list of responses (one per batch)
+
 
 # notes Lat/long can be in: deg/min/sec  or  decimal degrees
 # UTM can be in:  m  or  mm
@@ -59,71 +129,107 @@ def property_category_valid_options(property_category_model, sub_property_catego
 	
 
 def send_email_property(email, property_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send property submission notification to staff via send_email_service."""
 	subject = 'User adds a property for review'
-	message = f"""Name: {property_model.name}
-Phone number: {property_model.phone}
-Email: {property_model.email}
-Location: {property_model.location}
-Content: {property_model.short_content()}
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+	context_data = {
+		'header': 'New Property Submission',
+		'title': subject,
+		'sub_title': f"""<strong>Name:</strong> {property_model.name}<br/>
+<strong>Phone:</strong> {property_model.phone}<br/>
+<strong>Email:</strong> {property_model.email}<br/>
+<strong>Location:</strong> {property_model.location}<br/>
+<strong>Content:</strong> {property_model.short_content()}"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def send_email_quote(email, quote_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send quote request notification to staff via send_email_service."""
 	subject = 'New User wants Project Estimate'
-	message = f"""Name: {quote_model.name}
-Phone number: {quote_model.phone}
-Email: {quote_model.email}
-Location: {quote_model.location}
-Service: {quote_model.service.name}
-Sub Service: {quote_model.sub_service.name if quote_model.sub_service else ''}
-Message: {quote_model.message}
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+	context_data = {
+		'header': 'New Quote Request',
+		'title': subject,
+		'sub_title': f"""<strong>Name:</strong> {quote_model.name}<br/>
+<strong>Phone:</strong> {quote_model.phone}<br/>
+<strong>Email:</strong> {quote_model.email}<br/>
+<strong>Location:</strong> {quote_model.location}<br/>
+<strong>Service:</strong> {quote_model.service.name}<br/>
+<strong>Sub Service:</strong> {quote_model.sub_service.name if quote_model.sub_service else 'N/A'}<br/>
+<strong>Message:</strong> {quote_model.message}"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def send_email_contact(email, contact_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send contact form notification to staff via send_email_service."""
 	subject = 'User Contacts admin'
-	message = f"""Name: {contact_model.name}
-Phone number: {contact_model.phone}
-Email: {contact_model.email}
-Location: {contact_model.location}
-Message: {contact_model.message}
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+	context_data = {
+		'header': 'New Contact Form Submission',
+		'title': subject,
+		'sub_title': f"""<strong>Name:</strong> {contact_model.name}<br/>
+<strong>Phone:</strong> {contact_model.phone}<br/>
+<strong>Email:</strong> {contact_model.email}<br/>
+<strong>Location:</strong> {contact_model.location}<br/>
+<strong>Message:</strong> {contact_model.message}"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def send_booking_email(email, booking_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send booking notification to staff via send_email_service."""
 	subject = 'New User booked an appointment with us'
-	message = f"""Name: {booking_model.name}
-Phone number: {booking_model.phone}
-Email: {booking_model.email}
-Location: {booking_model.location}
-Service: {booking_model.service.name}
-Sub Service: {booking_model.sub_service.name if booking_model.sub_service else ''}
-Message: {booking_model.message}
-Meeting time: {booking_model.meeting_time.strftime("%A %d %B %Y by %I:%M%p")}
-Duration in minutes: {booking_model.duration_in_minutes}
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+	context_data = {
+		'header': 'New Booking',
+		'title': subject,
+		'sub_title': f"""<strong>Name:</strong> {booking_model.name}<br/>
+<strong>Phone:</strong> {booking_model.phone}<br/>
+<strong>Email:</strong> {booking_model.email}<br/>
+<strong>Location:</strong> {booking_model.location}<br/>
+<strong>Service:</strong> {booking_model.service.name}<br/>
+<strong>Sub Service:</strong> {booking_model.sub_service.name if booking_model.sub_service else 'N/A'}<br/>
+<strong>Message:</strong> {booking_model.message}<br/>
+<strong>Meeting time:</strong> {booking_model.meeting_time.strftime("%A %d %B %Y by %I:%M%p")}<br/>
+<strong>Duration:</strong> {booking_model.duration_in_minutes} minutes"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def send_user_booking_email(email, booking_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send booking confirmation to user via send_email_service."""
 	subject = 'Your Appointment has been booked'
-	message = f"""Your Appointment is on {booking_model.meeting_time.strftime("%A %d %B %Y by %I:%M%p")}
-Best regards Bomach Group.
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=False)
+	context_data = {
+		'header': 'Booking Confirmation',
+		'title': subject,
+		'sub_title': f"""Your appointment has been successfully booked for:<br/><br/>
+<strong>{booking_model.meeting_time.strftime("%A, %d %B %Y at %I:%M %p")}</strong><br/><br/>
+Thank you for choosing Bomach Group. We look forward to meeting you!"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def verify_google_recaptcha(recaptcha_token):
@@ -182,32 +288,43 @@ def normalize_nigerian_number(raw_number: str) -> str:
 
 
 def send_job_application_email(email, job_application_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send job application notification to staff via send_email_service."""
 	subject = 'New Job Application Received'
-	message = f"""Name: {job_application_model.name}
-Phone number: {job_application_model.phone}
-Email: {job_application_model.email}
-Job Title: {job_application_model.job.title}
-Applied at: {job_application_model.applied_at.strftime("%A %d %B %Y by %I:%M%p")}
-Message: {job_application_model.message if job_application_model.message else 'N/A'}
-Resume: {job_application_model.resume.name if job_application_model.resume else 'N/A'}
-Cover Letter: {job_application_model.cover_letter.name if job_application_model.cover_letter else 'N/A'}
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=True)
+	context_data = {
+		'header': 'New Job Application',
+		'title': subject,
+		'sub_title': f"""<strong>Name:</strong> {job_application_model.name}<br/>
+<strong>Phone:</strong> {job_application_model.phone}<br/>
+<strong>Email:</strong> {job_application_model.email}<br/>
+<strong>Job Title:</strong> {job_application_model.job.title}<br/>
+<strong>Applied at:</strong> {job_application_model.applied_at.strftime("%A %d %B %Y by %I:%M%p")}<br/>
+<strong>Message:</strong> {job_application_model.message if job_application_model.message else 'N/A'}<br/>
+<strong>Resume:</strong> {job_application_model.resume.name if job_application_model.resume else 'N/A'}<br/>
+<strong>Cover Letter:</strong> {job_application_model.cover_letter.name if job_application_model.cover_letter else 'N/A'}"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)
 
 
 def send_user_job_application_email(email, job_application_model):
-	if not isinstance(email, list):
-		email = [email]
+	"""Send job application confirmation to user via send_email_service."""
 	subject = 'Application Received - Bomach Group'
-	message = f"""Dear {job_application_model.name},
-
-Thank you for applying for the {job_application_model.job.title} position at Bomach Group. We have received your application and will review it carefully.
-
-We will get back to you soon with updates regarding your application.
-
-Best regards,
-Bomach Group
-"""
-	send_mail(subject, message, settings.EMAIL_HOST_USER, email, fail_silently=True)
+	context_data = {
+		'header': 'Application Received',
+		'title': subject,
+		'sub_title': f"""Dear {job_application_model.name},<br/><br/>
+Thank you for applying for the <strong>{job_application_model.job.title}</strong> position at Bomach Group. We have received your application and will review it carefully.<br/><br/>
+We will get back to you soon with updates regarding your application.<br/><br/>
+Best regards,<br/>
+<strong>Bomach Group</strong>"""
+	}
+	send_email_service(
+		recipients=email,
+		title=subject,
+		path='main/email_template/custom.html',
+		context_data=context_data
+	)

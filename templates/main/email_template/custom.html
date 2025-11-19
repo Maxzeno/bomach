@@ -1,0 +1,61 @@
+{% load static %}
+<html style="font-family: arial, 'helvetica neue', helvetica, sans-serif">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta content="telephone=no" name="format-detection" />
+  <title>Bomach Group</title>
+</head>
+
+<body style="
+      width: 100%;
+      font-family: arial, 'helvetica neue', helvetica, sans-serif;
+      padding: 0;
+      margin: 0;
+      background-color: #fff;
+    ">
+  <div style="margin: 10px 20px 10px 20px">
+    <div style="
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 40px 0;
+          text-align: start;
+          background-color: #fff;
+        ">
+      <img src="{% static 'assets/img/logo/bomach-logo-full.jpeg' %}" alt="Bomach Group Logo" style="
+            display: block;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+            font-size: 12px;
+            margin: 0 auto;
+          " width="200" title="Bomach Group Logo" />
+      <hr style="margin-top: 50px; border-color: #fafafa" />
+      <div style="padding: 0 15px">
+        <h1 style="
+              padding: 20px 0;
+              margin: 0;
+              line-height: 30px;
+              font-family: arial, 'helvetica neue', helvetica, sans-serif;
+              font-size: 30px;
+              font-style: normal;
+              font-weight: bold;
+              color: #333333;
+            ">
+          {{ header }}
+        </h1>
+        <div style="padding-top: 10px">{{ title }}</div>
+        <div style="padding-top: 15px">
+          {{ sub_title|safe }}
+        </div>
+      </div>
+    </div>
+
+    {% include './include/email_footer.html' %}
+  </div>
+</body>
+
+</html>
