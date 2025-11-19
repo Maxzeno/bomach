@@ -29,4 +29,6 @@ urlpatterns = [
     path('project/<slug:slug>', views.ProjectDetail.as_view(), name='project-details'),
     path('jobs', views.Jobs.as_view(), name='jobs'),
     path('jobs/<slug:slug>', views.JobDetail.as_view(), name='job-details'),
+    path('privacy', views.Privacy.as_view(), name='privacy'),
+    path('terms-of-service', views.TermsOfService.as_view(), name='terms-of-service'),
 ]

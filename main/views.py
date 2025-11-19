@@ -428,3 +428,12 @@ class JobDetail(View, Base):
         messages.error(request, 'Please check your form and try again', extra_tags='danger')
         return render(request, 'main/job-details.html', {'job': job, 'form': form, **self.context})
 
+
+class Privacy(View, Base):
+    def get(self, request):
+        return render(request, 'main/privacy.html', {**self.context})
+
+
+class TermsOfService(View, Base):
+    def get(self, request):
+        return render(request, 'main/terms-of-service.html', {**self.context})
