@@ -298,9 +298,7 @@ def send_job_application_email(email, job_application_model):
 <strong>Email:</strong> {job_application_model.email}<br/>
 <strong>Job Title:</strong> {job_application_model.job.title}<br/>
 <strong>Applied at:</strong> {job_application_model.applied_at.strftime("%A %d %B %Y by %I:%M%p")}<br/>
-<strong>Message:</strong> {job_application_model.message if job_application_model.message else 'N/A'}<br/>
-<strong>Resume:</strong> {job_application_model.resume.name if job_application_model.resume else 'N/A'}<br/>
-<strong>Cover Letter:</strong> {job_application_model.cover_letter.name if job_application_model.cover_letter else 'N/A'}"""
+<strong>Message:</strong> {job_application_model.message if job_application_model.message else 'N/A'}<br/>"""
 	}
 	send_email_service(
 		recipients=email,
